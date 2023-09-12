@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "all meal mobilapp",
+    "slug": "allmealmobilapp",
+    "privacy": "public",
+    "description": "food delivery",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/newSplash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/706b51b5-53a1-40ea-8b62-5278a2b3cb92"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.morbanjunior.allmealmobilapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.morbanjunior.allmealmobilapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    
+    
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
+  }
+}
