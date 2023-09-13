@@ -11,7 +11,7 @@ import { loginData } from '../../redux/loginSlice';
 import Toast from 'react-native-toast-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-type props = StackScreenProps<RootStackParamList, 'Signin'>
+type props = StackScreenProps<RootStackParamList, 'SigninDrawer'>
 
 const Signin: FunctionComponent<props>= ({navigation}) => {
   const [loginUser,{data, isError, error, isLoading}] = useLoginUserMutation();

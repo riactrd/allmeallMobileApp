@@ -50,7 +50,7 @@ const VerifyUser: FunctionComponent<Props> = ({route}) => {
     if(data ){
       SetVerificationCode('')
 
-      navigation.navigate('Signin')
+      navigation.navigate('SigninDrawer')
     }
 
     if(isError){

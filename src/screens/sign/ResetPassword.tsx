@@ -40,7 +40,7 @@ const ResetPassword: FunctionComponent<Props> = ({route}) => {
         animationType: "slide-in",
         
       });
-      navigation.navigate('Signin')
+      navigation.navigate('SigninDrawer')
     }
 
     if(isError){

@@ -52,12 +52,13 @@ import ResetPassword from "../screens/sign/ResetPassword";
 
 export type RootStackParamList = {
   HomeStack: undefined;
+  HomeDrawer:undefined;
   Category: undefined;
-  Signin: undefined;
-  Welcome: undefined;
-  Signup: undefined;
-  ForgotPassword: undefined;
-  ResetPassword: undefined;
+  SigninDrawer: undefined;
+  WelcomeDrawer: undefined;
+  SignupDrawer: undefined;
+  ForgotPasswordDrawer: undefined;
+  ResetPasswordDrawer: undefined;
   MyOrders: undefined;
   SingleOrder: undefined;
   Wellness: undefined;
@@ -125,7 +126,7 @@ export const SignUpStackNavigator: FunctionComponent = () => {
               color="#3C3C3C"
               style={{ marginLeft: 10 }}
               backgroundColor="white"
-              onPress={() => navigation.navigate("Signin")}
+              onPress={() => navigation.navigate("SigninDrawer")}
             />
           ),
           headerTransparent: true,
