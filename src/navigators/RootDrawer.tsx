@@ -25,7 +25,7 @@ const RootDrawer: FunctionComponent = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="HomeDrawer"
+        initialRouteName="WelcomeDrawer"
         screenOptions={{
           headerShown: false,
           drawerActiveBackgroundColor: "yellow",
@@ -37,10 +37,10 @@ const RootDrawer: FunctionComponent = () => {
       >
         <Drawer.Screen name="HomeDrawer" component={TabNavigator} />
 
-        <Drawer.Screen name="CategoryDrawer" component={CategoryPage} />
+        <Drawer.Screen name="Category" component={CategoryPage} />
         <Drawer.Screen name="WelcomeDrawer" component={Welcome} />
         <Drawer.Screen name="SigninDrawer" component={SigninStackNavigator} />
-        <Drawer.Screen name="SignUpDrawer" component={SignUpStackNavigator} />
+        <Drawer.Screen name="SignupDrawer" component={SignUpStackNavigator} />
 
         <Drawer.Screen
           name="ForgotPasswordDrawer"

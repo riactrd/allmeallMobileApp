@@ -119,7 +119,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
             })
           );
 
-          navigation.navigate("SignIn");
+          navigation.navigate("SigninDrawer");
         }
 
         // }

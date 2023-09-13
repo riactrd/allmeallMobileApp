@@ -6,7 +6,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Screenheight, ScreenWidth } from '../../componets/shared';
 import { useLoginUserMutation } from '../../redux/api/authApi';
 
-type props = StackScreenProps<RootStackParamList, 'Signin'>
+type props = StackScreenProps<RootStackParamList, 'SigninDrawer'>
 
 const Signin: FunctionComponent<props>= ({navigation}) => {
   const [loginUser,{data, isError, error, isLoading}] = useLoginUserMutation();

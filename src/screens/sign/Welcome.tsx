@@ -6,7 +6,7 @@ import { RootStackParamList } from '../../navigators/RootStack';
 import { ScreenWidth } from 'react-native-elements/dist/helpers';
 import { Screenheight } from '../../componets/shared';
 
-type props = StackScreenProps<RootStackParamList, 'Welcome'>
+type props = StackScreenProps<RootStackParamList, 'WelcomeDrawer'>
 
 
 const Welcome: FunctionComponent<props>= ({navigation}) => {
@@ -32,13 +32,13 @@ const Welcome: FunctionComponent<props>= ({navigation}) => {
                 </View>
                 <View style={styles.containerbuttom}>
                     <TouchableOpacity activeOpacity={.7} 
-                     onPress={()=>navigation.navigate('Signin')}
+                     onPress={()=>navigation.navigate('SigninDrawer')}
                      style={styles.buttomSignin}>
                         <Icon name="user-check" type="ionicon" color="#fff" style={styles.iconLogin}/>
                         <Text style={styles.textButtomLogin}>Log In</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
-                    onPress={()=>navigation.navigate('SignUp')}
+                    onPress={()=>navigation.navigate('SignupDrawer')}
                     activeOpacity={.7} style={styles.buttomSignup}>
                         <Icon name="user-check" type="ionicon" color="#fff" style={styles.iconLogup}/>
                         <Text style={styles.textButtomLogup}>Register</Text>

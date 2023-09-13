@@ -30,7 +30,7 @@ const Welcome: FunctionComponent<props>= ({navigation}) => {
                 </View>
                 <View style={styles.containerbuttom}>
                     <TouchableOpacity activeOpacity={.7} 
-                     onPress={()=>navigation.navigate('Signin')}
+                     onPress={()=>navigation.navigate('SigninDrawer')}
                      style={styles.buttomSignin}>
                         <Icon name="user-check" type="ionicon" color="#fff" style={styles.iconLogin}/>
                         <Text style={styles.textButtomLogin}>Log In</Text>

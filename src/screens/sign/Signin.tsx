@@ -21,7 +21,7 @@ interface errorModel{
   }
 } 
 
-type props = StackScreenProps<RootStackParamList, 'Signin'>
+type props = StackScreenProps<RootStackParamList, 'SigninDrawer'>
 
 const Signin: FunctionComponent<props>= ({navigation}) => {
   const [loginUser,{data, isError, error, isLoading}] = useLoginUserMutation();
@@ -55,7 +55,7 @@ const Signin: FunctionComponent<props>= ({navigation}) => {
         userData: data.data.user
       }))
       
-      navigation.navigate('Home')
+      navigation.navigate('HomeDrawer')
     }
    if(isError){
    
@@ -198,12 +198,12 @@ const onChangePassword = (e: NativeSyntheticEvent<TextInputChangeEventData>): vo
                               <Icon name="user-check" type="ionicon" color="#fff" style={styles.iconLogin}/>
                               <Text style={styles.textButtomLogin}>Log In</Text>
                       </TouchableOpacity>
-                          <TouchableOpacity style={styles.forgotPassword} onPress={()=>navigation.navigate('ForgotPassword')}>
+                          <TouchableOpacity style={styles.forgotPassword} onPress={()=>navigation.navigate('ForgotPasswordDrawer')}>
                               <Text style={styles.textRegister}>Forgot Password</Text>
                           </TouchableOpacity>
                       <View style={styles.containertextBottom}>
                           <Text style={styles.textAccount}>Don’t have an account?</Text>
-                          <TouchableOpacity  onPress={()=>navigation.navigate('SignUp')}>
+                          <TouchableOpacity  onPress={()=>navigation.navigate('SignupDrawer')}>
                               <Text style={styles.textRegister}>Register here</Text>
                           </TouchableOpacity>
                         

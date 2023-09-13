@@ -24,7 +24,7 @@ const MyProfile = () => {
   
 const handleLogout = ()=>{
 
-  navigation.navigate('Welcome')
+  navigation.navigate('WelcomeDrawer')
 
 
 }
