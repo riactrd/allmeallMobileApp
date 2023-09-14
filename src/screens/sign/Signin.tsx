@@ -16,7 +16,6 @@ import {
 } from "react-native";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { RootStackParamList } from "../../navigators/RootDrawer";
 import { StackScreenProps } from "@react-navigation/stack";
 import {
   Screenheight,
@@ -30,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { loginData } from "../../redux/loginSlice";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
+import { RootStackParamList } from "../../navigators/RootStack";
 
 interface errorModel {
   data: {
@@ -368,6 +368,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.25,
     textTransform: "capitalize",
     marginTop: 20,
+    paddingTop:1,
   },
   header: {
     display: "flex",

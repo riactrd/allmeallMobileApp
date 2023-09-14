@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,27 +7,129 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import Icon from "react-native-vector-icons/FontAwesome5";
 
-import { mainColor } from "../../componets/shared";
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Screenheight, ScreenWidth, thirdColor } from '../../componets/shared';
+import { useLoginUserMutation } from '../../redux/api/authApi';
+import { useToast } from "react-native-toast-notifications";
+import { useDispatch } from 'react-redux';
+import { loginData } from '../../redux/loginSlice';
+import Toast from 'react-native-toast-message';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { RootStackParamList } from '../../navigators/RootStack';
 
-export default function Login({ navigation }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+type props = StackScreenProps<RootStackParamList, 'SigninDrawer'>
 
-  const handleSubmit = () => {
-    // Aquí puedes realizar acciones con los datos, como enviarlos a un servidor
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+const Login: FunctionComponent<props>= ({navigation}) => {
+  const [loginUser,{data, isError, error, isLoading}] = useLoginUserMutation();
+  const [email, SetUserEmail] = useState<string>('');
+  const [password, SetPassword] = useState<string>('');
+  const toast = useToast();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    if(data && data.data.access_token){
+     
+      SetUserEmail('');
+      SetPassword('');
+      // SetIsLogin(true)
+      // console.log(data)
+      dispatch(loginData({
+        userLogin: true,
+        token: data.data.access_token,
+        userData: data.data.user
+      }))
+      
+      navigation.navigate('HomeDrawer')
+    }
+   if(isError){
+   
+        if (error) {
+          if ('status' in error) {
+            // you can access all properties of `FetchBaseQueryError` here
+            
+            toast.show(JSON.stringify(error.data.error.message), {
+              type: "danger",
+              placement: "bottom",
+              duration: 4000,
+              animationType: "slide-in",
+              
+            });
+
+              
+            SetUserEmail('');
+            SetPassword('');
+          }
+      }
+  
+   }
+  
+   
+},[data, isError])
+
+  const sign_in= {
+    "login": email,
+  "password": password
+  }
+  const HandlerLogin = async () =>{
+  
+   if(email=='' || password==''){
+    toast.show('Email or password are required', {
+      type: "danger",
+      placement: "bottom",
+      duration: 4000,
+      animationType: "slide-in",
+      
+    });
+
+    
+   }
+   else{
+    await loginUser({sign_in})
+   
+   }
+   
+   }
+
+
+const onChangeEmail = (e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
+  const value = e.nativeEvent.text;
+  SetUserEmail(value);
+}
+const onChangePassword = (e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
+  const value = e.nativeEvent.text;
+  SetPassword(value);
+}
 
   return (
     <>
+     <KeyboardAwareScrollView showsVerticalScrollIndicator={false} >
+     {isLoading && (
+          <View style={{ 
+            flex:1,
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            backgroundColor: 'rgba(3, 0, 2, 0.30)', 
+            height: Screenheight, 
+            width: ScreenWidth,
+            position: 'absolute',
+            zIndex: 99,
+
+          }}
+            >
+            <Text style={styles.headertext}>Loading....</Text>
+          </View>
+          )}
+     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
+      
         <ImageBackground
           source={require("../../../assets/img/Welcome.png")}
           style={{ flex: 1, resizeMode: "cover" }}
@@ -93,8 +195,8 @@ export default function Login({ navigation }) {
             marginBottom: 16,
           }}
           placeholder="Username or Email"
-          value={name}
-          onChangeText={setName}
+          value={email}
+          onChange={onChangeEmail}
         />
         <TextInput
           style={{
@@ -107,8 +209,8 @@ export default function Login({ navigation }) {
             marginBottom: 16,
           }}
           placeholder="Password"
-          value={email}
-          onChangeText={setEmail}
+          value={password}
+          onChange={onChangePassword}
           keyboardType="email-address"
         />
         {/* <TouchableOpacity
@@ -143,7 +245,7 @@ export default function Login({ navigation }) {
         </TouchableOpacity> */}
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation.navigate("HomeDrawer")}
+          onPress={HandlerLogin}
           style={styles.buttomSignin}
         >
           <Icon
@@ -172,9 +274,13 @@ export default function Login({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
+      </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
     </>
   );
 }
+
+export default Login
 
 const styles = StyleSheet.create({
   container: {
@@ -284,5 +390,13 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineheight: 54,
     marginBottom: 20,
+  },
+  headertext:{
+    color: thirdColor,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 22,
+    lineHeight: 24,
+    letterSpacing: 0.15,
   },
 });
