@@ -9,7 +9,12 @@ import Signin from "../screens/sign/Signin";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { CustomDrawerContent } from "../componets/CustomDrawerContent";
 import {
+  AmpStoreStackNavigator,
+  EditAdressesStackNavigator,
+  FaqStackNavigator,
   ForgoPasswordStackNavigator,
+  MyProfilestackNavigator,
+  NewAdressesStackNavigator,
   ResetPasswordStackNavigator,
   RootStackParamList,
   SigninStackNavigator,
@@ -17,6 +22,7 @@ import {
 } from "./RootStack";
 import TabNavigator from "./TabNavigator";
 import CheckoutInfo from "../screens/checkout/CheckoutInfo";
+import NewAddress from "../screens/adresses/NewAddress";
 
 const Drawer = createDrawerNavigator<RootStackParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
@@ -53,6 +59,17 @@ const RootDrawer: FunctionComponent = () => {
         />
 
         <Drawer.Screen name="CheckoutInfoDrawer" component={CheckoutInfo} />
+
+        <Drawer.Screen
+          name="NewAddressStack"
+          component={NewAdressesStackNavigator}
+        />
+
+        <Drawer.Screen
+          name="EditAddress"
+          component={EditAdressesStackNavigator}
+          // component={AmpStoreStackNavigator}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );

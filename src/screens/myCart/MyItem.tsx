@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: -10,
     backgroundColor: secundaryColor,
+    // backgroundColor: "red",
   },
   wrapper: {
     display: "flex",
@@ -113,8 +114,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     shadowOffset: { height: 3, width: 3 },
-    // backgroundColor: secundaryColor,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: secundaryColor,
+    // backgroundColor: "rgba(255, 255, 255, 0.1)",
     width: ScreenWidth - 20,
     height: 126,
     padding: 15,
