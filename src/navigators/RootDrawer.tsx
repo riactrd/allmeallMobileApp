@@ -9,6 +9,7 @@ import Signin from "../screens/sign/Signin";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { CustomDrawerContent } from "../componets/CustomDrawerContent";
 import {
+  FaqStackNavigator,
   ForgoPasswordStackNavigator,
   ResetPasswordStackNavigator,
   RootStackParamList,
@@ -53,6 +54,7 @@ const RootDrawer: FunctionComponent = () => {
         />
 
         <Drawer.Screen name="CheckoutInfoDrawer" component={CheckoutInfo} />
+        <Drawer.Screen name="FaqTab" component={TabNavigator} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
