@@ -27,6 +27,7 @@ import Refer from "../screens/refer/Refer";
 import Pickup from "../screens/pickup/Pickup";
 import MyCart from "../screens/myCart/MyCart";
 import {
+  ScreenWidth,
   mainColor,
   secundaryColor,
   secundaryColor7,
@@ -497,7 +498,7 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
           ),
           headerRight: () => <CartNotification />,
           // headerTransparent:true,
-          title: "New adress",
+          title: "Allergic Preferences",
         })}
         name="Allergic"
         component={Allergic}
@@ -648,6 +649,118 @@ export const AdressesStackNavigator: FunctionComponent = () => {
         }}
         name="AdressesStack"
         component={Adresses}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const NewAdressesStackNavigator: FunctionComponent = () => {
+  const navigation = useNavigation();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: secundaryColor7 },
+          title: "New Address",
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              // backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          // headerRight: () => <CartNotification />,
+          headerRight: () => (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "50%",
+                height: 30,
+                // marginBottom: 20,
+                backgroundColor: mainColor,
+                // padding: 20,
+                borderRadius: 8,
+                right: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: secundaryColor,
+                  fontWeight: "600",
+                  fontSize: 10,
+                  letterSpacing: 1.25,
+                  lineHeight: 16,
+                }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
+          ),
+        }}
+        name="NewAdressesStack"
+        component={NewAddress}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const EditAdressesStackNavigator: FunctionComponent = () => {
+  const navigation = useNavigation();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
+          headerStyle: { backgroundColor: secundaryColor7 },
+          title: "Edit Address",
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              // backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          // headerRight: () => <CartNotification />,
+          headerRight: () => (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "50%",
+                height: 30,
+                // marginBottom: 20,
+                backgroundColor: mainColor,
+                // padding: 20,
+                borderRadius: 8,
+                right: 20,
+              }}
+            >
+              <Text
+                style={{
+                  color: secundaryColor,
+                  fontWeight: "600",
+                  fontSize: 10,
+                  letterSpacing: 1.25,
+                  lineHeight: 16,
+                }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
+          ),
+        }}
+        name="EditAdressesStack"
+        component={EditAddress}
       />
     </Stack.Navigator>
   );
