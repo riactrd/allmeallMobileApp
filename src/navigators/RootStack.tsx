@@ -104,8 +104,8 @@ export const SigninStackNavigator: FunctionComponent = () => {
         options={{
           headerShown: false,
         }}
-        name="Signin"
-        component={Login}
+        name="SigninDrawer"
+        component={Signin}
         // component={Signin}
       />
     </Stack.Navigator>
@@ -151,10 +151,23 @@ export const ForgoPasswordStackNavigator: FunctionComponent = () => {
       }}
     >
       <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name="ForgotPassword"
+
+        options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <AntDesign
+              name="arrowleft"
+              size={25}
+              color="#000"
+              style={{ marginLeft: 10 }}
+              // backgroundColor="black"
+              onPress={() => navigation.navigate('SigninDrawer')}
+            />
+          ),
+          headerTransparent: true,
+          title: ""
+          // headerShown: false,
+        })}
+        name="ForgotPasswordDrawer"
         component={ForgotPassword}
       />
     </Stack.Navigator>
@@ -173,7 +186,7 @@ export const ResetPasswordStackNavigator: FunctionComponent = () => {
         options={{
           headerShown: false,
         }}
-        name="ResetPassword"
+        name="ResetPasswordDrawer"
         component={ResetPassword}
       />
     </Stack.Navigator>

@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, NativeSyntheticEvent, TextInputChangeEventData, ActivityIndicator } from 'react-native'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { RootStackParamList } from '../../navigators/RootDrawer';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Screenheight, ScreenWidth, thirdColor } from '../../componets/shared';
 import { useLoginUserMutation } from '../../redux/api/authApi';
@@ -10,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { loginData } from '../../redux/loginSlice';
 import Toast from 'react-native-toast-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { RootStackParamList } from '../../navigators/RootStack';
 
 type props = StackScreenProps<RootStackParamList, 'SigninDrawer'>
 
@@ -45,7 +45,7 @@ const Signin: FunctionComponent<props>= ({navigation}) => {
         userData: data.data.user
       }))
       
-      navigation.navigate('Home')
+      navigation.navigate('HomeDrawer')
     }
    if(isError){
    
@@ -269,14 +269,13 @@ const styles = StyleSheet.create({
       marginTop:30,
     },
     input:{
-      width: 328,
-      height:56,
-      borderWidth: 0.5,
-      padding: 10,
-      borderRadius: 5,
-      borderColor: 'gray',
-      marginBottom: 20,
-      color: 'black'
+      width: "100%",
+      height: 56,
+      borderRadius: 10,
+      borderColor: "gray",
+      borderWidth: 1,
+      paddingLeft: 16,
+      marginBottom: 16,
       
     },
     buttomSignin:{
