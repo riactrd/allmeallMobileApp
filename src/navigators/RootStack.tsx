@@ -48,11 +48,12 @@ import { selectUserData, selectcartTotalQuantity } from "../redux/store";
 import CartNotification from "../componets/cartNotification";
 import ForgotPassword from "../screens/sign/ForgotPassword";
 import ResetPassword from "../screens/sign/ResetPassword";
+import Login from "../screens/sign/Login";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
   HomeStack: undefined;
-  HomeDrawer:undefined;
+  HomeDrawer: undefined;
   Category: undefined;
   SigninDrawer: undefined;
   WelcomeDrawer: undefined;
@@ -103,7 +104,8 @@ export const SigninStackNavigator: FunctionComponent = () => {
           headerShown: false,
         }}
         name="Signin"
-        component={Signin}
+        component={Login}
+        // component={Signin}
       />
     </Stack.Navigator>
   );

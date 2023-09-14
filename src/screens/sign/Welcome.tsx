@@ -34,7 +34,7 @@ const Welcome: FunctionComponent<props> = ({ navigation }) => {
       >
         <Image
           source={require("../../../assets/img/logoAMP.png")}
-          style={{ width: 70, height: 70 }}
+          style={{ width: 80, height: 80 }}
         />
       </View>
       <View
@@ -69,6 +69,7 @@ const Welcome: FunctionComponent<props> = ({ navigation }) => {
             alignItems: "center",
           }}
         >
+          {/* se ha modificado  el componenete que rendereiza SigninStackNavigator a Login, para mejorar el estilo de la vista pero no tiene API aun */}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.navigate("SigninDrawer")}
