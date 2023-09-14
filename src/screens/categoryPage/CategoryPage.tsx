@@ -14,6 +14,7 @@ import MealPrepList from "./mealItem/MealPrepList";
 import Calendar from "./mealItem/Calendar";
 import { Entypo } from "@expo/vector-icons";
 import { mainColor } from "../../componets/shared";
+import { RootStackParamList } from "../../navigators/RootStack";
 
 const itemsCategories = [
   {
@@ -62,7 +63,7 @@ const itemsCategories = [
   },
 ];
 
-type props = StackScreenProps<RootStackParamList, "Categorymeal">;
+type props = StackScreenProps<RootStackParamList, "Category">;
 
 const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
@@ -71,13 +72,15 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
     <View>
       {/* <TopMenuCategory /> */}
       <View style={styles.container}>
-        <View style={styles.wrapper}>
+        <View 
+        // style={styles.wrapper}
+        >
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
             <View style={styles.categoryItems}>
               {itemsCategories.map((item, index) => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Category")}
-                  style={styles.categoryItemsContainer}
+                  // style={styles.categoryItemsContainer}
                 >
                   <CategoryPageItem
                     // item={item}

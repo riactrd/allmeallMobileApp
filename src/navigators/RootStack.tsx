@@ -67,6 +67,8 @@ export type RootStackParamList = {
   MyProfile: undefined;
   MealItemPage: undefined;
   Adresses: undefined;
+  CheckoutInfoDrawer:undefined;
+  NewAddressStack:undefined;
   EditAddress: undefined;
   NewAddress: undefined;
   BookCatering: undefined;
