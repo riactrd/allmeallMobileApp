@@ -918,22 +918,36 @@ export const ContactUsStackNavigator: FunctionComponent = () => {
 
 export const FaqStackNavigator: FunctionComponent = () => {
   const navigation = useNavigation();
+  const userData = useSelector(selectUserData);
+  const { id } = userData;
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{
           title: "Faq",
-          headerLeft: () => (
-            <Icon
-              name="ios-menu"
-              size={25}
-              color="#3C3C3C"
-              style={{ marginLeft: 10 }}
-              backgroundColor="white"
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            ></Icon>
-          ),
-          headerRight: () => <CartNotification />,
+          headerLeft: () =>
+            id ? (
+              <Icon
+                name="ios-menu"
+                size={25}
+                color="#3C3C3C"
+                style={{ marginLeft: 10 }}
+                backgroundColor="white"
+                onPress={() =>
+                  navigation.dispatch(DrawerActions.toggleDrawer())
+                }
+              ></Icon>
+            ) : (
+              <AntDesign
+                name="arrowleft"
+                size={25}
+                color="#3C3C3C"
+                style={{ marginLeft: 10 }}
+                backgroundColor="white"
+                onPress={() => navigation.navigate("WelcomeDrawer")}
+              />
+            ),
+          headerRight: () => (id ? <CartNotification /> : null),
         }}
         name="Faq"
         component={Faq}

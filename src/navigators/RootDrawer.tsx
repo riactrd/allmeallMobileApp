@@ -56,6 +56,8 @@ const RootDrawer: FunctionComponent = () => {
 
         <Drawer.Screen name="VerifyUser" component={VerifyUserStackNavigator} />
 
+        <Drawer.Screen name="FaqDrawer" component={FaqStackNavigator} />
+
         <Drawer.Screen
           name="ResetPasswordDrawer"
           component={ResetPasswordStackNavigator}
