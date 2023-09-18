@@ -98,7 +98,7 @@ const Signin: FunctionComponent<props> = ({ navigation }) => {
   }, [data, isError]);
 
   const sign_in = {
-    login: email,
+    login: email.toLowerCase(),
     password: password,
   };
 
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.25,
     textTransform: "capitalize",
     marginTop: 20,
-    paddingTop:1,
+    paddingTop: 1,
   },
   header: {
     display: "flex",
