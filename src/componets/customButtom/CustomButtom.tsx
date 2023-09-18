@@ -29,10 +29,10 @@ export default CustomButtom;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    width: 67,
-    height: 67,
-    position: "absolute",
+    // width: 67,
+    // height: 67,
+    // position: "absolute",
     top: -15,
-    borderRadius: 30,
+    borderRadius: 50,
   },
 });
