@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { ScreenWidth } from "../shared";
 
 const CustomButtom = () => {
   const navigation = useNavigation();
@@ -12,11 +13,11 @@ const CustomButtom = () => {
       onPress={() => navigation.navigate("Category")}
     >
       <Image
-        source={require("../../../assets/img/menuIcom.png")}
+        source={require("../../../assets/img/menuIcom2.png")}
         resizeMode="contain"
         style={{
-          width: 75,
-          height: 75,
+          width: ScreenWidth / 6,
+          height: ScreenWidth / 6,
           //   tintColor: color
         }}
       />
@@ -29,10 +30,10 @@ export default CustomButtom;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    width: 67,
-    height: 67,
-    position: "absolute",
+    // width: 67,
+    // height: 67,
+    // position: "absolute",
     top: -15,
-    borderRadius: 30,
+    borderRadius: 40,
   },
 });
