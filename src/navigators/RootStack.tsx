@@ -50,6 +50,7 @@ import CartNotification from "../componets/cartNotification";
 import ForgotPassword from "../screens/sign/ForgotPassword";
 import ResetPassword from "../screens/sign/ResetPassword";
 import Login from "../screens/sign/Login";
+import VerifyUser from "../screens/sign/VerifyUser";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -59,6 +60,7 @@ export type RootStackParamList = {
   SigninDrawer: undefined;
   WelcomeDrawer: undefined;
   SignupDrawer: undefined;
+  VerifyUser: undefined;
   ForgotPasswordDrawer: undefined;
   ResetPasswordDrawer: undefined;
   MyOrders: undefined;
@@ -67,8 +69,8 @@ export type RootStackParamList = {
   MyProfile: undefined;
   MealItemPage: undefined;
   Adresses: undefined;
-  CheckoutInfoDrawer:undefined;
-  NewAddressStack:undefined;
+  CheckoutInfoDrawer: undefined;
+  NewAddressStack: undefined;
   EditAddress: undefined;
   NewAddress: undefined;
   BookCatering: undefined;
@@ -153,7 +155,6 @@ export const ForgoPasswordStackNavigator: FunctionComponent = () => {
       }}
     >
       <Stack.Screen
-
         options={({ navigation, route }) => ({
           headerLeft: () => (
             <AntDesign
@@ -162,15 +163,45 @@ export const ForgoPasswordStackNavigator: FunctionComponent = () => {
               color="#000"
               style={{ marginLeft: 10 }}
               // backgroundColor="black"
-              onPress={() => navigation.navigate('SigninDrawer')}
+              onPress={() => navigation.navigate("SigninDrawer")}
             />
           ),
           headerTransparent: true,
-          title: ""
+          title: "",
           // headerShown: false,
         })}
         name="ForgotPasswordDrawer"
         component={ForgotPassword}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const VerifyUserStackNavigator: FunctionComponent = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        // headerShown: false,
+        gestureEnabled: false,
+      }}
+    >
+      <Stack.Screen
+        options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <AntDesign
+              name="arrowleft"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.navigate("SigninDrawer")}
+            />
+          ),
+          headerTransparent: true,
+          title: "",
+        })}
+        name="VerifyUser"
+        component={VerifyUser}
       />
     </Stack.Navigator>
   );
@@ -887,22 +918,36 @@ export const ContactUsStackNavigator: FunctionComponent = () => {
 
 export const FaqStackNavigator: FunctionComponent = () => {
   const navigation = useNavigation();
+  const userData = useSelector(selectUserData);
+  const { id } = userData;
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{
           title: "Faq",
-          headerLeft: () => (
-            <Icon
-              name="ios-menu"
-              size={25}
-              color="#3C3C3C"
-              style={{ marginLeft: 10 }}
-              backgroundColor="white"
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            ></Icon>
-          ),
-          headerRight: () => <CartNotification />,
+          headerLeft: () =>
+            id ? (
+              <Icon
+                name="ios-menu"
+                size={25}
+                color="#3C3C3C"
+                style={{ marginLeft: 10 }}
+                backgroundColor="white"
+                onPress={() =>
+                  navigation.dispatch(DrawerActions.toggleDrawer())
+                }
+              ></Icon>
+            ) : (
+              <AntDesign
+                name="arrowleft"
+                size={25}
+                color="#3C3C3C"
+                style={{ marginLeft: 10 }}
+                backgroundColor="white"
+                onPress={() => navigation.navigate("WelcomeDrawer")}
+              />
+            ),
+          headerRight: () => (id ? <CartNotification /> : null),
         }}
         name="Faq"
         component={Faq}

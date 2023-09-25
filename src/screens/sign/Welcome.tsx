@@ -97,7 +97,7 @@ const Welcome: FunctionComponent<props> = ({ navigation }) => {
             <Text style={styles.textButtomLogup}>Register</Text>
           </TouchableOpacity>
           <View style={{ marginBottom: "2%" }}>
-            <TouchableOpacity onPress={() => navigation.navigate("FaqTab")}>
+            <TouchableOpacity onPress={() => navigation.navigate("FaqDrawer")}>
               <Text
                 style={{
                   marginBottom: 1,
@@ -110,16 +110,18 @@ const Welcome: FunctionComponent<props> = ({ navigation }) => {
                 FAQ
               </Text>
             </TouchableOpacity>
-            <Text
-              style={{
-                color: "white",
-                alignSelf: "center",
-                fontSize: 16,
-                fontWeight: "bold",
-              }}
-            >
-              Privacy Policy
-            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("FaqDrawer")}>
+              <Text
+                style={{
+                  color: "white",
+                  alignSelf: "center",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                Privacy Policy
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

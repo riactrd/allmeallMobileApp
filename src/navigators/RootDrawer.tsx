@@ -19,6 +19,7 @@ import {
   RootStackParamList,
   SigninStackNavigator,
   SignUpStackNavigator,
+  VerifyUserStackNavigator,
 } from "./RootStack";
 import TabNavigator from "./TabNavigator";
 import CheckoutInfo from "../screens/checkout/CheckoutInfo";
@@ -52,6 +53,10 @@ const RootDrawer: FunctionComponent = () => {
           name="ForgotPasswordDrawer"
           component={ForgoPasswordStackNavigator}
         />
+
+        <Drawer.Screen name="VerifyUser" component={VerifyUserStackNavigator} />
+
+        <Drawer.Screen name="FaqDrawer" component={FaqStackNavigator} />
 
         <Drawer.Screen
           name="ResetPasswordDrawer"
