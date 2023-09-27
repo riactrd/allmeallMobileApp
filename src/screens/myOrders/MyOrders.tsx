@@ -43,7 +43,7 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       {/* <TopMenuCategory /> */}
       <View style={styles.container}>
         <View style={styles.wrapper}>
@@ -51,12 +51,12 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
             <View style={styles.categoryItems}>
               {itemsCategories.map((item, index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => navigation.navigate("Category")}
                   style={styles.categoryItemsContainer}
                 >
                   <OrderState
                     item={item}
-                    key={index}
                     selected={selected}
                     Setselected={Setselected}
                     index={index}
@@ -65,34 +65,12 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
               ))}
             </View>
           </ScrollView>
-          {/* <ScrollView showsVerticalScrollIndicator={false}  
-                                showsHorizontalScrollIndicator={false} 
-                                horizontal={false} alwaysBounceVertical={true}>
-                      <View style={styles.mealItems}>
-                          
-                          {
-                                  itemsCategories.map((item, index)=>(
-                                    <TouchableOpacity 
-                                    onPress={()=>navigation.navigate('Category')}>
-                                          <MyOrderItem 
-                                          // item={item} 
-                                          // key={index} 
-                                          // selected={selected} 
-                                          // Setselected={Setselected}
-                                          // index={index}
-                                          />
-                                    </TouchableOpacity>
-                                      
-                                  
-                                  ))
-                              }
-                      </View>
-                    </ScrollView> */}
+
           <OrdersList navigation={navigation} />
         </View>
       </View>
       {/* <BottomMenu/> */}
-    </ScrollView>
+    </View>
   );
 };
 

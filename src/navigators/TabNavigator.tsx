@@ -89,7 +89,7 @@ const BottomTabNavigator = () => {
                 style={{
                   fontSize: 10,
                   color: focused ? "#FF6F00" : "#fff",
-                  fontFamily: "Poppins",
+                  // fontFamily: "Poppins",
                   fontWeight: "600",
                   // lineHeight: 20,
                   letterSpacing: 0.15,
@@ -125,7 +125,7 @@ const BottomTabNavigator = () => {
                 style={{
                   fontSize: 10,
                   color: focused ? "#FF6F00" : "#fff",
-                  fontFamily: "Poppins",
+                  // fontFamily: "Poppins",
                   fontWeight: "600",
                   // lineHeight: 20,
                   letterSpacing: 0.15,
@@ -183,7 +183,7 @@ const BottomTabNavigator = () => {
                 style={{
                   fontSize: 10,
                   color: focused ? "#FF6F00" : "#fff",
-                  fontFamily: "Poppins",
+                  // fontFamily: "Poppins",
                   fontWeight: "600",
                   // lineHeight: 20,
                   letterSpacing: 0.15,
@@ -219,7 +219,7 @@ const BottomTabNavigator = () => {
                 style={{
                   fontSize: 10,
                   color: focused ? "#FF6F00" : "#fff",
-                  fontFamily: "Poppins",
+                  // fontFamily: "Poppins",
                   fontWeight: "600",
                   // lineHeight: 20,
                   letterSpacing: 0.15,
