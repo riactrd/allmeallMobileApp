@@ -243,7 +243,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
             <DrawerItem
               icon={({ color, size }) => (
-                <FontAwesome name="dollar" color={color} size={size} />
+                <MaterialIcons name="attach-money" size={size} color={color} />
+                // <FontAwesome name="dollar" color={color} size={size} />
               )}
               label="Refer & Earn"
               onPress={() => {
