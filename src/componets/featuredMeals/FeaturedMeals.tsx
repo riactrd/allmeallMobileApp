@@ -44,7 +44,7 @@ const FeaturedMeals = ({ featuredMeals }: Props) => {
         <Text style={styles.categoryText}>Featured Meals</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           <View style={styles.categoryItems}>
-            {featuredMealsItems?.map((item, index) => (
+            {featuredMeals?.map((item, index) => (
               <View style={styles.categoryItemsContainer} key={index}>
                 <FeaturedMealsItems
                   item={item}

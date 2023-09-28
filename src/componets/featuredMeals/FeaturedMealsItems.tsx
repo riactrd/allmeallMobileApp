@@ -20,10 +20,18 @@ const FeaturedMealsItems: React.FC<Props> = ({
   index,
   Setselected,
 }) => {
+  // console.log(item.pictures[0].image);
   return (
     <TouchableOpacity activeOpacity={0.7} style={styles.buttom}>
       <View>
-        <Image source={item.img} style={styles.imgContainer} />
+        {/* <Image
+          source={{ uri: item.pictures[0].image.url }}
+          style={styles.imgContainer}
+        /> */}
+        <Image
+          source={require("../../../assets/img/MaskGroup1.png")}
+          style={styles.imgContainer}
+        />
       </View>
       <Text style={styles.textCategory}>{item.name}</Text>
     </TouchableOpacity>
