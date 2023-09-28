@@ -46,8 +46,8 @@ type props = StackScreenProps<RootStackParamList, "SigninDrawer">;
 const Signin: FunctionComponent<props> = ({ navigation }) => {
   const [loginUser, { data, isError, error, isLoading }] =
     useLoginUserMutation();
-  const [email, SetUserEmail] = useState<string>("");
-  const [password, SetPassword] = useState<string>("");
+  const [email, SetUserEmail] = useState<string>("morbanjunior@gmail.com");
+  const [password, SetPassword] = useState<string>("123456");
   const toast = useToast();
   const dispatch = useDispatch();
 

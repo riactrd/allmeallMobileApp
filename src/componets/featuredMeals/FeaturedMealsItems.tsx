@@ -24,14 +24,16 @@ const FeaturedMealsItems: React.FC<Props> = ({
   return (
     <TouchableOpacity activeOpacity={0.7} style={styles.buttom}>
       <View>
-        {/* <Image
-          source={{ uri: item.pictures[0].image.url }}
-          style={styles.imgContainer}
-        /> */}
         <Image
-          source={require("../../../assets/img/MaskGroup1.png")}
+          source={{
+            uri: `https://api.allmealprep.com/api/v1/${item.pictures[0].image.url}`,
+          }}
           style={styles.imgContainer}
         />
+        {/* <Image
+          source={require("../../../assets/img/MaskGroup1.png")}
+          style={styles.imgContainer}
+        /> */}
       </View>
       <Text style={styles.textCategory}>{item.name}</Text>
     </TouchableOpacity>
