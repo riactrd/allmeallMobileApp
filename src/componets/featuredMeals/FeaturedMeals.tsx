@@ -35,7 +35,7 @@ type Props = {
   featuredMeals: FeaturedMeal[];
 };
 
-const FeaturedMeals = ({ featuredMeals }: Props) => {
+const FeaturedMeals = ({ featuredMeals, navigation }: Props) => {
   const [selected, Setselected] = useState(0);
 
   return (
@@ -51,6 +51,7 @@ const FeaturedMeals = ({ featuredMeals }: Props) => {
                   selected={selected}
                   Setselected={Setselected}
                   index={index}
+                  navigation={navigation}
                 />
               </View>
             ))}

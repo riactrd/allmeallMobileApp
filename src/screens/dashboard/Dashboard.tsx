@@ -70,7 +70,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
   };
 
   const [featuredMeals, SetfeaturedMeals] = useState<FeaturedMeal[]>([]);
-  console.log(featuredMeals);
+  // console.log(featuredMeals);
 
   useEffect(() => {
     wait(900000).then(
@@ -141,7 +141,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         <DashInfo dash={dash} />
         <Search />
         <Categories navigation={navigation} />
-        <FeaturedMeals featuredMeals={featuredMeals} />
+        <FeaturedMeals featuredMeals={featuredMeals} navigation={navigation} />
       </ScrollView>
     </>
   );
