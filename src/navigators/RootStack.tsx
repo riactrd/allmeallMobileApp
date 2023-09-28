@@ -108,7 +108,7 @@ export const SigninStackNavigator: FunctionComponent = () => {
         options={{
           headerShown: false,
         }}
-        name="SigninDrawer"
+        name="Signin"
         component={Signin}
         // component={Signin}
       />
@@ -303,7 +303,7 @@ export const CategoryStackNavigator: FunctionComponent = () => {
           ),
           headerRight: () => <CartNotification />,
         }}
-        name="Category"
+        name="Meall Prep"
         component={CategoryPage}
       />
       <Stack.Screen
@@ -1378,8 +1378,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 10,
-    LineHeight: 16,
-    Letter: 1.25,
+    lineHeight: 16,
+    letterSpacing: 1.25,
     textAlign: "center",
   },
   button: {
@@ -1398,8 +1398,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 10,
-    LineHeight: 16,
-    Letter: 1.25,
+    lineHeight: 16,
+    letterSpacing: 1.25,
     textAlign: "center",
   },
   textWelcom: {
@@ -1407,8 +1407,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "300",
     fontSize: 16,
-    LineHeight: 16,
-    Letter: 1.25,
+    lineHeight: 16,
+    letterSpacing: 1.25,
     textAlign: "center",
   },
   textName: {
@@ -1416,8 +1416,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "700",
     fontSize: 16,
-    LineHeight: 16,
-    Letter: 1.3,
+    lineHeight: 16,
+    letterSpacing: 1.3,
     textAlign: "center",
   },
 });

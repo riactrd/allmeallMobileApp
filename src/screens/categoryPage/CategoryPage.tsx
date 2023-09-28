@@ -72,19 +72,20 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
     <View>
       {/* <TopMenuCategory /> */}
       <View style={styles.container}>
-        <View 
+        <View
         // style={styles.wrapper}
         >
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
             <View style={styles.categoryItems}>
               {itemsCategories.map((item, index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => navigation.navigate("Category")}
                   // style={styles.categoryItemsContainer}
                 >
                   <CategoryPageItem
                     // item={item}
-                    key={index}
+
                     selected={selected}
                     Setselected={Setselected}
                     index={index}
@@ -94,10 +95,10 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
             </View>
           </ScrollView>
           <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            horizontal={false}
-            alwaysBounceVertical={true}
+          // showsVerticalScrollIndicator={false}
+          // showsHorizontalScrollIndicator={false}
+          // horizontal={false}
+          // alwaysBounceVertical={true}
           >
             {/* <View style={styles.mealItems}>
               {mealsList.map((item, index) => (
@@ -131,7 +132,6 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
               </View>
               <Calendar />
             </View>
-
             <MealPrepList navigation={navigation} />
           </ScrollView>
         </View>

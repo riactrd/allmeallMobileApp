@@ -228,14 +228,21 @@ export const mealsList = [
 
 export default function MealPrepList({ navigation }) {
   return (
-    <FlatList
-      showsVerticalScrollIndicator={false}
-      data={mealsList}
-      renderItem={({ item }) => (
-        <MealPrepCard item={item} navigation={navigation} />
-      )}
-      ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
-      ListFooterComponent={<View style={{ marginBottom: 60 }}></View>}
-    />
+    <View>
+      {mealsList.map((item) => (
+        <View
+          key={item.id}
+          style={
+            {
+              // marginVertical: 20, // Aplicamos el margen superior a cada elemento
+              // paddingHorizontal: 20, // Estilo para el pie de cada elemento
+            }
+          }
+        >
+          <MealPrepCard item={item} navigation={navigation} />
+        </View>
+      ))}
+      <View style={{ marginBottom: 60 }}></View>
+    </View>
   );
 }

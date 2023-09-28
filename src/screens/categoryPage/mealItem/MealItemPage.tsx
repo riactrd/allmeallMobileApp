@@ -182,6 +182,7 @@ const MealItemPage = ({ route }) => {
               >
                 {nutritionFacts.map((item, index) => (
                   <View
+                    key={index}
                     style={{
                       width: card,
                       backgroundColor: `${mainColor}20`,

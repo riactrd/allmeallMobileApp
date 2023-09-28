@@ -37,7 +37,8 @@ const wait = (timeout: number | undefined) => {
 
 const Dashboard: FunctionComponent<props> = ({ navigation }) => {
   const { data, isError, error, isLoading, isSuccess, refetch } =
-    useGetdashboardQuery("bulbasaur");
+    useGetdashboardQuery("");
+
   const dispatch = useDispatch();
   const toast = useToast();
   const [dash, SetDash] = useState({
@@ -68,7 +69,8 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     );
   };
 
-  const [featuredMeals, SetfeaturedMeals] = useState<FeaturedMeal[]>();
+  const [featuredMeals, SetfeaturedMeals] = useState<FeaturedMeal[]>([]);
+  console.log(featuredMeals);
 
   useEffect(() => {
     wait(900000).then(
@@ -85,7 +87,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         rewardPoints: data.data.dashboard.reward_points,
       });
       SetfeaturedMeals(data.data.dashboard.featured_meals);
-      console.log("Featured Meals: " + featuredMeals);
+      // console.log("Featured Meals: " + featuredMeals);
     } else if (isError) {
       console.log(error);
     }

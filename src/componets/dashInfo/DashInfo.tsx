@@ -23,7 +23,7 @@ const DashInfo = ({ dash }: Props) => {
         <TouchableOpacity
           onPress={() => {
             Setselected("1");
-            navigation.navigate("MyOrders");
+            navigation.navigate("MyOrdersTab");
           }}
           activeOpacity={0.7}
           style={[selected === "1" ? styles.ItemInfoActive : styles.ItemInfo]}
@@ -84,7 +84,7 @@ const DashInfo = ({ dash }: Props) => {
         <TouchableOpacity
           onPress={() => {
             Setselected("3");
-            navigation.navigate("Wallet");
+            navigation.navigate("WalletTab");
           }}
           activeOpacity={0.7}
           style={[selected === "3" ? styles.ItemInfoActive : styles.ItemInfo]}
