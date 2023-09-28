@@ -108,7 +108,7 @@ export const SigninStackNavigator: FunctionComponent = () => {
         options={{
           headerShown: false,
         }}
-        name="SigninDrawer"
+        name="Signin"
         component={Signin}
         // component={Signin}
       />
@@ -303,7 +303,7 @@ export const CategoryStackNavigator: FunctionComponent = () => {
           ),
           headerRight: () => <CartNotification />,
         }}
-        name="Category"
+        name="Meall Prep"
         component={CategoryPage}
       />
       <Stack.Screen

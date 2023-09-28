@@ -160,7 +160,7 @@ const BottomTabNavigator = () => {
       />
 
       <Tab.Screen
-        name="Wellness"
+        name="WellnessTab"
         component={WellnessstackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -196,7 +196,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="MyProfile"
+        name="MyProfileTab"
         component={MyProfilestackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (

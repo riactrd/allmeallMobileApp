@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     // fontsStyle: 'normal',
     fontWeight: "700",
     fontSize: 36,
-    lineheight: 54,
+    lineHeight: 54,
   },
   containerTitle: {
     display: "flex",
