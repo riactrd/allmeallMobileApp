@@ -5,6 +5,7 @@ import { Categories } from "../../model/categories";
 import { FeaturedMeal } from "../../model/DashboardModel";
 
 import { ScreenWidth } from "../shared";
+import { useNavigation } from "@react-navigation/native";
 const itemWidth = ScreenWidth / 2.9;
 
 interface Props {
@@ -16,17 +17,23 @@ interface Props {
 
 const FeaturedMealsItems: React.FC<Props> = ({
   item,
+  // navigation,
   selected,
   index,
   Setselected,
 }) => {
-  // console.log(item.pictures[0].image);
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.buttom}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.buttom}
+      onPress={() => navigation.navigate("MealItemPage", { meal: item })}
+    >
       <View>
         <Image
           source={{
-            uri: `https://api.allmealprep.com/api/v1/${item.pictures[0].image.url}`,
+            uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
+            //  uri: `https://allmealprep.com/uploads/picture/image/529/All_Meal_Prep_Mojo_Shrimp_With_White_RIce.jpg`,
           }}
           style={styles.imgContainer}
         />
