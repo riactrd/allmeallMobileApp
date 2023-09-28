@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState } from "react";
-import Material from "react-native-vector-icons/MaterialCommunityIcons";
-import { Categories } from "../../model/categories";
 import { FeaturedMeal } from "../../model/DashboardModel";
 
 import { ScreenWidth } from "../shared";
@@ -27,7 +25,13 @@ const FeaturedMealsItems: React.FC<Props> = ({
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.buttom}
-      onPress={() => navigation.navigate("MealItemPage", { meal: item })}
+      onPress={() => 
+        navigation.navigate('Category', {
+          screen: 'MealItemPage',
+          params: { meal: item },
+        })
+       
+      }
     >
       <View>
         <Image

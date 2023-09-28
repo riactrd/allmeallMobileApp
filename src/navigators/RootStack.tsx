@@ -302,8 +302,9 @@ export const CategoryStackNavigator: FunctionComponent = () => {
             ></Icon>
           ),
           headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
         }}
-        name="Meall Prep"
+        name="Category"
         component={CategoryPage}
       />
       <Stack.Screen
@@ -315,7 +316,7 @@ export const CategoryStackNavigator: FunctionComponent = () => {
               color="#fff"
               style={{ marginLeft: 10 }}
               // backgroundColor='white'
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Category")}
             />
           ),
           headerRight: () => <CartNotification />,
