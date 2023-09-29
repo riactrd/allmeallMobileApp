@@ -10,19 +10,19 @@ export const itemsCategories = [
       size: 45,
     },
   },
+  // {
+  //   id: 2,
+  //   text: "Meal Prep",
+  //   code: "",
+  //   img: "../../../assets/img/breakfast.png",
+  //   icon: {
+  //     iconType: "material-community",
+  //     name: "food-turkey",
+  //     size: 45,
+  //   },
+  // },
   {
     id: 2,
-    text: "Meal Prep",
-    code: "",
-    img: "../../../assets/img/breakfast.png",
-    icon: {
-      iconType: "material-community",
-      name: "food-turkey",
-      size: 45,
-    },
-  },
-  {
-    id: 3,
     text: "CBD Meals",
     code: "cbd-meal",
     img: "../../../assets/img/breakfast.png",
@@ -33,9 +33,9 @@ export const itemsCategories = [
     },
   },
   {
-    id: 4,
+    id: 3,
     text: "Combo Meals ",
-    code: "six-dollar-meal",
+    code: "combo-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -44,9 +44,9 @@ export const itemsCategories = [
     },
   },
   {
-    id: 5,
+    id: 4,
     text: "$9 Meals",
-    code: "Signature-Meal",
+    code: "six-dollar-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -55,9 +55,9 @@ export const itemsCategories = [
     },
   },
   {
-    id: 6,
+    id: 5,
     text: "Bulk Meal",
-    code: "Diabetic-Friendly-Meal",
+    code: "bulk-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",

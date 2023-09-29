@@ -69,18 +69,20 @@ type props = StackScreenProps<RootStackParamList, "Category">;
 
 const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
-  const { data } = useGetcategoriesQuery("combo-meal");
   const [meal, setMeal] = useState([]);
+  const [code, setCode] = useState("");
   const { params } = useRoute();
-  console.log("Los parametros de navegacion son:", params);
+  const { data, isLoading, isError } = useGetcategoriesQuery(code);
 
   useEffect(() => {
-    setMeal(data?.data.menu);
+    setCode(params.itemcode);
+  }, [params]);
+
+  useEffect(() => {
+    setMeal(data?.data);
   }, [data]);
 
-  if (data) {
-    console.log(data?.data.menu);
-  }
+  console.log(meal);
 
   return (
     <View>
@@ -146,7 +148,15 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
               </View>
               <Calendar />
             </View>
-            <MealPrepList navigation={navigation} meal={meal} />
+            {isLoading ? (
+              <Text>Cargando...</Text>
+            ) : isError ? (
+              <Text>Error al cargar los datos</Text>
+            ) : meal && meal.menu && meal.menu.length > 0 ? (
+              <MealPrepList navigation={navigation} meal={meal.menu} />
+            ) : (
+              <Text>Vacio</Text>
+            )}
           </ScrollView>
         </View>
       </View>

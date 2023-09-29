@@ -138,7 +138,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Category"
+        name="CategoryTab"
         component={CategoryStackNavigator}
         // options={{
         //   tabBarIcon:({focused})=>(

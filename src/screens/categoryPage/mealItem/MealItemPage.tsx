@@ -56,6 +56,8 @@ const MealItemPage = ({ route }) => {
   const { meal } = route.params;
   const { name, price, desc, id, nutricion, ingredients } = meal;
 
+  console.log("el route es :  ", route);
+
   const navigation = useNavigation();
   const [quantity, SetQuantity] = useState<number>(1);
   const dispatch = useDispatch();

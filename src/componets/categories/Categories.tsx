@@ -22,7 +22,12 @@ const Categories: FunctionComponent<props> = ({ navigation }) => {
             {itemsCategories.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate("Category")}
+                onPress={() =>
+                  navigation.navigate("CategoryTab", {
+                    screen: "Category",
+                    params: { itemcode: item.code },
+                  })
+                }
                 style={styles.categoryItemsContainer}
               >
                 <CategoriesItems

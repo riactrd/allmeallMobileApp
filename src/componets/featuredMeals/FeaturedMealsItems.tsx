@@ -25,12 +25,11 @@ const FeaturedMealsItems: React.FC<Props> = ({
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.buttom}
-      onPress={() => 
-        navigation.navigate('Category', {
-          screen: 'MealItemPage',
+      onPress={() =>
+        navigation.navigate("CategoryTab", {
+          screen: "MealItemPage",
           params: { meal: item },
         })
-       
       }
     >
       <View>

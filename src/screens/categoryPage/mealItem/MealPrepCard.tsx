@@ -24,81 +24,87 @@ export default function MealPrepCard({ item, navigation }) {
   const navigateToDetails = () => {
     navigation.navigate("MealprepItemScreen", { itemId: item.id });
   };
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("MealItemPage", { meal: item })}
-      style={styles.orderCard}
-    >
-      <Image
-        source={item.image}
-        style={{ height: 110, width: 110, resizeMode: "contain" }}
-      />
-
-      <View style={styles.textContainer}>
-        <View style={styles.textRow}>
-          <View
-            style={{
-              backgroundColor: `${mainColor}50`,
-              borderRadius: 8,
-              padding: 5,
-              marginRight: 10,
+  {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("MealItemPage", { meal: item })}
+        style={styles.orderCard}
+      >
+        {item.pictures?.length > 0 && (
+          <Image
+            source={{
+              uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
             }}
-          >
-            <Text style={{ fontWeight: 800, color: mainColor }}>
-              ${item.price} / Meal
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            {/* <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={decreaseQuantity}
-              style={{
-                backgroundColor: mainColor,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Icon name="remove" size={25} color={secundaryColor} />
-            </TouchableOpacity> */}
-            {/* <View
-              style={{
-                marginHorizontal: 10,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text>{quantity}</Text>
-            </View> */}
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() =>
-                navigation.navigate("MealItemPage", { meal: item })
-              }
-              style={{
-                backgroundColor: mainColor,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Icon name="add" size={25} color={secundaryColor} />
-            </TouchableOpacity>
-          </View>
-        </View>
+            style={{ height: 110, width: 110, resizeMode: "contain" }}
+          />
+        )}
 
-        <View style={styles.paidByText}>
-          <View>
-            <Text style={{ fontSize: 10, fontWeight: 600 }}>{item.name}</Text>
-            <Text style={{ fontSize: 10 }}>{item.desc}</Text>
+        <View style={styles.textContainer}>
+          <View style={styles.textRow}>
+            <View
+              style={{
+                backgroundColor: `${mainColor}50`,
+                borderRadius: 8,
+                padding: 5,
+                marginRight: 10,
+              }}
+            >
+              <Text style={{ fontWeight: 800, color: mainColor }}>
+                ${item.price} / Meal
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              {/* <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={decreaseQuantity}
+                style={{
+                  backgroundColor: mainColor,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 20,
+                }}
+              >
+                <Icon name="remove" size={25} color={secundaryColor} />
+              </TouchableOpacity> */}
+              {/* <View
+                style={{
+                  marginHorizontal: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>{quantity}</Text>
+              </View> */}
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() =>
+                  navigation.navigate("MealItemPage", { meal: item })
+                }
+                style={{
+                  backgroundColor: mainColor,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 20,
+                }}
+              >
+                <Icon name="add" size={25} color={secundaryColor} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.paidByText}>
+            <View>
+              <Text style={{ fontSize: 10, fontWeight: 600 }}>{item.name}</Text>
+              <Text style={{ fontSize: 10 }}>{item.desc}</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
