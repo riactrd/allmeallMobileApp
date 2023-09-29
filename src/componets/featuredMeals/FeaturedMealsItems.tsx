@@ -36,7 +36,6 @@ const FeaturedMealsItems: React.FC<Props> = ({
         <Image
           source={{
             uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
-            //  uri: `https://allmealprep.com/uploads/picture/image/529/All_Meal_Prep_Mojo_Shrimp_With_White_RIce.jpg`,
           }}
           style={styles.imgContainer}
         />

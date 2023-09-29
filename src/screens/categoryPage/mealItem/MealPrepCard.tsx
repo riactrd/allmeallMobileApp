@@ -7,7 +7,7 @@ import { mainColor, secundaryColor } from "../../../componets/shared";
 export default function MealPrepCard({ item, navigation }) {
   const [quantity, setQuantity] = useState(1);
 
-  // console.log(item);
+  console.log(item.description);
 
   const increaseQuantity = () => {
     if (quantity < 15) {
@@ -35,7 +35,13 @@ export default function MealPrepCard({ item, navigation }) {
             source={{
               uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
             }}
-            style={{ height: 110, width: 110, resizeMode: "contain" }}
+            style={{
+              height: 110,
+              width: "35%",
+              // left: "-20%",
+              resizeMode: "cover",
+              borderRadius: 5,
+            }}
           />
         )}
 
@@ -97,8 +103,8 @@ export default function MealPrepCard({ item, navigation }) {
 
           <View style={styles.paidByText}>
             <View>
-              <Text style={{ fontSize: 10, fontWeight: 600 }}>{item.name}</Text>
-              <Text style={{ fontSize: 10 }}>{item.desc}</Text>
+              <Text style={{ fontSize: 12, fontWeight: 600 }}>{item.name}</Text>
+              <Text style={{ fontSize: 10 }}>{item.description}</Text>
             </View>
           </View>
         </View>
@@ -114,15 +120,16 @@ const styles = StyleSheet.create({
     backgroundColor: secundaryColor,
     marginVertical: 10,
     marginHorizontal: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    padding: 15,
+    // paddingVertical: 10,
     flexDirection: "row",
     alignItems: "center",
   },
   textContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-around",
+    // flexDirection: "column",
+    // justifyContent: "space-around",
+    height: "100%",
     // backgroundColor: "blue",
     paddingHorizontal: 10, // Agregado para un mejor espacio
   },

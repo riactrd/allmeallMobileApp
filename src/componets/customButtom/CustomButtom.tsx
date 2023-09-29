@@ -10,7 +10,7 @@ const CustomButtom = () => {
     <TouchableOpacity
       style={styles.container}
       activeOpacity={0.9}
-      onPress={() => navigation.navigate("Category")}
+      onPress={() => navigation.navigate("CategoryTab")}
     >
       <Image
         source={require("../../../assets/img/menuIcom2.png")}

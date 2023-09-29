@@ -70,19 +70,19 @@ type props = StackScreenProps<RootStackParamList, "Category">;
 const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
   const [meal, setMeal] = useState([]);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("new-menu");
   const { params } = useRoute();
   const { data, isLoading, isError } = useGetcategoriesQuery(code);
 
   useEffect(() => {
-    setCode(params.itemcode);
+    if (params && params.itemcode) {
+      setCode(params.itemcode);
+    }
   }, [params]);
 
   useEffect(() => {
     setMeal(data?.data);
   }, [data]);
-
-  console.log(meal);
 
   return (
     <View>
@@ -111,10 +111,10 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
             </View>
           </ScrollView>
           <ScrollView
-          // showsVerticalScrollIndicator={false}
-          // showsHorizontalScrollIndicator={false}
-          // horizontal={false}
-          // alwaysBounceVertical={true}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            horizontal={false}
+            alwaysBounceVertical={true}
           >
             {/* <View style={styles.mealItems}>
               {mealsList.map((item, index) => (

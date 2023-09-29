@@ -29,34 +29,55 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const itemsProps = [1, 2, 3, 4, 5, 6];
 
-const nutritionFacts = [
-  { value: "377.0 g", name: "Calories" },
-  { value: "31,0 g", name: "Carbs" },
-  { value: "50.0 g", name: "Protein" },
-  { value: "6.0 g", name: "Fat" },
-  { value: "6.0 g", name: "Fiber" },
-  { value: "447.0 mg", name: "Sodium" },
-];
-
-const Ingrediends = [
-  " Potatoes (oz)",
-  "6 oz Blackened Chicken",
-  "Broccoli (oz)",
-  "Squash (oz)",
-  "Garlic (oz)",
-  "Grape Tomato Slices",
-  "Minced Parsley (oz)",
-  "Zuchinni (oz)",
-];
-
 const { width } = Dimensions.get("screen");
 const card = width / 3.9;
 
 const MealItemPage = ({ route }) => {
   const { meal } = route.params;
-  const { name, price, desc, id, nutricion, ingredients } = meal;
+  const {
+    name,
+    price,
+    desc,
+    id,
+    nutricion,
+    ingredients,
+    calories,
+    carbohydrates,
+    proteins,
+    fat,
+    fiber,
+    sodium,
+    pictures,
+  } = meal;
 
-  console.log("el route es :  ", route);
+  const nutritionFacts = [
+    // { value: "377.0 g", name: "Calories" },
+    // { value: "31,0 g", name: "Carbs" },
+    // { value: "50.0 g", name: "Protein" },
+    // { value: "6.0 g", name: "Fat" },
+    // { value: "6.0 g", name: "Fiber" },
+    // { value: "447.0 mg", name: "Sodium" },
+    { value: `${calories ? calories.toFixed(1) : "N/A"} g`, name: "Calories" },
+    {
+      value: `${carbohydrates ? carbohydrates.toFixed(1) : "N/A"} g`,
+      name: "Carbs",
+    },
+    { value: `${proteins ? proteins.toFixed(1) : "N/A"} g`, name: "Protein" },
+    { value: `${fat ? fat.toFixed(1) : "N/A"} g`, name: "Fat" },
+    { value: `${fiber ? fiber.toFixed(1) : "N/A"} g`, name: "Fiber" },
+    { value: `${sodium ? sodium.toFixed(1) : "N/A"} mg`, name: "Sodium" },
+  ];
+
+  const Ingrediends = [
+    " Potatoes (oz)",
+    "6 oz Blackened Chicken",
+    "Broccoli (oz)",
+    "Squash (oz)",
+    "Garlic (oz)",
+    "Grape Tomato Slices",
+    "Minced Parsley (oz)",
+    "Zuchinni (oz)",
+  ];
 
   const navigation = useNavigation();
   const [quantity, SetQuantity] = useState<number>(1);
@@ -102,7 +123,11 @@ const MealItemPage = ({ route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ImageBackground
-        source={require("../../../../assets/img/meailMenu.png")}
+        source={
+          pictures && pictures.length > 0
+            ? { uri: `https://allmealprep.com/${pictures[0].image.url}` }
+            : require("../../../../assets/img/meailMenu.png") // Agrega una imagen por defecto si pictures[0] no está definido
+        }
         resizeMode="cover"
         style={styles.img}
       ></ImageBackground>
