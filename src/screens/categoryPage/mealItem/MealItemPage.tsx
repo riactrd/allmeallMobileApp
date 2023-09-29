@@ -325,8 +325,9 @@ const MealItemPage = ({ route }) => {
                   gap: 10,
                 }}
               >
-                {Ingrediends.map((item) => (
+                {Ingrediends.map((item, index) => (
                   <View
+                    key={index}
                     style={{
                       backgroundColor: `${mainColor}20`,
                       padding: 5,
