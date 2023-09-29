@@ -7,7 +7,7 @@ import { mainColor, secundaryColor } from "../../../componets/shared";
 export default function MealPrepCard({ item, navigation }) {
   const [quantity, setQuantity] = useState(1);
 
-  console.log(item);
+  // console.log(item);
 
   const increaseQuantity = () => {
     if (quantity < 15) {

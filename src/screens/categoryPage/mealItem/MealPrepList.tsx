@@ -226,22 +226,24 @@ export const mealsList = [
   },
 ];
 
-export default function MealPrepList({ navigation }) {
+export default function MealPrepList({ navigation, meal }) {
   return (
     <View>
-      {mealsList.map((item) => (
-        <View
-          key={item.id}
-          style={
-            {
-              // marginVertical: 20, // Aplicamos el margen superior a cada elemento
-              // paddingHorizontal: 20, // Estilo para el pie de cada elemento
+      {meal &&
+        meal.length > 0 &&
+        meal.map((item, index) => (
+          <View
+            key={item.id}
+            style={
+              {
+                // marginVertical: 20, // Aplicamos el margen superior a cada elemento
+                // paddingHorizontal: 20, // Estilo para el pie de cada elemento
+              }
             }
-          }
-        >
-          <MealPrepCard item={item} navigation={navigation} />
-        </View>
-      ))}
+          >
+            <MealPrepCard item={item} navigation={navigation} />
+          </View>
+        ))}
       <View style={{ marginBottom: 60 }}></View>
     </View>
   );

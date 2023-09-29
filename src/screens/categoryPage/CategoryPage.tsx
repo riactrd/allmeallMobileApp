@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import CategoryPageItem from "./CategoryPageItem";
 import MealItem from "./mealItem/MealItem";
@@ -15,6 +15,8 @@ import Calendar from "./mealItem/Calendar";
 import { Entypo } from "@expo/vector-icons";
 import { mainColor } from "../../componets/shared";
 import { RootStackParamList } from "../../navigators/RootStack";
+import { useGetcategoriesQuery } from "../../redux/api/categoriesApi";
+import { useRoute } from "@react-navigation/native";
 
 const itemsCategories = [
   {
@@ -67,6 +69,18 @@ type props = StackScreenProps<RootStackParamList, "Category">;
 
 const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
+  const { data } = useGetcategoriesQuery("combo-meal");
+  const [meal, setMeal] = useState([]);
+  const { params } = useRoute();
+  console.log("Los parametros de navegacion son:", params);
+
+  useEffect(() => {
+    setMeal(data?.data.menu);
+  }, [data]);
+
+  if (data) {
+    console.log(data?.data.menu);
+  }
 
   return (
     <View>
@@ -132,7 +146,7 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
               </View>
               <Calendar />
             </View>
-            <MealPrepList navigation={navigation} />
+            <MealPrepList navigation={navigation} meal={meal} />
           </ScrollView>
         </View>
       </View>
