@@ -4,14 +4,12 @@ import { mainColor, ScreenWidth, thirdColor } from "../../componets/shared";
 import { useNavigation } from "@react-navigation/native";
 // import mindfull from "../../../assets/img/mindfull.png";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import HTML from "react-native-render-html";
-import { useWindowDimensions } from "react-native";
+
 import he from "he";
 import moment from "moment";
 
 const Post = ({ item }) => {
   const navigation = useNavigation();
-  const windowWidth = useWindowDimensions().width;
 
   const urlImage = item.image.url;
 
@@ -30,8 +28,13 @@ const Post = ({ item }) => {
     <TouchableOpacity
       style={styles.containerItem}
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("PostDetails")}
+      onPress={() => navigation.navigate("PostDetails", { details: item })}
     >
+      {/* onPress={() => 
+        navigation.navigate('Category', {
+          screen: 'MealItemPage',
+          params: { meal: item },
+        }) */}
       <View style={styles.container}>
         <View style={{ width: "100%", height: 215 }}>
           <Image
