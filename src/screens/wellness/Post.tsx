@@ -6,12 +6,25 @@ import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HTML from "react-native-render-html";
 import { useWindowDimensions } from "react-native";
+import he from "he";
+import moment from "moment";
 
 const Post = ({ item }) => {
   const navigation = useNavigation();
   const windowWidth = useWindowDimensions().width;
 
   const urlImage = item.image.url;
+
+  // Función para decodificar las entidades HTML y eliminar las etiquetas HTML
+  const decodeHtmlEntities = (html) => {
+    const decodedText = he.decode(html);
+    // Elimina etiquetas HTML restantes utilizando una expresión regular
+    return decodedText.replace(/<[^>]*>/g, "");
+  };
+
+  // Formatear la fecha y la hora usando moment.js
+  const formattedDate = moment(item.published_on).format("DD/MM/YY");
+  const formattedTime = moment(item.published_on).format("HH:mm");
 
   return (
     <TouchableOpacity
@@ -38,7 +51,7 @@ const Post = ({ item }) => {
               color={mainColor}
               style={styles.icon}
             />
-            <Text style={styles.datetext}>10/07/2020</Text>
+            <Text style={styles.datetext}>{formattedDate}</Text>
           </View>
           <View style={styles.datesItems}>
             <Ionicons
@@ -46,18 +59,21 @@ const Post = ({ item }) => {
               color={mainColor}
               style={styles.icon}
             />
-            <Text style={styles.datetext}>10/07/2020</Text>
+            <Text style={styles.datetext}>{formattedTime}</Text>
           </View>
         </View>
         <View style={styles.dates}>
           <Text style={styles.title}>{item.title}</Text>
         </View>
         <View style={styles.dates}>
-          <HTML
+          {/* <HTML
             source={{ html: item.body }}
             contentWidth={windowWidth}
             ignoredDomTags={["font"]}
-          />
+          /> */}
+          <Text numberOfLines={3} style={styles.body}>
+            {decodeHtmlEntities(item.body)}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -130,5 +146,9 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     width: 309,
     marginBottom: 10,
+  },
+
+  body: {
+    paddingBottom: 10,
   },
 });
