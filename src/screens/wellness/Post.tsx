@@ -5,9 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 // import mindfull from "../../../assets/img/mindfull.png";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HTML from "react-native-render-html";
+import { useWindowDimensions } from "react-native";
 
 const Post = ({ item }) => {
   const navigation = useNavigation();
+  const windowWidth = useWindowDimensions().width;
 
   const urlImage = item.image.url;
 
@@ -51,8 +53,11 @@ const Post = ({ item }) => {
           <Text style={styles.title}>{item.title}</Text>
         </View>
         <View style={styles.dates}>
-          {/* <HTML source={{ html: item.body }} /> */}
-          <Text>{item.body}</Text>
+          <HTML
+            source={{ html: item.body }}
+            contentWidth={windowWidth}
+            ignoredDomTags={["font"]}
+          />
         </View>
       </View>
     </TouchableOpacity>
