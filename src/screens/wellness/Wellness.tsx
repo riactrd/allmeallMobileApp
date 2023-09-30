@@ -1,11 +1,23 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScreenWidth, secundaryColor } from "../../componets/shared";
 import Post from "./Post";
+import { useGetWellnessQuery } from "../../redux/api/WellnessApi";
 
-const postList = [1, 2, 3, 4];
+// const postList = [1, 2, 3, 4];
 
 const Wellness = () => {
+  const { data, isError, isLoading } = useGetWellnessQuery();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (data && data.data && data.data.wellness_posts) {
+      setPosts(data.data.wellness_posts);
+    }
+  }, [data, posts]);
+
+  // console.log(posts);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -14,8 +26,8 @@ const Wellness = () => {
           style={{ width: ScreenWidth, marginBottom: 5 }}
         >
           <View style={styles.viewScroll}>
-            {postList.map((item, index) => (
-              <Post key={index} />
+            {posts.map((item, index) => (
+              <Post key={index} item={item} />
             ))}
           </View>
         </ScrollView>
