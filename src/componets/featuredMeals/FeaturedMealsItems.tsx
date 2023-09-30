@@ -25,19 +25,17 @@ const FeaturedMealsItems: React.FC<Props> = ({
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.buttom}
-      onPress={() => 
-        navigation.navigate('Category', {
-          screen: 'MealItemPage',
+      onPress={() =>
+        navigation.navigate("CategoryTab", {
+          screen: "MealItemPage",
           params: { meal: item },
         })
-       
       }
     >
       <View>
         <Image
           source={{
             uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
-            //  uri: `https://allmealprep.com/uploads/picture/image/529/All_Meal_Prep_Mojo_Shrimp_With_White_RIce.jpg`,
           }}
           style={styles.imgContainer}
         />

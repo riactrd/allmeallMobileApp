@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import CategoryPageItem from "./CategoryPageItem";
 import MealItem from "./mealItem/MealItem";
@@ -15,6 +15,8 @@ import Calendar from "./mealItem/Calendar";
 import { Entypo } from "@expo/vector-icons";
 import { mainColor } from "../../componets/shared";
 import { RootStackParamList } from "../../navigators/RootStack";
+import { useGetcategoriesQuery } from "../../redux/api/categoriesApi";
+import { useRoute } from "@react-navigation/native";
 
 const itemsCategories = [
   {
@@ -67,6 +69,20 @@ type props = StackScreenProps<RootStackParamList, "Category">;
 
 const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
+  const [meal, setMeal] = useState([]);
+  const [code, setCode] = useState("new-menu");
+  const { params } = useRoute();
+  const { data, isLoading, isError } = useGetcategoriesQuery(code);
+
+  useEffect(() => {
+    if (params && params.itemcode) {
+      setCode(params.itemcode);
+    }
+  }, [params]);
+
+  useEffect(() => {
+    setMeal(data?.data);
+  }, [data]);
 
   return (
     <View>
@@ -95,10 +111,10 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
             </View>
           </ScrollView>
           <ScrollView
-          // showsVerticalScrollIndicator={false}
-          // showsHorizontalScrollIndicator={false}
-          // horizontal={false}
-          // alwaysBounceVertical={true}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            horizontal={false}
+            alwaysBounceVertical={true}
           >
             {/* <View style={styles.mealItems}>
               {mealsList.map((item, index) => (
@@ -132,7 +148,15 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
               </View>
               <Calendar />
             </View>
-            <MealPrepList navigation={navigation} />
+            {isLoading ? (
+              <Text>Cargando...</Text>
+            ) : isError ? (
+              <Text>Error al cargar los datos</Text>
+            ) : meal && meal.menu && meal.menu.length > 0 ? (
+              <MealPrepList navigation={navigation} meal={meal.menu} />
+            ) : (
+              <Text>Vacio</Text>
+            )}
           </ScrollView>
         </View>
       </View>
