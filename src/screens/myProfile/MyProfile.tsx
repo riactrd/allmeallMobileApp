@@ -41,7 +41,7 @@ const MyProfile = () => {
   const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
   const { first_name, last_name, date_of_birth, phone_number } = userData;
   const [selected, Setselected] = useState("1");
-  const [gender, SetGender] = useState("Male");
+  const [gender, SetGender] = useState();
   const navigation = useNavigation();
   const [name, SetName] = useState(first_name);
   const [lastname, SetLastName] = useState(last_name);
@@ -56,6 +56,7 @@ const MyProfile = () => {
       SetPhone(data?.data.profile.phone_number);
       SetDateofBirth(data?.data.profile.date_of_birth);
       SetSecondaryPhone(data?.data.profile.sec_phone_number);
+      SetGender(data?.data.profile.gender);
     }
   }, [data]);
 
@@ -71,6 +72,8 @@ const MyProfile = () => {
       })
     );
   }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
+
+  console.log(gender);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
@@ -336,8 +339,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Male"
                             // label="Carto Base MAp"
-                            status={gender === "Male" ? "checked" : "unchecked"}
-                            onPress={() => SetGender("Male")}
+                            status={gender === 1 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(1)}
                             color={mainColor}
                           />
                         </View>
@@ -347,7 +350,7 @@ const MyProfile = () => {
                       <View style={styles.textDivide}>
                         <View
                           style={[
-                            gender === "Female"
+                            gender === 2
                               ? styles.radiobutomActive
                               : styles.radiobutom,
                           ]}
@@ -355,10 +358,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Female"
                             // label="Carto Base MAp"
-                            status={
-                              gender === "Female" ? "checked" : "unchecked"
-                            }
-                            onPress={() => SetGender("Female")}
+                            status={gender === 2 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(2)}
                             color={mainColor}
                           />
                         </View>
@@ -368,7 +369,7 @@ const MyProfile = () => {
                       <View style={styles.textDivide}>
                         <View
                           style={[
-                            gender === "Other"
+                            gender === 3
                               ? styles.radiobutomActive
                               : styles.radiobutom,
                           ]}
@@ -376,10 +377,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Other"
                             // label="Carto Base MAp"
-                            status={
-                              gender === "Other" ? "checked" : "unchecked"
-                            }
-                            onPress={() => SetGender("Other")}
+                            status={gender === 3 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(3)}
                             color={mainColor}
                           />
                         </View>
