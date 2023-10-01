@@ -47,17 +47,26 @@ const elements = [
 ];
 
 const Allergic = () => {
-  const [selectedElements, setSelectedElements] = useState(
-    elements.map((element) => ({ ...element, isSelected: true }))
-  );
   const [deselectedIds, setDeselectedIds] = useState([]);
+  const [selectedElements, setSelectedElements] = useState(
+    elements.map((element) => ({
+      ...element,
+      isSelected: !deselectedIds.includes(element.id),
+    }))
+  );
+
   const { data } = useGetprofileApiQuery();
   const [send, { error, isLoading }] = useUpdateallergicMutation();
   const toast = useToast();
 
   useEffect(() => {
-    if (data) {
-      setDeselectedIds(data.data.allergic_ingredients);
+    if (data && data.data && data.data.allergic_ingredients) {
+      const deselectedIds = data.data.allergic_ingredients;
+      const initialSelectedElements = elements.map((element) => ({
+        ...element,
+        isSelected: !deselectedIds.includes(element.id),
+      }));
+      setSelectedElements(initialSelectedElements);
     }
   }, [data]);
 
