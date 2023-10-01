@@ -61,6 +61,7 @@ const Allergic = () => {
 
   useEffect(() => {
     if (data && data.data && data.data.allergic_ingredients) {
+      setDeselectedIds(data.data.allergic_ingredients);
       const deselectedIds = data.data.allergic_ingredients;
       const initialSelectedElements = elements.map((element) => ({
         ...element,
@@ -69,32 +70,8 @@ const Allergic = () => {
       setSelectedElements(initialSelectedElements);
     }
   }, [data]);
-
+  console.log(data?.data.allergic_ingredients);
   console.log(deselectedIds);
-
-  // const toggleElementSelection = (elementId) => {
-  //   // En lugar de usar prevSelectedElements, vamos a clonar selectedElements actual
-  //   const updatedSelectedElements = [...selectedElements];
-  //   const elementIndex = updatedSelectedElements.findIndex(
-  //     (element) => element.id === elementId
-  //   );
-
-  //   if (elementIndex !== -1) {
-  //     // Cambiar el estado de selección del elemento
-  //     updatedSelectedElements[elementIndex] = {
-  //       ...updatedSelectedElements[elementIndex],
-  //       isSelected: !updatedSelectedElements[elementIndex].isSelected,
-  //     };
-
-  //     // Actualizar el estado
-  //     setSelectedElements(updatedSelectedElements);
-
-  //     // Verificar si el elemento se ha deseleccionado
-  //     if (!updatedSelectedElements[elementIndex].isSelected) {
-  //       console.log("Deseleccionado el elemento con ID:", elementId);
-  //     }
-  //   }
-  // };
 
   const toggleElementSelection = (elementId) => {
     // Clona el estado de selectedElements actual
@@ -128,8 +105,6 @@ const Allergic = () => {
       }
     }
   };
-
-  // console.log(deselectedIds);
 
   const handlerSend = async () => {
     try {
