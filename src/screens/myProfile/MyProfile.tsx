@@ -90,6 +90,29 @@ const MyProfile = () => {
 
   // console.log(data?.data.profile.referral_email);
 
+  useEffect(() => {
+    if (data) {
+      SetName(data?.data.profile.first_name);
+      SetLastName(data?.data.profile.last_name);
+      SetPhone(data?.data.profile.phone_number);
+      SetDateofBirth(data?.data.profile.date_of_birth);
+      SetSecondaryPhone(data?.data.profile.sec_phone_number);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    dispatch(
+      setProfileData({
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+      })
+    );
+  }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
+
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
   };
