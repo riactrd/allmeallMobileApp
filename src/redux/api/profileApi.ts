@@ -75,7 +75,7 @@ export const profileApi = createApi({
               // weight: null,
               // health_conditions: null,
               // level_of_activity: 1,
-              // gender: 1,
+              gender: profile.gender,
               // weight_goal: null,
               // goal_timing: "",
               date_of_birth: profile.dateofBirth,

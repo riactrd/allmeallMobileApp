@@ -10,6 +10,7 @@ const myProfileSlice = createSlice({
     secondaryPhone: "",
     gender: "",
   },
+
   reducers: {
     setProfileData: (state, action) => {
       // Esta función se usará para actualizar los datos del perfil
