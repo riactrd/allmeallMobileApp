@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   mainColor,
   Screenheight,
@@ -26,9 +26,19 @@ import ImagePickerExample from "../../componets/PickImage";
 import { useSelector } from "react-redux";
 import { selectUserData } from "../../redux/store";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  useGetprofileApiQuery,
+  useUpdateprofileMutation,
+} from "../../redux/api/profileApi";
+
+import { useDispatch } from "react-redux";
+import { setProfileData } from "../../redux/profileSlice";
 
 const MyProfile = () => {
+  const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
+  const { data, isLoading, error } = useGetprofileApiQuery();
+  const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
   const { first_name, last_name, date_of_birth, phone_number } = userData;
   const [selected, Setselected] = useState("1");
   const [gender, SetGender] = useState("Male");
@@ -38,6 +48,29 @@ const MyProfile = () => {
   const [phone, SetPhone] = useState(phone_number);
   const [secondaryPhone, SetSecondaryPhone] = useState("");
   const [dateofBirth, SetDateofBirth] = useState(date_of_birth);
+
+  useEffect(() => {
+    if (data) {
+      SetName(data?.data.profile.first_name);
+      SetLastName(data?.data.profile.last_name);
+      SetPhone(data?.data.profile.phone_number);
+      SetDateofBirth(data?.data.profile.date_of_birth);
+      SetSecondaryPhone(data?.data.profile.sec_phone_number);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    dispatch(
+      setProfileData({
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+      })
+    );
+  }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
