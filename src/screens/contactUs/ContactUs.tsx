@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   mainColor,
   ScreenWidth,
@@ -14,29 +14,84 @@ import {
 } from "../../componets/shared";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSentcontactMutation } from "../../redux/api/ContactApi";
+import { useSelector } from "react-redux";
+import { useGetprofileApiQuery } from "../../redux/api/profileApi";
+import { useToast } from "react-native-toast-notifications";
 
-const ContactUs = () => {
+const ContactUs = ({ navigation }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const userData = useSelector((state) => state.login.userData);
+  const [phone, setPhone] = useState("");
+
+  const { data: dataProfile } = useGetprofileApiQuery();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (dataProfile && dataProfile.data) {
+      setPhone(dataProfile?.data?.profile.phone_number);
+    }
+  }, [dataProfile]);
 
   const [send, { isloading, isSuccess }] = useSentcontactMutation();
-  console.log(isSuccess);
+
+  useEffect(() => {
+    if (userData && userData.first_name) {
+      setFullName(userData.first_name + userData.last_name);
+      setEmail(userData.email);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    navigation.navigate("HomeDrawer");
+  }, [isSuccess]);
 
   const handlerSend = async () => {
     try {
-      const response = await send({ subject, message }).unwrap();
-      console.log("Respuesta del servidor:", response);
+      const response = await send({
+        fullName,
+        email,
+        phone,
+        subject,
+        message,
+      }).unwrap();
+      toast.show(JSON.stringify("Thanks for Contacting Us!"), {
+        type: "success",
+        placement: "center",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+      // console.log("Response Server:", response);
 
-      // Limpiar los campos después de que la llamada sea exitosa
       setSubject("");
       setMessage("");
-
-      // Realiza cualquier otra lógica que necesites con la respuesta del servidor
     } catch (error) {
-      console.error("Error en la solicitud:", error);
-      // Maneja el error de la solicitud, si es necesario
+      // console.error("Error :", error);
+      toast.show(JSON.stringify(error.data), {
+        type: "danger",
+        placement: "center",
+        duration: 8000,
+        animationType: "slide-in",
+      });
     }
   };
+
+  const onChangeSubject = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setSubject(value);
+  };
+
+  const onChangeMessage = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setMessage(value);
+  };
+  // console.log(message);
 
   return (
     <KeyboardAwareScrollView
@@ -54,7 +109,7 @@ const ContactUs = () => {
             <TextInput
               placeholder="Your Subject"
               style={styles.input}
-              onChangeText={(text) => setSubject(text)}
+              onChange={onChangeSubject}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -62,7 +117,7 @@ const ContactUs = () => {
               placeholder="Your Message"
               style={styles.inputMult}
               multiline={true}
-              onChangeText={(text) => setMessage(text)}
+              onChange={onChangeMessage}
             />
           </View>
           <TouchableOpacity

@@ -1,7 +1,6 @@
 import {
   BaseQueryFn,
   createApi,
-  FetchArgs,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
@@ -32,22 +31,28 @@ export const contactApi = createApi({
 
       return headers;
     },
-  }) as BaseQueryFn<string | FetchArgs, unknown, errorModel, {}>,
+  }) as BaseQueryFn<FetchArgs, unknown, errorModel, {}>, // Corrección en el tipo de BaseQueryFn
+
   endpoints: (builder) => ({
     sentcontact: builder.mutation<ResponseContactModel, ContactModel>({
-      query: (contact) => ({
-        url: "contact-us",
-        method: "POST",
-        body: {
-          contact_us: {
-            name: "contact.name",
-            email: "contact.email",
-            phone_number: "contact.phone_number",
-            subject: contact.subject,
-            message: contact.message,
+      query: (contact) => {
+        // Imprime por consola los datos antes de enviar la solicitud
+        console.log("Data being sent:", contact);
+
+        return {
+          url: "contact-us",
+          method: "POST",
+          body: {
+            contact_us: {
+              name: contact.fullName,
+              email: contact.email,
+              phone_number: contact.phone,
+              subject: contact.subject,
+              message: contact.message,
+            },
           },
-        },
-      }),
+        };
+      },
     }),
   }),
 });
