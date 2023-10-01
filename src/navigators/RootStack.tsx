@@ -425,9 +425,16 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
   const navigation = useNavigation();
   const toast = useToast();
   const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
-  const { name, lastname, phone, dateofBirth, secondaryPhone, gender } =
-    useSelector((state) => state.myProfile);
-  console.log("desde el store es", gender);
+  const {
+    name,
+    lastname,
+    phone,
+    dateofBirth,
+    secondaryPhone,
+    gender,
+    referralEmail,
+    referrer,
+  } = useSelector((state) => state.myProfile);
 
   const handlerSave = async () => {
     try {
@@ -438,6 +445,8 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
         dateofBirth,
         secondaryPhone,
         gender,
+        referralEmail,
+        referrer,
       }).unwrap();
       toast.show(JSON.stringify(response.message), {
         type: "success",

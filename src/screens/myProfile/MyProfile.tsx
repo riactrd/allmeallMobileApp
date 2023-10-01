@@ -48,6 +48,8 @@ const MyProfile = () => {
   const [phone, SetPhone] = useState(phone_number);
   const [secondaryPhone, SetSecondaryPhone] = useState("");
   const [dateofBirth, SetDateofBirth] = useState(date_of_birth);
+  const [referrer, setReferrer] = useState("");
+  const [referralEmail, setReferralEmail] = useState("");
 
   useEffect(() => {
     if (data) {
@@ -57,6 +59,8 @@ const MyProfile = () => {
       SetDateofBirth(data?.data.profile.date_of_birth);
       SetSecondaryPhone(data?.data.profile.sec_phone_number);
       SetGender(data?.data.profile.gender);
+      setReferrer(data?.data.profile.referral_email);
+      setReferralEmail(data?.data.profile.referral_email);
     }
   }, [data]);
 
@@ -69,11 +73,22 @@ const MyProfile = () => {
         dateofBirth,
         secondaryPhone,
         gender,
+        referrer,
+        referralEmail,
       })
     );
-  }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
+  }, [
+    name,
+    lastname,
+    phone,
+    dateofBirth,
+    secondaryPhone,
+    gender,
+    referrer,
+    referralEmail,
+  ]);
 
-  console.log(gender);
+  // console.log(data?.data.profile.referral_email);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
@@ -112,6 +127,20 @@ const MyProfile = () => {
   ): void => {
     const value = e.nativeEvent.text;
     SetDateofBirth(value);
+  };
+
+  const onChangeReferrer = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferrer(value);
+  };
+
+  const onChangeReferralEmail = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferralEmail(value);
   };
 
   return (
@@ -418,6 +447,8 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referrer..."
                         style={styles.input}
+                        onChange={onChangeReferrer}
+                        value={referralEmail}
                       />
                     </View>
                     <View style={styles.inputContainer}>
@@ -428,6 +459,8 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referral Email*..."
                         style={styles.input}
+                        onChange={onChangeReferralEmail}
+                        value={referralEmail}
                       />
                     </View>
                   </View>
