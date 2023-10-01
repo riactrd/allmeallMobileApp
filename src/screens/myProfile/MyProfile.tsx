@@ -97,6 +97,7 @@ const MyProfile = () => {
       SetPhone(data?.data.profile.phone_number);
       SetDateofBirth(data?.data.profile.date_of_birth);
       SetSecondaryPhone(data?.data.profile.sec_phone_number);
+      SetGender(data?.data.profile.gender);
     }
   }, [data]);
 
@@ -112,6 +113,8 @@ const MyProfile = () => {
       })
     );
   }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
+
+  console.log(gender);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
