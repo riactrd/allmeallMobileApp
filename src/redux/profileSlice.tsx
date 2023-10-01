@@ -9,19 +9,31 @@ const myProfileSlice = createSlice({
     dateofBirth: "",
     secondaryPhone: "",
     gender: "",
+    referrer: "",
+    referralEmail: "",
   },
 
   reducers: {
     setProfileData: (state, action) => {
       // Esta función se usará para actualizar los datos del perfil
-      const { name, lastname, phone, dateofBirth, secondaryPhone, gender } =
-        action.payload;
+      const {
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+        referrer,
+        referralEmail,
+      } = action.payload;
       state.name = name;
       state.lastname = lastname;
       state.phone = phone;
       state.dateofBirth = dateofBirth;
       state.secondaryPhone = secondaryPhone;
       state.gender = gender;
+      state.referrer = referrer;
+      state.referralEmail = referralEmail;
     },
   },
 });
