@@ -70,8 +70,8 @@ const Allergic = () => {
       setSelectedElements(initialSelectedElements);
     }
   }, [data]);
-  console.log(data?.data.allergic_ingredients);
-  console.log(deselectedIds);
+  // console.log(data?.data.allergic_ingredients);
+  // console.log(deselectedIds);
 
   const toggleElementSelection = (elementId) => {
     // Clona el estado de selectedElements actual
@@ -117,9 +117,9 @@ const Allergic = () => {
         duration: 8000,
         animationType: "slide-in",
       });
-      console.log(response.data.message);
+      // console.log(response.data.message);
     } catch (error) {
-      console.error("Error :", error);
+      // console.error("Error :", error);
       toast.show(JSON.stringify(error), {
         type: "danger",
         placement: "center",
