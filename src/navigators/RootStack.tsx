@@ -51,6 +51,8 @@ import ForgotPassword from "../screens/sign/ForgotPassword";
 import ResetPassword from "../screens/sign/ResetPassword";
 import Login from "../screens/sign/Login";
 import VerifyUser from "../screens/sign/VerifyUser";
+import { useUpdateprofileMutation } from "../redux/api/profileApi";
+import { useToast } from "react-native-toast-notifications";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -421,6 +423,48 @@ export const WellnessstackNavigator: FunctionComponent = () => {
 
 export const MyProfilestackNavigator: FunctionComponent = () => {
   const navigation = useNavigation();
+  const toast = useToast();
+  const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
+  const {
+    name,
+    lastname,
+    phone,
+    dateofBirth,
+    secondaryPhone,
+    gender,
+    referralEmail,
+    referrer,
+  } = useSelector((state) => state.myProfile);
+
+  const handlerSave = async () => {
+    try {
+      const response = await updateProfile({
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+        referralEmail,
+        referrer,
+      }).unwrap();
+      toast.show(JSON.stringify(response.message), {
+        type: "success",
+        placement: "center",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+      console.log("Response Server:", response.message);
+    } catch (error) {
+      console.error("Error :", error);
+      toast.show(JSON.stringify(error), {
+        type: "danger",
+        placement: "center",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    }
+  };
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -444,7 +488,11 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity activeOpacity={0.7} style={styles.button}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.button}
+                onPress={handlerSave}
+              >
                 <Text style={styles.buttonText}>Save</Text>
               </TouchableOpacity>
             </View>

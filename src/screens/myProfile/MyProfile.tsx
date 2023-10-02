@@ -11,7 +11,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   mainColor,
   Screenheight,
@@ -27,17 +28,97 @@ import { useSelector } from "react-redux";
 import { selectUserData } from "../../redux/store";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { useDispatch } from "react-redux";
+import { setProfileData } from "../../redux/profileSlice";
+import {
+  useGetprofileApiQuery,
+  useUpdateprofileMutation,
+} from "../../redux/api/profileApi";
+
 const MyProfile = () => {
+  const dispatch = useDispatch();
+
   const userData = useSelector(selectUserData);
+
+  const { data, isLoading, error } = useGetprofileApiQuery();
+  const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
   const { first_name, last_name, date_of_birth, phone_number } = userData;
   const [selected, Setselected] = useState("1");
-  const [gender, SetGender] = useState("Male");
+
+  const [gender, SetGender] = useState();
   const navigation = useNavigation();
   const [name, SetName] = useState(first_name);
   const [lastname, SetLastName] = useState(last_name);
   const [phone, SetPhone] = useState(phone_number);
   const [secondaryPhone, SetSecondaryPhone] = useState("");
   const [dateofBirth, SetDateofBirth] = useState(date_of_birth);
+  const [referrer, setReferrer] = useState("");
+  const [referralEmail, setReferralEmail] = useState("");
+
+  useEffect(() => {
+    if (data) {
+      SetName(data?.data.profile.first_name);
+      SetLastName(data?.data.profile.last_name);
+      SetPhone(data?.data.profile.phone_number);
+      SetDateofBirth(data?.data.profile.date_of_birth);
+      SetSecondaryPhone(data?.data.profile.sec_phone_number);
+      SetGender(data?.data.profile.gender);
+      setReferrer(data?.data.profile.referral_email);
+      setReferralEmail(data?.data.profile.referral_email);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    dispatch(
+      setProfileData({
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+        referrer,
+        referralEmail,
+      })
+    );
+  }, [
+    name,
+    lastname,
+    phone,
+    dateofBirth,
+    secondaryPhone,
+    gender,
+    referrer,
+    referralEmail,
+  ]);
+
+  // console.log(data?.data.profile.referral_email);
+
+  useEffect(() => {
+    if (data) {
+      SetName(data?.data.profile.first_name);
+      SetLastName(data?.data.profile.last_name);
+      SetPhone(data?.data.profile.phone_number);
+      SetDateofBirth(data?.data.profile.date_of_birth);
+      SetSecondaryPhone(data?.data.profile.sec_phone_number);
+      SetGender(data?.data.profile.gender);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    dispatch(
+      setProfileData({
+        name,
+        lastname,
+        phone,
+        dateofBirth,
+        secondaryPhone,
+        gender,
+      })
+    );
+  }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
+
+  console.log(gender);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
@@ -76,6 +157,20 @@ const MyProfile = () => {
   ): void => {
     const value = e.nativeEvent.text;
     SetDateofBirth(value);
+  };
+
+  const onChangeReferrer = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferrer(value);
+  };
+
+  const onChangeReferralEmail = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferralEmail(value);
   };
 
   return (
@@ -303,8 +398,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Male"
                             // label="Carto Base MAp"
-                            status={gender === "Male" ? "checked" : "unchecked"}
-                            onPress={() => SetGender("Male")}
+                            status={gender === 1 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(1)}
                             color={mainColor}
                           />
                         </View>
@@ -314,7 +409,7 @@ const MyProfile = () => {
                       <View style={styles.textDivide}>
                         <View
                           style={[
-                            gender === "Female"
+                            gender === 2
                               ? styles.radiobutomActive
                               : styles.radiobutom,
                           ]}
@@ -322,10 +417,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Female"
                             // label="Carto Base MAp"
-                            status={
-                              gender === "Female" ? "checked" : "unchecked"
-                            }
-                            onPress={() => SetGender("Female")}
+                            status={gender === 2 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(2)}
                             color={mainColor}
                           />
                         </View>
@@ -335,7 +428,7 @@ const MyProfile = () => {
                       <View style={styles.textDivide}>
                         <View
                           style={[
-                            gender === "Other"
+                            gender === 3
                               ? styles.radiobutomActive
                               : styles.radiobutom,
                           ]}
@@ -343,10 +436,10 @@ const MyProfile = () => {
                           <RadioButton
                             value="Other"
                             // label="Carto Base MAp"
-                            status={
-                              gender === "Other" ? "checked" : "unchecked"
-                            }
-                            onPress={() => SetGender("Other")}
+                            status={gender === 3 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(3)}
+                            status={gender === 3 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(3)}
                             color={mainColor}
                           />
                         </View>
@@ -386,6 +479,10 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referrer..."
                         style={styles.input}
+                        onChange={onChangeReferrer}
+                        value={referralEmail}
+                        onChange={onChangeReferrer}
+                        value={referralEmail}
                       />
                     </View>
                     <View style={styles.inputContainer}>
@@ -396,6 +493,10 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referral Email*..."
                         style={styles.input}
+                        onChange={onChangeReferralEmail}
+                        value={referralEmail}
+                        onChange={onChangeReferralEmail}
+                        value={referralEmail}
                       />
                     </View>
                   </View>
