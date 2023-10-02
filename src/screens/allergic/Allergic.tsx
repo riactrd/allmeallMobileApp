@@ -61,7 +61,10 @@ const Allergic = () => {
 
   useEffect(() => {
     if (data && data.data && data.data.allergic_ingredients) {
+<<<<<<< HEAD
       setDeselectedIds(data.data.allergic_ingredients);
+=======
+>>>>>>> 2c20621 (loading get inputs deselected)
       const deselectedIds = data.data.allergic_ingredients;
       const initialSelectedElements = elements.map((element) => ({
         ...element,
