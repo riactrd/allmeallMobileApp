@@ -110,6 +110,7 @@ const ContactUs = ({ navigation }) => {
               placeholder="Your Subject"
               style={styles.input}
               onChange={onChangeSubject}
+              value={subject}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -118,6 +119,7 @@ const ContactUs = ({ navigation }) => {
               style={styles.inputMult}
               multiline={true}
               onChange={onChangeMessage}
+              value={message}
             />
           </View>
           <TouchableOpacity
