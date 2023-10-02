@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   mainColor,
   Screenheight,
@@ -33,14 +34,25 @@ import {
 
 import { useDispatch } from "react-redux";
 import { setProfileData } from "../../redux/profileSlice";
+import {
+  useGetprofileApiQuery,
+  useUpdateprofileMutation,
+} from "../../redux/api/profileApi";
+
+import { useDispatch } from "react-redux";
+import { setProfileData } from "../../redux/profileSlice";
 
 const MyProfile = () => {
+  const dispatch = useDispatch();
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
   const { data, isLoading, error } = useGetprofileApiQuery();
   const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
+  const { data, isLoading, error } = useGetprofileApiQuery();
+  const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
   const { first_name, last_name, date_of_birth, phone_number } = userData;
   const [selected, Setselected] = useState("1");
+  const [gender, SetGender] = useState();
   const [gender, SetGender] = useState();
   const navigation = useNavigation();
   const [name, SetName] = useState(first_name);
@@ -153,6 +165,20 @@ const MyProfile = () => {
   ): void => {
     const value = e.nativeEvent.text;
     SetDateofBirth(value);
+  };
+
+  const onChangeReferrer = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferrer(value);
+  };
+
+  const onChangeReferralEmail = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setReferralEmail(value);
   };
 
   const onChangeReferrer = (
@@ -425,6 +451,7 @@ const MyProfile = () => {
                         <View
                           style={[
                             gender === 3
+                            gender === 3
                               ? styles.radiobutomActive
                               : styles.radiobutom,
                           ]}
@@ -432,6 +459,8 @@ const MyProfile = () => {
                           <RadioButton
                             value="Other"
                             // label="Carto Base MAp"
+                            status={gender === 3 ? "checked" : "unchecked"}
+                            onPress={() => SetGender(3)}
                             status={gender === 3 ? "checked" : "unchecked"}
                             onPress={() => SetGender(3)}
                             color={mainColor}
@@ -475,6 +504,8 @@ const MyProfile = () => {
                         style={styles.input}
                         onChange={onChangeReferrer}
                         value={referralEmail}
+                        onChange={onChangeReferrer}
+                        value={referralEmail}
                       />
                     </View>
                     <View style={styles.inputContainer}>
@@ -485,6 +516,8 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referral Email*..."
                         style={styles.input}
+                        onChange={onChangeReferralEmail}
+                        value={referralEmail}
                         onChange={onChangeReferralEmail}
                         value={referralEmail}
                       />
