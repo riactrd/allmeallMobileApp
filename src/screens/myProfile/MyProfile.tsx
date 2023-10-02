@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+
 import React, { useEffect, useState } from "react";
 import {
   mainColor,
@@ -27,10 +27,6 @@ import ImagePickerExample from "../../componets/PickImage";
 import { useSelector } from "react-redux";
 import { selectUserData } from "../../redux/store";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import {
-  useGetprofileApiQuery,
-  useUpdateprofileMutation,
-} from "../../redux/api/profileApi";
 
 import { useDispatch } from "react-redux";
 import { setProfileData } from "../../redux/profileSlice";
@@ -38,21 +34,17 @@ import {
   useGetprofileApiQuery,
   useUpdateprofileMutation,
 } from "../../redux/api/profileApi";
-
-import { useDispatch } from "react-redux";
-import { setProfileData } from "../../redux/profileSlice";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
-  const dispatch = useDispatch();
+
   const userData = useSelector(selectUserData);
-  const { data, isLoading, error } = useGetprofileApiQuery();
-  const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
+
   const { data, isLoading, error } = useGetprofileApiQuery();
   const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
   const { first_name, last_name, date_of_birth, phone_number } = userData;
   const [selected, Setselected] = useState("1");
-  const [gender, SetGender] = useState();
+
   const [gender, SetGender] = useState();
   const navigation = useNavigation();
   const [name, SetName] = useState(first_name);
@@ -165,20 +157,6 @@ const MyProfile = () => {
   ): void => {
     const value = e.nativeEvent.text;
     SetDateofBirth(value);
-  };
-
-  const onChangeReferrer = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-  ): void => {
-    const value = e.nativeEvent.text;
-    setReferrer(value);
-  };
-
-  const onChangeReferralEmail = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-  ): void => {
-    const value = e.nativeEvent.text;
-    setReferralEmail(value);
   };
 
   const onChangeReferrer = (
@@ -450,7 +428,6 @@ const MyProfile = () => {
                       <View style={styles.textDivide}>
                         <View
                           style={[
-                            gender === 3
                             gender === 3
                               ? styles.radiobutomActive
                               : styles.radiobutom,
