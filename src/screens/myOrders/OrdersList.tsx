@@ -48,12 +48,12 @@ const foods = [
   },
 ];
 
-export default function OrdersList({ navigation }) {
+export default function OrdersList({ navigation, ordersList }) {
   return (
     <>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={foods}
+        data={ordersList}
         renderItem={({ item }) => (
           <OrderCard item={item} navigation={navigation} />
         )}

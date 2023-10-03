@@ -10,11 +10,13 @@ export default function OrderCard({ item, navigation }) {
   return (
     <>
       <TouchableOpacity
-        onPress={() => navigation.navigate("SingleOrder")}
+        onPress={() => navigation.navigate("SingleOrder", { id: item.id })}
         style={styles.orderCard}
       >
         <Image
-          source={item.image}
+          source={{
+            uri: `https://allmealprep.com/${item.image_url}`,
+          }}
           style={{ height: 110, width: 110, resizeMode: "contain" }}
         />
         <View style={styles.textContainer}>
@@ -27,22 +29,24 @@ export default function OrderCard({ item, navigation }) {
                 marginRight: 10,
               }}
             >
-              <Text style={{ fontWeight: 800, color: mainColor }}>$120.33</Text>
+              <Text style={{ fontWeight: 800, color: mainColor }}>
+                {item.total_price}
+              </Text>
             </View>
-            <Text style={{ fontWeight: 600 }}>Delivered</Text>
+            <Text style={{ fontWeight: 600 }}>{item.delivery_status}</Text>
           </View>
           <View style={styles.textRow}>
             <View style={styles.textRow}>
               <Entypo name="calendar" size={16} color={mainColor} />
               <Text style={{ marginHorizontal: 5, fontWeight: 600 }}>
-                07-Aug-2021
+                {item.order_date}
               </Text>
             </View>
 
             <View style={styles.textRow}>
               <Ionicons name="receipt-outline" size={16} color={mainColor} />
               <Text style={{ marginHorizontal: 5, fontWeight: 600 }}>
-                4100F5
+                {item.number}
               </Text>
             </View>
           </View>
@@ -55,7 +59,7 @@ export default function OrderCard({ item, navigation }) {
                 marginRight: 10,
               }}
             >
-              <Text>Paid by Manually</Text>
+              <Text>{item.paid_by}</Text>
             </View>
             <MaterialIcons name="replay" size={24} color={mainColor} />
           </View>
