@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import CategoryPageItem from "./OrderState";
 import MealItem from "./mealItem/MealItem";
@@ -13,6 +13,7 @@ import { RootStackParamList } from "../../navigators/RootStack";
 import OrderState from "./OrderState";
 import MyOrderItem from "./MyOrderItem";
 import OrdersList from "./OrdersList";
+import { useGetmyorderQuery } from "../../redux/api/myorderApi";
 
 const itemsCategories = [
   {
@@ -41,6 +42,16 @@ type props = StackScreenProps<RootStackParamList, "MyOrders">;
 
 const MyOrders: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
+  const [ordersList, setOrdersList] = useState([]);
+
+  const { data } = useGetmyorderQuery();
+
+  useEffect(() => {
+    if (data) {
+      setOrdersList(data?.data.orders);
+    }
+    // console.log(ordersList);
+  }, [data]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,7 +77,7 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
             </View>
           </ScrollView>
 
-          <OrdersList navigation={navigation} />
+          <OrdersList navigation={navigation} ordersList={ordersList} />
         </View>
       </View>
       {/* <BottomMenu/> */}
