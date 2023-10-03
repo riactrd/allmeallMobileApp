@@ -38,12 +38,6 @@ const AdressesItem = ({item, selected, SetdeleteStatus, deleteStatus}:Props) => 
                 animationType: "slide-in",
                 
               });
-          // navigation.navigate('VerifyUser', 
-          // {
-          //   screen: 'VerifyUser',
-          //   params: {userId: data.data.user.id, message: data.message}
-          // }
-          // )
         }
       
         if(isError){
