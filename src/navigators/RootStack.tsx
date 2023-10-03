@@ -556,7 +556,7 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
           // headerTransparent:true,
           title: "New adress",
         })}
-        name="NewAddressStack"
+        name="NewAddress"
         component={NewAddress}
       />
       <Stack.Screen
@@ -742,7 +742,7 @@ export const AdressesStackNavigator: FunctionComponent = () => {
           ),
           headerRight: () => <CartNotification />,
         }}
-        name="AdressesStack"
+        name="Adresses"
         component={Adresses}
       />
     </Stack.Navigator>
@@ -798,8 +798,7 @@ export const NewAdressesStackNavigator: FunctionComponent = () => {
             </TouchableOpacity>
           ),
         }}
-        name="NewAdressesStack"
-        component={NewAddress}
+        name="NewAddress" component={NewAddress}
       />
     </Stack.Navigator>
   );
