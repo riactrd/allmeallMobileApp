@@ -317,6 +317,8 @@ const BottomTabNavigator = () => {
         component={AmpStoreStackNavigator}
         options={{ tabBarItemStyle: { display: "none" } }}
       />
+
+      
     </Tab.Navigator>
   );
 };
