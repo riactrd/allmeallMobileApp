@@ -53,6 +53,7 @@ import Login from "../screens/sign/Login";
 import VerifyUser from "../screens/sign/VerifyUser";
 import { useUpdateprofileMutation } from "../redux/api/profileApi";
 import { useToast } from "react-native-toast-notifications";
+import Transactions from "../screens/wallet/Transactions";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -94,6 +95,7 @@ export type RootStackParamList = {
   PostDetails: undefined;
   Wallet: undefined;
   AmpStore: undefined;
+  Transactions: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -1402,6 +1404,25 @@ export const WalletStackNavigator: FunctionComponent = () => {
         }}
         name="Wallet"
         component={Wallet}
+      />
+
+      <Stack.Screen
+        options={{
+          title: "Digital Wallet History",
+          headerLeft: () => (
+            <AntDesign
+              name="arrowleft"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.navigate("Wallet")}
+            />
+          ),
+          headerRight: () => <CartNotification />,
+        }}
+        name="Transactions"
+        component={Transactions}
       />
     </Stack.Navigator>
   );
