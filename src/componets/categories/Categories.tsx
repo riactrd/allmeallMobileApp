@@ -7,10 +7,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { ScreenWidth } from "../shared";
 const itemWidth = ScreenWidth / 6;
 import { itemsCategories } from "../../data/categories";
+import { setIndex } from "../../redux/indexCategorySlice";
+import { useDispatch } from "react-redux";
 
 type props = StackScreenProps<RootStackParamList, "Dashboard">;
 
 const Categories: FunctionComponent<props> = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [selected, Setselected] = useState(0);
 
   return (
@@ -22,16 +25,14 @@ const Categories: FunctionComponent<props> = ({ navigation }) => {
             {itemsCategories.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() =>
-                  // navigation.navigate("CategoryTab", {
-                  //   screen: "Category",
-                  //   params: { itemcode: item.code },
-                  // })
+                onPress={() => {
+                  dispatch(setIndex(selected));
+
                   navigation.navigate("CategoryTab", {
                     screen: item.code,
                     params: { itemcode: item.code },
-                  })
-                }
+                  });
+                }}
                 style={styles.categoryItemsContainer}
               >
                 <CategoriesItems

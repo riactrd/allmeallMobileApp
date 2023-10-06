@@ -1,26 +1,42 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { setIndex } from "../../redux/indexCategorySlice";
+
 interface Props {
   // item:categoryDataProps;
   selected: number;
   Setselected: React.Dispatch<React.SetStateAction<number>>;
   index: number;
+  item: string;
 }
 const CategoryPageItem: React.FC<Props> = ({
   selected,
   index,
   Setselected,
+  item,
 }) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  // console.log(item);
   return (
     <TouchableOpacity
-      onPress={() => Setselected(index)}
+      onPress={() => {
+        dispatch(setIndex(index));
+        navigation.navigate("CategoryTab", {
+          screen: item.code,
+          params: { itemcode: item.code },
+        });
+      }}
       style={styles.container}
     >
       <View
         style={[selected === index ? styles.wrapperActive : styles.wrapper]}
       >
         <Text style={[selected === index ? styles.textActive : styles.text]}>
-          Meal Prep Menu
+          {item?.text}
         </Text>
       </View>
     </TouchableOpacity>

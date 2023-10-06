@@ -22,58 +22,14 @@ import { RootStackParamList } from "../../../navigators/RootStack";
 import { useGetcategoriesQuery } from "../../../redux/api/categoriesApi";
 import { useRoute } from "@react-navigation/native";
 import Spinner from "react-native-loading-spinner-overlay";
-
-const itemsCategories = [
-  {
-    id: 1,
-    text: "Meal Prep Menu",
-  },
-  {
-    id: 2,
-    text: "Bulk Meal Prep Menu",
-  },
-  {
-    id: 3,
-    text: "Preselected Meals",
-  },
-  {
-    id: 4,
-    text: "$8 Meal Prep Menu",
-  },
-  {
-    id: 5,
-    text: "Keto Meals",
-  },
-  {
-    id: 6,
-    text: "$8 Meal Prep Menu",
-  },
-  {
-    id: 7,
-    text: "Keto Meals",
-  },
-  {
-    id: 8,
-    text: "$8 Meal Prep Menu",
-  },
-  {
-    id: 9,
-    text: "Keto Meals",
-  },
-  {
-    id: 10,
-    text: "$8 Meal Prep Menu",
-  },
-  {
-    id: 11,
-    text: "Keto Meals",
-  },
-];
+import { itemsCategories } from "../../../data/categories";
+import { useSelector } from "react-redux";
 
 type props = StackScreenProps<RootStackParamList, "Category">;
 
 const FamilyMeal: FunctionComponent<props> = ({ navigation }) => {
-  const [selected, Setselected] = useState(0);
+  const currentIndex = useSelector((state) => state.indexCategory.index);
+  const [selected, Setselected] = useState(currentIndex);
   const [meal, setMeal] = useState(null);
   const { data, isLoading, isError } = useGetcategoriesQuery("family-meals");
 
@@ -124,8 +80,7 @@ const FamilyMeal: FunctionComponent<props> = ({ navigation }) => {
                   // style={styles.categoryItemsContainer}
                 >
                   <CategoryPageItem
-                    // item={item}
-
+                    item={item}
                     selected={selected}
                     Setselected={Setselected}
                     index={index}

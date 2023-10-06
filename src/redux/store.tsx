@@ -28,6 +28,7 @@ import { pickupGlasswareApi } from "./api/pickupGlasswareApi";
 import { updateCartApi } from "./api/updateCartApi";
 import { increasemyCartApi } from "./api/increaseCartApi";
 import myProfileReducer from "./profileSlice";
+import indexCategoryReducer from "./indexCategorySlice";
 
 const store = configureStore({
   reducer: {
@@ -55,6 +56,7 @@ const store = configureStore({
     [pickupGlasswareApi.reducerPath]: pickupGlasswareApi.reducer,
     [updateCartApi.reducerPath]: updateCartApi.reducer,
     myProfile: myProfileReducer,
+    indexCategory: indexCategoryReducer,
     avatar: imageReducer,
     login: loginReducer,
     cart: cartReducer,
