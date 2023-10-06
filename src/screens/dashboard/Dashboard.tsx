@@ -156,7 +156,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
               //visibility of Overlay Loading Spinner
               visible={isLoading}
               //Text with the Spinner
-              textContent={"Loading..."}
+              // textContent={"Loading..."}
               //Text style of the Spinner Text
               // textStyle={styles.spinnerTextStyle}
             />
