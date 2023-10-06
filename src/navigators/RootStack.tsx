@@ -54,6 +54,18 @@ import VerifyUser from "../screens/sign/VerifyUser";
 import { useUpdateprofileMutation } from "../redux/api/profileApi";
 import { useToast } from "react-native-toast-notifications";
 import Transactions from "../screens/wallet/Transactions";
+import NewMenuCode from "../screens/categoryPage/categoryCode/NewMenuCode";
+import CbdMeals from "../screens/categoryPage/categoryCode/CbdMeals";
+import ComboMeals from "../screens/categoryPage/categoryCode/ComboMeals";
+import SixDollarMeal from "../screens/categoryPage/categoryCode/SixDollarMeal";
+import BulkMeal from "../screens/categoryPage/categoryCode/BulkMeal";
+import SignatureMeal from "../screens/categoryPage/categoryCode/SignatureMeal";
+import DiabeticFriendly from "../screens/categoryPage/categoryCode/DiabeticFriendly";
+import KetoMeal from "../screens/categoryPage/categoryCode/KetoMeal";
+import PaleoMeal from "../screens/categoryPage/categoryCode/PaleoMeal";
+import FamilyMeal from "../screens/categoryPage/categoryCode/FamilyMeal";
+import VeganMeals from "../screens/categoryPage/categoryCode/VeganMeals";
+import DessertMenu from "../screens/categoryPage/categoryCode/DessertMenu";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -289,6 +301,7 @@ export const DashboardStackNavigator: FunctionComponent = () => {
   );
 };
 
+// CATEGORY STACK
 export const CategoryStackNavigator: FunctionComponent = () => {
   const navigation = useNavigation();
   return (
@@ -311,6 +324,235 @@ export const CategoryStackNavigator: FunctionComponent = () => {
         name="Category"
         component={CategoryPage}
       />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryNew-menu"
+        component={NewMenuCode}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryCbd-meal"
+        component={CbdMeals}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryCombo-meal"
+        component={ComboMeals}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategorySix-dollar-meal"
+        component={SixDollarMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryBulk-meal"
+        component={BulkMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategorySignature-meal"
+        component={SignatureMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryDiabetic-friendly"
+        component={DiabeticFriendly}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryKeto-meals"
+        component={KetoMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryPaleo-meals"
+        component={PaleoMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryFamily-meals"
+        component={FamilyMeal}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryVegan-meals"
+        component={VeganMeals}
+      />
+
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+          title: "All Meal Prep",
+        }}
+        name="CategoryDessert-menu"
+        component={DessertMenu}
+      />
+
       <Stack.Screen
         options={({ navigation, route }) => ({
           headerLeft: () => (
@@ -800,7 +1042,8 @@ export const NewAdressesStackNavigator: FunctionComponent = () => {
             </TouchableOpacity>
           ),
         }}
-        name="NewAddress" component={NewAddress}
+        name="NewAddress"
+        component={NewAddress}
       />
     </Stack.Navigator>
   );
