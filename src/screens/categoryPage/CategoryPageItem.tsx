@@ -1,26 +1,38 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+
 interface Props {
   // item:categoryDataProps;
   selected: number;
   Setselected: React.Dispatch<React.SetStateAction<number>>;
   index: number;
+  item: string;
 }
 const CategoryPageItem: React.FC<Props> = ({
   selected,
   index,
   Setselected,
+  item,
 }) => {
+  const navigation = useNavigation();
+  // console.log(item);
   return (
     <TouchableOpacity
-      onPress={() => Setselected(index)}
+      onPress={() => {
+        Setselected(index);
+        navigation.navigate("CategoryTab", {
+          screen: item.code,
+          params: { itemcode: item.code },
+        });
+      }}
       style={styles.container}
     >
       <View
         style={[selected === index ? styles.wrapperActive : styles.wrapper]}
       >
         <Text style={[selected === index ? styles.textActive : styles.text]}>
-          Meal Prep Menu
+          {item?.text}
         </Text>
       </View>
     </TouchableOpacity>

@@ -23,10 +23,6 @@ const Categories: FunctionComponent<props> = ({ navigation }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() =>
-                  // navigation.navigate("CategoryTab", {
-                  //   screen: "Category",
-                  //   params: { itemcode: item.code },
-                  // })
                   navigation.navigate("CategoryTab", {
                     screen: item.code,
                     params: { itemcode: item.code },
