@@ -2,7 +2,8 @@ export const itemsCategories = [
   {
     id: 1,
     text: "New menu",
-    code: "new-menu",
+    // code: "new-menu",
+    code: "CategoryNew-menu",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "Ionicons",
@@ -10,21 +11,12 @@ export const itemsCategories = [
       size: 45,
     },
   },
-  // {
-  //   id: 2,
-  //   text: "Meal Prep",
-  //   code: "",
-  //   img: "../../../assets/img/breakfast.png",
-  //   icon: {
-  //     iconType: "material-community",
-  //     name: "food-turkey",
-  //     size: 45,
-  //   },
-  // },
+
   {
     id: 2,
     text: "CBD Meals",
-    code: "cbd-meal",
+    // code: "cbd-meal",
+    code: "CategoryCbd-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -35,7 +27,8 @@ export const itemsCategories = [
   {
     id: 3,
     text: "Combo Meals ",
-    code: "combo-meal",
+    // code: "combo-meal",
+    code: "CategoryCombo-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -46,7 +39,8 @@ export const itemsCategories = [
   {
     id: 4,
     text: "$9 Meals",
-    code: "six-dollar-meal",
+    // code: "six-dollar-meal",
+    code: "CategorySix-dollar-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -57,7 +51,8 @@ export const itemsCategories = [
   {
     id: 5,
     text: "Bulk Meal",
-    code: "bulk-meal",
+    // code: "bulk-meal",
+    code: "CategoryBulk-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -68,7 +63,8 @@ export const itemsCategories = [
   {
     id: 7,
     text: "Signature Meal",
-    code: "signature-meal",
+    // code: "signature-meal",
+    code: "CategorySignature-meal",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -79,7 +75,8 @@ export const itemsCategories = [
   {
     id: 8,
     text: "Diabetic Friendly",
-    code: "diabetic-friendly",
+    // code: "diabetic-friendly",
+    code: "CategoryDiabetic-friendly",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -90,7 +87,8 @@ export const itemsCategories = [
   {
     id: 9,
     text: "Keto Meals",
-    code: "keto-meals",
+    // code: "keto-meals",
+    code: "CategoryKeto-meals",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -101,7 +99,8 @@ export const itemsCategories = [
   {
     id: 10,
     text: "Paleo Meals",
-    code: "paleo-meals",
+    // code: "paleo-meals",
+    code: "CategoryPaleo-meals",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -112,7 +111,8 @@ export const itemsCategories = [
   {
     id: 11,
     text: "Family Meals",
-    code: "family-meals",
+    // code: "family-meals",
+    code: "CategoryFamily-meals",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -123,7 +123,8 @@ export const itemsCategories = [
   {
     id: 12,
     text: "Vegan Meals",
-    code: "vegan-meals",
+    // code: "vegan-meals",
+    code: "CategoryVegan-meals",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",
@@ -134,7 +135,8 @@ export const itemsCategories = [
   {
     id: 13,
     text: "Dessert Menu",
-    code: "dessert-menu",
+    // code: "dessert-menu",
+    code: "CategoryDessert-menu",
     img: "../../../assets/img/breakfast.png",
     icon: {
       iconType: "material-community",

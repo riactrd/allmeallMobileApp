@@ -7,15 +7,15 @@ import {
 } from "react-native";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
-import CategoryPageItem from "./CategoryPageItem";
-import MealItem from "./mealItem/MealItem";
-import { mealsList } from "../../data/meals";
-import MealPrepList from "./mealItem/MealPrepList";
-import Calendar from "./mealItem/Calendar";
+import CategoryPageItem from "../CategoryPageItem";
+import MealItem from "../mealItem/MealItem";
+import { mealsList } from "../../../data/meals";
+import MealPrepList from "../mealItem/MealPrepList";
+import Calendar from "../mealItem/Calendar";
 import { Entypo } from "@expo/vector-icons";
-import { mainColor } from "../../componets/shared";
-import { RootStackParamList } from "../../navigators/RootStack";
-import { useGetcategoriesQuery } from "../../redux/api/categoriesApi";
+import { mainColor } from "../../../componets/shared";
+import { RootStackParamList } from "../../../navigators/RootStack";
+import { useGetcategoriesQuery } from "../../../redux/api/categoriesApi";
 import { useRoute } from "@react-navigation/native";
 
 const itemsCategories = [
@@ -67,21 +67,17 @@ const itemsCategories = [
 
 type props = StackScreenProps<RootStackParamList, "Category">;
 
-const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
+const NewMenuCode: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
-  const [meal, setMeal] = useState([]);
+  const [meal, setMeal] = useState(null);
   const [code, setCode] = useState("new-menu");
   const { params } = useRoute();
-  const { data, isLoading, isError } = useGetcategoriesQuery(code);
+  const { data, isLoading, isError } = useGetcategoriesQuery("new-menu");
 
   useEffect(() => {
-    if (params && params.itemcode) {
-      setCode(params.itemcode);
+    if (data) {
+      setMeal(data?.data);
     }
-  }, [params]);
-
-  useEffect(() => {
-    setMeal(data?.data);
   }, [data]);
 
   return (
@@ -152,7 +148,7 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
               <Text>Cargando...</Text>
             ) : isError ? (
               <Text>Error al cargar los datos</Text>
-            ) : meal && meal.menu && meal.menu.length > 0 ? (
+            ) : meal && meal.menu && meal.menu.length >= 1 ? (
               <MealPrepList navigation={navigation} meal={meal.menu} />
             ) : (
               meal && meal.menu && meal.menu.length === 0 && <Text>Vacio</Text>
@@ -165,7 +161,7 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   );
 };
 
-export default CategoryPage;
+export default NewMenuCode;
 
 const styles = StyleSheet.create({
   container: {
