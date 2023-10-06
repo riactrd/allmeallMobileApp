@@ -800,7 +800,8 @@ export const NewAdressesStackNavigator: FunctionComponent = () => {
             </TouchableOpacity>
           ),
         }}
-        name="NewAddress" component={NewAddress}
+        name="NewAddress"
+        component={NewAddress}
       />
     </Stack.Navigator>
   );
