@@ -19,7 +19,12 @@ import Search from "../../componets/search/Search";
 import Categories from "../../componets/categories/Categories";
 import FeaturedMeals from "../../componets/featuredMeals/FeaturedMeals";
 import { StackScreenProps } from "@react-navigation/stack";
-import { secundaryColor, secundaryColor7 } from "../../componets/shared";
+import {
+  ScreenWidth,
+  Screenheight,
+  secundaryColor,
+  secundaryColor7,
+} from "../../componets/shared";
 import { useGetdashboardQuery } from "../../redux/api/dashboardApi";
 import { FeaturedMeal } from "../../model/DashboardModel";
 import { useToast } from "react-native-toast-notifications";
@@ -28,6 +33,8 @@ import { loginData } from "../../redux/loginSlice";
 import { CommonActions } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigators/RootStack";
 import DashInfo from "../../componets/dashInfo/DashInfo";
+import SkeletonDashboard from "./SkeletonDashboard";
+import Spinner from "react-native-loading-spinner-overlay";
 
 type props = StackScreenProps<RootStackParamList, "Home">;
 
@@ -129,22 +136,56 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     }
   }, [data]);
 
-  return (
-    <>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          backgroundColor: secundaryColor7,
-          flex: 1,
-        }}
-      >
-        <DashInfo dash={dash} />
-        <Search />
-        <Categories navigation={navigation} />
-        <FeaturedMeals featuredMeals={featuredMeals} navigation={navigation} />
-      </ScrollView>
-    </>
-  );
+  if (isLoading || featuredMeals.length < 1) {
+    return (
+      <>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 0, 2, 0.30)",
+            height: Screenheight,
+            width: ScreenWidth,
+            position: "absolute",
+            zIndex: 99,
+          }}
+        >
+          <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={isLoading}
+              //Text with the Spinner
+              // textContent={"Loading..."}
+              //Text style of the Spinner Text
+              // textStyle={styles.spinnerTextStyle}
+            />
+          </View>
+        </View>
+        <SkeletonDashboard />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            backgroundColor: secundaryColor7,
+            flex: 1,
+          }}
+        >
+          <DashInfo dash={dash} />
+          <Search />
+          <Categories navigation={navigation} />
+          <FeaturedMeals
+            featuredMeals={featuredMeals}
+            navigation={navigation}
+          />
+        </ScrollView>
+      </>
+    );
+  }
 };
 
 export default Dashboard;
