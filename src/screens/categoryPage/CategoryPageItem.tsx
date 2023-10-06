@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { setIndex } from "../../redux/indexCategorySlice";
 
 interface Props {
   // item:categoryDataProps;
@@ -16,11 +18,13 @@ const CategoryPageItem: React.FC<Props> = ({
   item,
 }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   // console.log(item);
   return (
     <TouchableOpacity
       onPress={() => {
-        Setselected(index);
+        dispatch(setIndex(index));
         navigation.navigate("CategoryTab", {
           screen: item.code,
           params: { itemcode: item.code },

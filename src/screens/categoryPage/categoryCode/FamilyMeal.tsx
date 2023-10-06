@@ -23,11 +23,13 @@ import { useGetcategoriesQuery } from "../../../redux/api/categoriesApi";
 import { useRoute } from "@react-navigation/native";
 import Spinner from "react-native-loading-spinner-overlay";
 import { itemsCategories } from "../../../data/categories";
+import { useSelector } from "react-redux";
 
 type props = StackScreenProps<RootStackParamList, "Category">;
 
 const FamilyMeal: FunctionComponent<props> = ({ navigation }) => {
-  const [selected, Setselected] = useState(0);
+  const currentIndex = useSelector((state) => state.indexCategory.index);
+  const [selected, Setselected] = useState(currentIndex);
   const [meal, setMeal] = useState(null);
   const { data, isLoading, isError } = useGetcategoriesQuery("family-meals");
 
