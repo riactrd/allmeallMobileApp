@@ -13,10 +13,15 @@ import { mealsList } from "../../../data/meals";
 import MealPrepList from "../mealItem/MealPrepList";
 import Calendar from "../mealItem/Calendar";
 import { Entypo } from "@expo/vector-icons";
-import { mainColor } from "../../../componets/shared";
+import {
+  ScreenWidth,
+  Screenheight,
+  mainColor,
+} from "../../../componets/shared";
 import { RootStackParamList } from "../../../navigators/RootStack";
 import { useGetcategoriesQuery } from "../../../redux/api/categoriesApi";
 import { useRoute } from "@react-navigation/native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const itemsCategories = [
   {
@@ -86,6 +91,31 @@ const DiabeticFriendly: FunctionComponent<props> = ({ navigation }) => {
         <View
         // style={styles.wrapper}
         >
+          {isLoading && (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(3, 0, 2, 0.30)",
+                height: Screenheight,
+                width: ScreenWidth,
+                position: "absolute",
+                zIndex: 99,
+              }}
+            >
+              <View>
+                <Spinner
+                  //visibility of Overlay Loading Spinner
+                  visible={isLoading}
+                  //Text with the Spinner
+                  textContent={"Loading..."}
+                  //Text style of the Spinner Text
+                  textStyle={styles.spinnerTextStyle}
+                />
+              </View>
+            </View>
+          )}
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
             <View style={styles.categoryItems}>
               {itemsCategories.map((item, index) => (
@@ -143,14 +173,38 @@ const DiabeticFriendly: FunctionComponent<props> = ({ navigation }) => {
               </View>
               <Calendar />
             </View>
-            {isLoading ? (
-              <Text>Cargando...</Text>
-            ) : isError ? (
-              <Text>Error al cargar los datos</Text>
+            {isError ? (
+              <View style={{ marginTop: 40 }}>
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 20,
+                    fontWeight: 600,
+                    color: "#a1a1a1",
+                  }}
+                >
+                  Error loading data
+                </Text>
+              </View>
             ) : meal && meal.menu && meal.menu.length >= 1 ? (
               <MealPrepList navigation={navigation} meal={meal.menu} />
             ) : (
-              meal && meal.menu && meal.menu.length === 0 && <Text>Vacio</Text>
+              meal &&
+              meal.menu &&
+              meal.menu.length === 0 && (
+                <View style={{ marginTop: 40 }}>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 20,
+                      fontWeight: 600,
+                      color: "#a1a1a1",
+                    }}
+                  >
+                    Empty menu
+                  </Text>
+                </View>
+              )
             )}
           </ScrollView>
         </View>
