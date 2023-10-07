@@ -14,6 +14,8 @@ import OrderState from "./OrderState";
 import MyOrderItem from "./MyOrderItem";
 import OrdersList from "./OrdersList";
 import { useGetmyorderQuery } from "../../redux/api/myorderApi";
+import { ScreenWidth, Screenheight } from "../../componets/shared";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const itemsCategories = [
   {
@@ -44,7 +46,7 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
   const [selected, Setselected] = useState(0);
   const [ordersList, setOrdersList] = useState([]);
 
-  const { data } = useGetmyorderQuery();
+  const { data, isLoading } = useGetmyorderQuery();
 
   useEffect(() => {
     if (data) {
@@ -54,34 +56,64 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
   }, [data]);
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* <TopMenuCategory /> */}
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
-          <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-            <View style={styles.categoryItems}>
-              {itemsCategories.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => navigation.navigate("Category")}
-                  style={styles.categoryItemsContainer}
-                >
-                  <OrderState
-                    item={item}
-                    selected={selected}
-                    Setselected={Setselected}
-                    index={index}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-
-          <OrdersList navigation={navigation} ordersList={ordersList} />
+    <>
+      {isLoading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 0, 2, 0.30)",
+            height: Screenheight,
+            width: ScreenWidth,
+            position: "absolute",
+            zIndex: 99,
+          }}
+        >
+          <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={isLoading}
+              //Text with the Spinner
+              textContent={"Loading..."}
+              //Text style of the Spinner Text
+              textStyle={styles.spinnerTextStyle}
+            />
+          </View>
         </View>
+      )}
+      <View style={{ flex: 1 }}>
+        {/* <TopMenuCategory /> */}
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+            >
+              <View style={styles.categoryItems}>
+                {itemsCategories.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => navigation.navigate("Category")}
+                    style={styles.categoryItemsContainer}
+                  >
+                    <OrderState
+                      item={item}
+                      selected={selected}
+                      Setselected={Setselected}
+                      index={index}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+
+            <OrdersList navigation={navigation} ordersList={ordersList} />
+          </View>
+        </View>
+        {/* <BottomMenu/> */}
       </View>
-      {/* <BottomMenu/> */}
-    </View>
+    </>
   );
 };
 
