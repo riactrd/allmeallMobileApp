@@ -52,7 +52,6 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
     if (data) {
       setOrdersList(data?.data.orders);
     }
-    // console.log(ordersList);
   }, [data]);
 
   return (

@@ -106,7 +106,6 @@ const SingleOrder = () => {
   }, [data]);
 
   // pictures[0].image.url
-  console.log("shipto es : ", shipTo);
 
   return (
     <>
