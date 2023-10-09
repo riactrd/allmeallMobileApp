@@ -1,8 +1,13 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { ScreenWidth, secundaryColor } from "../../componets/shared";
+import {
+  ScreenWidth,
+  Screenheight,
+  secundaryColor,
+} from "../../componets/shared";
 import Post from "./Post";
 import { useGetWellnessQuery } from "../../redux/api/WellnessApi";
+import Spinner from "react-native-loading-spinner-overlay";
 
 // const postList = [1, 2, 3, 4];
 
@@ -20,6 +25,31 @@ const Wellness = () => {
 
   return (
     <View style={styles.container}>
+      {isLoading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 0, 2, 0.30)",
+            height: Screenheight,
+            width: ScreenWidth,
+            position: "absolute",
+            zIndex: 99,
+          }}
+        >
+          <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={isLoading}
+              //Text with the Spinner
+              textContent={"Loading..."}
+              //Text style of the Spinner Text
+              textStyle={styles.spinnerTextStyle}
+            />
+          </View>
+        </View>
+      )}
       <View style={styles.wrapper}>
         <ScrollView
           showsVerticalScrollIndicator={false}

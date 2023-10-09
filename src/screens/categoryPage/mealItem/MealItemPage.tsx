@@ -68,17 +68,6 @@ const MealItemPage = ({ route }) => {
     { value: `${sodium ? sodium.toFixed(1) : "N/A"} mg`, name: "Sodium" },
   ];
 
-  const Ingrediends = [
-    " Potatoes (oz)",
-    "6 oz Blackened Chicken",
-    "Broccoli (oz)",
-    "Squash (oz)",
-    "Garlic (oz)",
-    "Grape Tomato Slices",
-    "Minced Parsley (oz)",
-    "Zuchinni (oz)",
-  ];
-
   const navigation = useNavigation();
   const [quantity, SetQuantity] = useState<number>(1);
   const dispatch = useDispatch();
@@ -325,30 +314,34 @@ const MealItemPage = ({ route }) => {
                   gap: 10,
                 }}
               >
-                {Ingrediends.map((item, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      backgroundColor: `${mainColor}20`,
-                      padding: 5,
-                      borderRadius: 5,
-                      // minWidth: card,
-                    }}
-                  >
-                    <Text
+                {ingredients && ingredients.length > 0 ? (
+                  ingredients.map((item, index) => (
+                    <View
+                      key={index}
                       style={{
-                        textAlign: "center",
-                        fontSize: 11,
-                        paddingHorizontal: 10,
-
-                        marginRight: 5,
-                        fontWeight: 600,
+                        backgroundColor: `${mainColor}20`,
+                        padding: 5,
+                        borderRadius: 5,
+                        // minWidth: card,
                       }}
                     >
-                      {item}
-                    </Text>
-                  </View>
-                ))}
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontSize: 11,
+                          paddingHorizontal: 10,
+
+                          marginRight: 5,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                    </View>
+                  ))
+                ) : (
+                  <Text>Empty</Text>
+                )}
               </View>
             </View>
           </View>
@@ -481,7 +474,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   headerDetails: {
-    //   marginTop:8,
+    marginTop: 10,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

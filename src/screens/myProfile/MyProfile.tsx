@@ -34,6 +34,7 @@ import {
   useGetprofileApiQuery,
   useUpdateprofileMutation,
 } from "../../redux/api/profileApi";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -92,8 +93,6 @@ const MyProfile = () => {
     referralEmail,
   ]);
 
-  // console.log(data?.data.profile.referral_email);
-
   useEffect(() => {
     if (data) {
       SetName(data?.data.profile.first_name);
@@ -117,8 +116,6 @@ const MyProfile = () => {
       })
     );
   }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
-
-  console.log(gender);
 
   const handleLogout = () => {
     navigation.navigate("WelcomeDrawer");
@@ -175,6 +172,31 @@ const MyProfile = () => {
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      {isLoading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 0, 2, 0.30)",
+            height: Screenheight,
+            width: ScreenWidth,
+            position: "absolute",
+            zIndex: 99,
+          }}
+        >
+          <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={isLoading}
+              //Text with the Spinner
+              textContent={"Loading..."}
+              //Text style of the Spinner Text
+              textStyle={styles.spinnerTextStyle}
+            />
+          </View>
+        </View>
+      )}
       <View style={{ flex: 1 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
