@@ -15,7 +15,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/1d68bae0-4051-4582-8a87-8a1665672fae"
+      "url": "https://u.expo.dev/706b51b5-53a1-40ea-8b62-5278a2b3cb92"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -38,7 +38,9 @@
       "policy": "appVersion"
     },
     "extra": {
-      
+      "eas": {
+        "projectId": "706b51b5-53a1-40ea-8b62-5278a2b3cb92"
+      }
     }
   }
 }
