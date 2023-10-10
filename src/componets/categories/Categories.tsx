@@ -9,12 +9,14 @@ const itemWidth = ScreenWidth / 6;
 import { itemsCategories } from "../../data/categories";
 import { setIndex } from "../../redux/indexCategorySlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 type props = StackScreenProps<RootStackParamList, "Dashboard">;
 
 const Categories: FunctionComponent<props> = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [selected, Setselected] = useState(0);
+  const currentIndex = useSelector((state) => state.indexCategory.index);
+  const [selected, Setselected] = useState(currentIndex);
 
   return (
     <View style={styles.container}>
@@ -26,7 +28,7 @@ const Categories: FunctionComponent<props> = ({ navigation }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  dispatch(setIndex(selected));
+                  dispatch(setIndex(index));
 
                   navigation.navigate("CategoryTab", {
                     screen: item.code,
