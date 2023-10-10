@@ -149,7 +149,7 @@ export interface Food {
     cart: {
         food_id: Number,
         quantity: number,
-        food_combo_id: number
+        food_combo_id: number | null
     }
   }
     

@@ -2,7 +2,6 @@ import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery } from "@reduxjs/tool
 import { CartModelApi, NewCartModelApi } from "../../model/CartModel";
 import { URL_VAR } from "@env" 
 import { RootState } from "../store";
-import { MycartModel } from "../../model/MyCartModel";
 
 interface errorModel{
   data:{
@@ -35,10 +34,10 @@ export const addCartApi = createApi({
     // getAddCart: builder.query<AddressModel , string | boolean>({
     //   query: (addresses) => `addresses/${addresses}`,
       
-    getmyCart: builder.query<MycartModel , string | boolean>({
-      query: () => "my-cart",
-      
-    }),
+    // }),
+    // getaddressesId: builder.query({
+    //     query: (id) => `addresses/${id}`,
+    // }),
     createAddCart: builder.mutation<CartModelApi, NewCartModelApi>({
       query: cart =>({
           url: 'user/carts/create',
@@ -66,7 +65,7 @@ export const addCartApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
-    useGetmyCartQuery,
+    // useGetaddressesQuery,
     useCreateAddCartMutation,
     // useUpdateaddressesMutation,
     // useDeleteaddressesMutation,

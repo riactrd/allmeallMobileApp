@@ -16,7 +16,7 @@ import { Entypo } from "@expo/vector-icons";
 import { ScreenWidth, Screenheight, mainColor } from "../../componets/shared";
 import { RootStackParamList } from "../../navigators/RootStack";
 import { useGetcategoriesQuery } from "../../redux/api/categoriesApi";
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { itemsCategories } from "../../data/categories";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -31,6 +31,7 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
   const { params } = useRoute();
   const { data, isLoading, isError } = useGetcategoriesQuery(code);
 
+  const isFocused = useIsFocused();
   useEffect(() => {
     if (params && params.itemcode) {
       setCode(params.itemcode);
@@ -39,7 +40,7 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
 
   useEffect(() => {
     setMeal(data?.data);
-  }, [data]);
+  }, [data, isFocused]);
 
   return (
     <View>
