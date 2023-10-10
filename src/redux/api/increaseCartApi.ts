@@ -32,10 +32,10 @@ export const increasemyCartApi = createApi({
  
   endpoints: (builder) => ({
    
-    increaseCart: builder.query<MycartModel, number | boolean>({
+    increaseCart: builder.mutation<MycartModel, number | boolean>({
       query: id =>({
           url: `change-quantity/${id}/+`,
-          method: 'GET',
+          method: 'POST',
           
       })
     }),
@@ -46,7 +46,7 @@ export const increasemyCartApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
-    useIncreaseCartQuery,
+    useIncreaseCartMutation,
     // useCreateAddCartMutation,
     // useUpdateallergicMutation,
     // useDeleteaddressesMutation,

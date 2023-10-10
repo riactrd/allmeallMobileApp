@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
 import { MenuModel } from "../../model/MenuModel";
 import { URL_VAR } from "@env";
+import { RootState } from "../store";
 
 // export const token = useSelector(selectloginToken);
 

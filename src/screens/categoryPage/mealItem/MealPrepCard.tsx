@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import Colors from "../../colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { mainColor, secundaryColor } from "../../../componets/shared";
 
@@ -9,21 +8,21 @@ export default function MealPrepCard({ item, navigation }) {
 
   // console.log("los ingredientes son :", item.ingredients[0].name);
 
-  const increaseQuantity = () => {
-    if (quantity < 15) {
-      setQuantity(quantity + 1);
-    }
-  };
+  // const increaseQuantity = () => {
+  //   if (quantity < 15) {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
+  // const decreaseQuantity = () => {
+  //   if (quantity > 1) {
+  //     setQuantity(quantity - 1);
+  //   }
+  // };
 
-  const navigateToDetails = () => {
-    navigation.navigate("MealprepItemScreen", { itemId: item.id });
-  };
+  // const navigateToDetails = () => {
+  //   navigation.navigate("MealprepItemScreen", { itemId: item.id });
+  // };
   {
     return (
       <TouchableOpacity

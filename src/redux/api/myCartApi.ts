@@ -39,17 +39,17 @@ export const myCartApi = createApi({
     // getaddressesId: builder.query({
     //     query: (id) => `addresses/${id}`,
     // }),
-    increaseCart: builder.query<MycartModel, string | boolean>({
+    increaseCart: builder.mutation<MycartModel, number | boolean>({
       query: id =>({
           url: `change-quantity/${id}/+`,
-          method: 'GET',
+          method: 'POST',
           
       })
     }),
-    decreaseCart: builder.query<MycartModel, string | boolean>({
+    decreaseCart: builder.mutation<MycartModel, number | boolean>({
       query: id =>({
           url: `change-quantity/${id}/-`,
-          method: 'GET',
+          method: 'POST',
           
       })
     }),
@@ -60,12 +60,13 @@ export const myCartApi = createApi({
           body: cart
       })
     }),
-    // deleteaddresses: builder.mutation({
-    //   query: (id) =>({
-    //       url: `addresses/${id}`,
-    //       method: 'DELETE',
-    //   })
-    //  }),
+    deleteItemCart: builder.mutation<MycartModel, number>({
+      query: id =>({
+          url: `delete/${id}`,
+          method: 'DELETE',
+          
+      })
+    }),
 
   }),
 });
@@ -74,7 +75,8 @@ export const myCartApi = createApi({
 // auto-generated based on the defined endpoints
 export const { 
     useGetmyCartQuery,
-    // useCreateAddCartMutation,
+    useDecreaseCartMutation,
     useUpdatecartQuery,
-    // useDeleteaddressesMutation,
+    useIncreaseCartMutation,
+    useDeleteItemCartMutation,
     } = myCartApi;
