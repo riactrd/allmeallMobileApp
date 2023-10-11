@@ -87,7 +87,13 @@ const MycartItem: FunctionComponent<Props> = ({
         {/* <Image source={mailPhote} /> */}
         <Image
           source={{
-            uri: `https://allmealprep.com/${item.pictures[0].image.url}`,
+            uri:
+              item.pictures &&
+              item.pictures[0] &&
+              item.pictures[0].image &&
+              item.pictures[0].image.url
+                ? `https://allmealprep.com/${item.pictures[0].image.url}`
+                : "https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg",
           }}
           style={{
             height: 110,
