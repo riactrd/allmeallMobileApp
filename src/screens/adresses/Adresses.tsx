@@ -121,9 +121,12 @@ const Adresses = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("NewAddress", { addressType: selected })
-            }
+            onPress={() => {
+              navigation.navigate("MyProfileTab", {
+                screen: "NewAddress",
+                params: { addressType: selected },
+              });
+            }}
             activeOpacity={0.7}
             style={styles.addButtomActive}
           >
