@@ -21,6 +21,8 @@ import {
 } from "../../../redux/cartSlice";
 import { CartModel } from "../../../model/CartModel";
 import {
+  ScreenWidth,
+  Screenheight,
   mainColor,
   secundaryColor,
   secundaryColor7,
@@ -28,6 +30,7 @@ import {
 } from "../../../componets/shared";
 import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
+import Spinner from "react-native-loading-spinner-overlay";
 
 // const itemsProps=[1,2,3,4,5,6]
 
@@ -35,8 +38,10 @@ const { width } = Dimensions.get("screen");
 const card = width / 3.9;
 
 const MealItemPage = ({ route }) => {
-  const [createAddCart, { data, isError, error, isLoading, isSuccess }] =
-    useCreateAddCartMutation();
+  const [
+    createAddCart,
+    { data, isError, error, isLoading, isSuccess, isFetching },
+  ] = useCreateAddCartMutation();
   const toast = useToast();
   const { meal } = route.params;
   const {
@@ -184,181 +189,213 @@ const MealItemPage = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ImageBackground
-        source={
-          pictures && pictures.length > 0
-            ? { uri: `https://allmealprep.com/${pictures[0].image.url}` }
-            : require("../../../../assets/img/meailMenu.png") // Agrega una imagen por defecto si pictures[0] no está definido
-        }
-        resizeMode="cover"
-        style={styles.img}
-      ></ImageBackground>
-      <View style={styles.wrapper}>
-        <View style={styles.container}>
-          <View style={styles.containerMeal}>
-            <View
-              style={{
-                backgroundColor: secundaryColor,
-                // height: 169,
-                borderRadius: 8,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
-                shadowRadius: 10,
-                elevation: 2,
-              }}
-            >
-              <View style={styles.ButtomContainer}>
-                <View style={styles.headerButtomContainer}>
-                  <View style={styles.headerButtomTextContainer}>
-                    <Text style={styles.headerButtomText}>
-                      ${price.toFixed(2)} / Meal
-                    </Text>
+    <>
+      {isLoading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 0, 2, 0.30)",
+            height: Screenheight,
+            width: ScreenWidth,
+            position: "absolute",
+            zIndex: 99,
+          }}
+        >
+          <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={isLoading}
+              //Text with the Spinner
+              // textContent={"Loading..."}
+              //Text style of the Spinner Text
+              textStyle={styles.spinnerTextStyle}
+            />
+          </View>
+        </View>
+      )}
+
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <ImageBackground
+          source={
+            pictures && pictures.length > 0
+              ? { uri: `https://allmealprep.com/${pictures[0].image.url}` }
+              : require("../../../../assets/img/meailMenu.png") // Agrega una imagen por defecto si pictures[0] no está definido
+          }
+          resizeMode="cover"
+          style={styles.img}
+        ></ImageBackground>
+        <View style={styles.wrapper}>
+          <View style={styles.container}>
+            <View style={styles.containerMeal}>
+              <View
+                style={{
+                  backgroundColor: secundaryColor,
+                  // height: 169,
+                  borderRadius: 8,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 10,
+                  elevation: 2,
+                }}
+              >
+                <View style={styles.ButtomContainer}>
+                  <View style={styles.headerButtomContainer}>
+                    <View style={styles.headerButtomTextContainer}>
+                      <Text style={styles.headerButtomText}>
+                        ${price.toFixed(2)} / Meal
+                      </Text>
+                    </View>
+                    <View style={styles.buttom}>
+                      <TouchableOpacity
+                        onPress={() => handleControl("decrease")}
+                      >
+                        <AntDesign
+                          name="minuscircle"
+                          type="ionicon"
+                          style={styles.headerButtomIcon}
+                        />
+                      </TouchableOpacity>
+                      <Text style={styles.number}>{quantity}</Text>
+                      <TouchableOpacity
+                        onPress={() => handleControl("increase")}
+                      >
+                        <AntDesign
+                          name="pluscircle"
+                          type="ionicon"
+                          style={styles.headerButtomIcon}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.buttom}>
-                    <TouchableOpacity onPress={() => handleControl("decrease")}>
-                      <AntDesign
-                        name="minuscircle"
-                        type="ionicon"
-                        style={styles.headerButtomIcon}
-                      />
-                    </TouchableOpacity>
-                    <Text style={styles.number}>{quantity}</Text>
-                    <TouchableOpacity onPress={() => handleControl("increase")}>
-                      <AntDesign
-                        name="pluscircle"
-                        type="ionicon"
-                        style={styles.headerButtomIcon}
-                      />
-                    </TouchableOpacity>
+                  <Text style={styles.headerText}>{name}</Text>
+                  <Text style={styles.headerTextp}>{description}</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      // backgroundColor: 'black',
+                      justifyContent: "space-between",
+                      marginTop: 10,
+                    }}
+                  >
+                    <Image
+                      style={{ marginTop: 10 }}
+                      source={require("../../../../assets/img/minilogo.png")}
+                    />
+                    {quantity ? (
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: mainColor,
+                          padding: 10,
+                          borderRadius: 8,
+                        }}
+                        onPress={() => {
+                          // selectedItems()
+                          handlerAddCart();
+                        }}
+                      >
+                        <Text style={styles.addButtomText}>
+                          Add {quantity} to order - $ {total.toFixed(2)}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <></>
+                    )}
                   </View>
                 </View>
-                <Text style={styles.headerText}>{name}</Text>
-                <Text style={styles.headerTextp}>{description}</Text>
+              </View>
+              <View style={styles.containerDetails}>
+                <View style={styles.headerDetails}>
+                  <Image
+                    source={require("../../../../assets/img/fork.png")}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={styles.bottomText}>Nutrition Facts</Text>
+                </View>
+
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "center",
-                    // backgroundColor: 'black',
-                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: 5,
                     marginTop: 10,
                   }}
                 >
-                  <Image
-                    style={{ marginTop: 10 }}
-                    source={require("../../../../assets/img/minilogo.png")}
-                  />
-                  {quantity ? (
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: mainColor,
-                        padding: 10,
-                        borderRadius: 8,
-                      }}
-                      onPress={() => {
-                        // selectedItems()
-                        handlerAddCart();
-                      }}
-                    >
-                      <Text style={styles.addButtomText}>
-                        Add {quantity} to order - $ {total.toFixed(2)}
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <></>
-                  )}
-                </View>
-              </View>
-            </View>
-            <View style={styles.containerDetails}>
-              <View style={styles.headerDetails}>
-                <Image
-                  source={require("../../../../assets/img/fork.png")}
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={styles.bottomText}>Nutrition Facts</Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  gap: 5,
-                  marginTop: 10,
-                }}
-              >
-                {nutritionFacts.map((item, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      width: card,
-                      backgroundColor: `${mainColor}20`,
-                      padding: 5,
-                      borderRadius: 5,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={styles.subItemsText}>{item.value}</Text>
-                    <Text style={styles.subItemsTextSecond}>{item.name}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-
-            <View style={styles.containerDetails}>
-              <View style={styles.headerDetails}>
-                <Image
-                  source={require("../../../../assets/img/huevo.png")}
-                  style={{ marginRight: 10 }}
-                />
-                <Text style={styles.bottomText}>Ingrediends</Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  gap: 10,
-                  marginTop: 10,
-                }}
-              >
-                {ingredients && ingredients.length > 0 ? (
-                  ingredients.map((item, index) => (
+                  {nutritionFacts.map((item, index) => (
                     <View
                       key={index}
                       style={{
+                        width: card,
                         backgroundColor: `${mainColor}20`,
                         padding: 5,
                         borderRadius: 5,
-                        // minWidth: card,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          fontSize: 11,
-                          paddingHorizontal: 10,
+                      <Text style={styles.subItemsText}>{item.value}</Text>
+                      <Text style={styles.subItemsTextSecond}>{item.name}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
 
-                          marginRight: 5,
-                          fontWeight: 600,
+              <View style={styles.containerDetails}>
+                <View style={styles.headerDetails}>
+                  <Image
+                    source={require("../../../../assets/img/huevo.png")}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={styles.bottomText}>Ingrediends</Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    gap: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  {ingredients && ingredients.length > 0 ? (
+                    ingredients.map((item, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          backgroundColor: `${mainColor}20`,
+                          padding: 5,
+                          borderRadius: 5,
+                          // minWidth: card,
                         }}
                       >
-                        {item.name}
-                      </Text>
-                    </View>
-                  ))
-                ) : (
-                  <Text>Empty</Text>
-                )}
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontSize: 11,
+                            paddingHorizontal: 10,
+
+                            marginRight: 5,
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item.name}
+                        </Text>
+                      </View>
+                    ))
+                  ) : (
+                    <Text>Empty</Text>
+                  )}
+                </View>
               </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
