@@ -1,66 +1,31 @@
+import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
-  Text,
   View,
-  Image,
+  Text,
   ImageBackground,
-  SafeAreaView,
+  Image,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
+  StyleSheet,
   NativeSyntheticEvent,
   TextInputChangeEventData,
-  ActivityIndicator,
 } from "react-native";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { StackScreenProps } from "@react-navigation/stack";
-import {
-  Screenheight,
-  ScreenWidth,
-  secundaryColor,
-  thirdColor,
-} from "../../componets/shared";
+import { ScreenWidth, Screenheight, mainColor } from "../../componets/shared";
 import { useLoginUserMutation } from "../../redux/api/authApi";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { loginData } from "../../redux/loginSlice";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
-import { RootStackParamList } from "../../navigators/RootStack";
 
-interface errorModel {
-  data: {
-    code: number;
-    error: {
-      message: string;
-    };
-    success: boolean;
-  };
-}
-
-type props = StackScreenProps<RootStackParamList, "SigninDrawer">;
-
-const Signin: FunctionComponent<props> = ({ navigation }) => {
+export default function Signin({ navigation }) {
   const [loginUser, { data, isError, error, isLoading }] =
     useLoginUserMutation();
   const [email, SetUserEmail] = useState<string>("morbanjunior@gmail.com");
   const [password, SetPassword] = useState<string>("123456");
   const toast = useToast();
   const dispatch = useDispatch();
-
-  // if(isLoading){
-  //   return (
-  //     <View style={{
-  //       flex:1, justifyContent: 'center', alignItems: 'center'
-  //     }}>
-  //        <ActivityIndicator size='large'/>
-  //     </View>
-  //   );
-
-  // }
 
   useEffect(() => {
     if (data && data.data.access_token) {
@@ -102,7 +67,6 @@ const Signin: FunctionComponent<props> = ({ navigation }) => {
     password: password,
   };
 
-  // console.log(sign_in)
   const HandlerLogin = async () => {
     if (email == "" || password == "") {
       toast.show("Email or password are required", {
@@ -128,8 +92,9 @@ const Signin: FunctionComponent<props> = ({ navigation }) => {
     const value = e.nativeEvent.text;
     SetPassword(value);
   };
+
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <>
       {isLoading && (
         <View
           style={{
@@ -148,173 +113,190 @@ const Signin: FunctionComponent<props> = ({ navigation }) => {
               //visibility of Overlay Loading Spinner
               visible={isLoading}
               //Text with the Spinner
-              textContent={"Loading..."}
+              // textContent={"Loading..."}
               //Text style of the Spinner Text
-              textStyle={styles.spinnerTextStyle}
+              // textStyle={styles.spinnerTextStyle}
             />
           </View>
         </View>
       )}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
         <ImageBackground
           source={require("../../../assets/img/Welcome.png")}
-          resizeMode="cover"
-          style={styles.img}
+          style={{ flex: 1, resizeMode: "cover" }}
         >
-          <SafeAreaView>
-            <View style={styles.wrapper}>
-              <View style={styles.header}>
-                <Image
-                  source={require("../../../assets/img/logoAMP.png")}
-                  style={{
-                    width: 100,
-                    height: 100,
-                  }}
-                />
-                <View style={styles.containerTitle}>
-                  <Text style={styles.title}>Meal Prep</Text>
-                  <Text style={styles.title}>Chicago</Text>
-                </View>
-              </View>
-              <View style={styles.containerBottom}>
-                <View style={styles.wrapperButton}>
-                  <Text style={styles.textLogin}>Log In</Text>
-                </View>
-                <View style={styles.containerInput}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Username or Email"
-                    value={email}
-                    onChange={onChangeEmail}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    value={password}
-                    onChange={onChangePassword}
-                  />
-                </View>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.buttomSignin}
-                  // onPress={()=>navigation.navigate('Home')}
-                  onPress={HandlerLogin}
-                >
-                  <Icon
-                    name="user-check"
-                    type="ionicon"
-                    color="#fff"
-                    style={styles.iconLogin}
-                  />
-                  <Text style={styles.textButtomLogin}>Log In</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.forgotPassword}
-                  onPress={() => navigation.navigate("ForgotPasswordDrawer")}
-                >
-                  <Text style={styles.textRegister}>Forgot Password</Text>
-                </TouchableOpacity>
-                <View style={styles.containertextBottom}>
-                  <Text style={styles.textAccount}>Don’t have an account?</Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("SignupDrawer")}
-                  >
-                    <Text style={styles.textRegister}>Register here</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </SafeAreaView>
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              top: "15%",
+            }}
+          >
+            <Image
+              source={require("../../../assets/img/logoAMP.png")}
+              style={{ width: 80, height: 80 }}
+            />
+          </View>
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              top: "60%",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
+              Meal Prep
+            </Text>
+            <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
+              Chicago
+            </Text>
+          </View>
         </ImageBackground>
-      </TouchableWithoutFeedback>
-    </KeyboardAwareScrollView>
-  );
-};
+      </View>
+      <View
+        style={{
+          flex: 1,
+          // backgroundColor: "red",
+          paddingHorizontal: 24,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          // alignItems: "flex-end",
+          marginBottom: 10,
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: Screenheight * 0.02,
+            }}
+          >
+            Log In
+          </Text>
+        </View>
 
-export default Signin;
+        <View>
+          <TextInput
+            style={{
+              width: "100%",
+              height: 56,
+              borderRadius: 10,
+              borderColor: "gray",
+              borderWidth: 1,
+              paddingLeft: 16,
+              marginBottom: 16,
+            }}
+            placeholder="Username or Email"
+            value={email}
+            onChange={onChangeEmail}
+          />
+
+          <TextInput
+            style={{
+              width: "100%",
+              height: 56,
+              borderRadius: 10,
+              borderColor: "gray",
+              borderWidth: 1,
+              paddingLeft: 16,
+              marginBottom: 16,
+            }}
+            placeholder="Password"
+            value={password}
+            secureTextEntry={true}
+            value={password}
+            onChange={onChangePassword}
+          />
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate("HomeDrawer")}
+            style={styles.buttomSignin}
+            onPress={HandlerLogin}
+          >
+            <Icon
+              name="user-check"
+              type="ionicon"
+              color="#fff"
+              style={styles.iconLogin}
+            />
+            <Text style={styles.textButtomLogin}>Log In</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <Text
+            style={{
+              // marginBottom: 8,
+              alignSelf: "center",
+              fontSize: 14,
+              fontStyle: "italic",
+            }}
+          >
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignupDrawer")}>
+            <Text
+              style={{ alignSelf: "center", fontSize: 16, fontWeight: "bold" }}
+            >
+              Register here
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginTop: 8 }}
+            onPress={() => navigation.navigate("ForgotPasswordDrawer")}
+          >
+            <Text style={styles.textRegister}>Forgot Password</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  );
+}
 
 const styles = StyleSheet.create({
-  containerKey: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     // backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: "center",
   },
-
-  img: {
-    width: ScreenWidth,
-    height: 812,
-  },
+  // img: {
+  //   width: ScreenWidth,
+  //   height: Screenheight + 40,
+  // },
   wrapper: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     // paddingTop:30,
-    height: Screenheight + 50,
   },
-  headertext: {
-    color: secundaryColor,
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 22,
-    lineHeight: 24,
-    letterSpacing: 0.15,
-  },
+
   title: {
     color: "#FFFFFF",
     // fontFamily: 'Poppins',
     // fontsStyle: 'normal',
     fontWeight: "700",
     fontSize: 36,
-    lineHeight: 54,
+    lineheight: 54,
   },
   containerTitle: {
     display: "flex",
     flexDirection: "column",
-    marginTop: 30,
+    marginTop: 150,
     alignItems: "center",
     justifyContent: "center",
   },
-  containerBottom: {
-    width: ScreenWidth,
-    height: 520,
-    backgroundColor: "#fff",
-    borderTopEndRadius: 25,
-    borderTopLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    borderBottomLeftRadius: 25,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  wrapperButton: {
-    marginTop: 20,
-  },
-  textLogin: {
-    color: "#262626",
-    fontStyle: "normal",
-    fontWeight: "700",
-    fontSize: 22,
-    lineHeight: 24,
-    letterSpacing: 0.15,
-  },
-  containerInput: {
-    marginTop: 30,
-  },
-  input: {
-    width: 328,
-    height: 56,
-    borderWidth: 0.5,
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "gray",
-    marginBottom: 20,
-    color: "black",
+  containerbuttom: {
+    marginTop: 50,
   },
   buttomSignin: {
     display: "flex",
@@ -324,9 +306,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6F00",
     padding: 20,
     borderRadius: 8,
-    width: 328,
+    width: "100%",
     height: 56,
-    // marginBottom:30,
+    marginBottom: 10,
   },
   textButtomLogin: {
     fontStyle: "normal",
@@ -344,22 +326,19 @@ const styles = StyleSheet.create({
     marginRight: 40,
     marginLeft: -60,
   },
-  containertextBottom: {
+  buttomSignup: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#262626",
+    padding: 20,
+    borderRadius: 8,
+    width: "90%",
+    height: 56,
+    marginBottom: 15,
   },
-  textAccount: {
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 16,
-    lineHeight: 16,
-    textAlign: "center",
-    letterSpacing: 1.25,
-    textTransform: "capitalize",
-  },
-  textRegister: {
+  textButtomLogup: {
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 18,
@@ -367,28 +346,41 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 1.25,
     textTransform: "capitalize",
-    marginTop: 20,
+    color: "#FFFFFF",
     paddingTop: 1,
+    height: 18,
   },
-  header: {
+  iconLogup: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    marginRight: 40,
+    marginLeft: -40,
+  },
+  titleBottom: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 50,
-    marginBottom: 80,
+    margin: 40,
   },
-  forgotPassword: {
+  textBottom: {
+    color: "#FFFFFF",
+    fontsStyle: "normal",
+    fontWeight: "700",
+    fontSize: 26,
+    lineheight: 54,
     marginBottom: 20,
   },
-  loading: {
-    backgroundColor: thirdColor,
-    height: 70,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  spinnerTextStyle: {
-    color: "#FFF",
+
+  textRegister: {
+    fontStyle: "normal",
+    // fontWeight: "600",
+    // fontSize: 18,
+    // lineHeight: 16,
+    textAlign: "center",
+    letterSpacing: 1.25,
+    textTransform: "capitalize",
+    // marginTop: 20,
+    paddingTop: 1,
   },
 });
