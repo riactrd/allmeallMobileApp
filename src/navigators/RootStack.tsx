@@ -186,7 +186,7 @@ export const ForgoPasswordStackNavigator: FunctionComponent = () => {
           title: "",
           // headerShown: false,
         })}
-        name="ForgotPasswordDrawer"
+        name="ForgotPassword"
         component={ForgotPassword}
       />
     </Stack.Navigator>
