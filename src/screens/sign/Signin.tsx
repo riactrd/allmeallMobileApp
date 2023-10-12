@@ -165,7 +165,7 @@ export default function Signin({ navigation }) {
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
           flexDirection: "column",
-          justifyContent: "space-between",
+          // justifyContent: "space-around",
           // alignItems: "flex-end",
           marginBottom: 10,
         }}
@@ -181,58 +181,65 @@ export default function Signin({ navigation }) {
           >
             Log In
           </Text>
-        </View>
-
-        <View>
-          <TextInput
-            style={{
-              width: "100%",
-              height: 56,
-              borderRadius: 10,
-              borderColor: "gray",
-              borderWidth: 1,
-              paddingLeft: 16,
-              marginBottom: 16,
-            }}
-            placeholder="Username or Email"
-            value={email}
-            onChange={onChangeEmail}
-          />
-
-          <TextInput
-            style={{
-              width: "100%",
-              height: 56,
-              borderRadius: 10,
-              borderColor: "gray",
-              borderWidth: 1,
-              paddingLeft: 16,
-              marginBottom: 16,
-            }}
-            placeholder="Password"
-            value={password}
-            secureTextEntry={true}
-            value={password}
-            onChange={onChangePassword}
-          />
-
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate("HomeDrawer")}
-            style={styles.buttomSignin}
-            onPress={HandlerLogin}
-          >
-            <Icon
-              name="user-check"
-              type="ionicon"
-              color="#fff"
-              style={styles.iconLogin}
+          <View style={{ marginTop: Screenheight * 0.02 }}>
+            <TextInput
+              style={{
+                width: "100%",
+                height: 56,
+                borderRadius: 10,
+                borderColor: "gray",
+                borderWidth: 1,
+                paddingLeft: 16,
+                marginBottom: 16,
+              }}
+              placeholder="Username or Email"
+              value={email}
+              onChange={onChangeEmail}
             />
-            <Text style={styles.textButtomLogin}>Log In</Text>
-          </TouchableOpacity>
+
+            <TextInput
+              style={{
+                width: "100%",
+                height: 56,
+                borderRadius: 10,
+                borderColor: "gray",
+                borderWidth: 1,
+                paddingLeft: 16,
+                marginBottom: 16,
+              }}
+              placeholder="Password"
+              value={password}
+              secureTextEntry={true}
+              value={password}
+              onChange={onChangePassword}
+            />
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate("HomeDrawer")}
+              style={styles.buttomSignin}
+              onPress={HandlerLogin}
+            >
+              <Icon
+                name="user-check"
+                type="ionicon"
+                color="#fff"
+                style={styles.iconLogin}
+              />
+              <Text style={styles.textButtomLogin}>Log In</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View>
+        <View
+          style={{
+            // marginTop: Screenheight * 0.01,
+            flex: 1,
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Text
             style={{
               // marginBottom: 8,
