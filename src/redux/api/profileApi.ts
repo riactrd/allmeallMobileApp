@@ -7,6 +7,7 @@ import {
 import { RootState } from "@reduxjs/toolkit/dist/query/core/apiState";
 import { editProfile, ProfileModel } from "../../model/ProfileModel";
 import { URL_VAR } from "@env";
+import { format } from "date-fns";
 
 interface errorModel {
   data: {
@@ -50,18 +51,40 @@ export const profileApi = createApi({
     // }),
     updateprofile: builder.mutation<ProfileModel, editProfile>({
       query: (profile) => {
+        // const formattedDateOfBirth = format(profile.dateofBirth, "yyyy-MM-dd");
         // console.log(profile);
+
+        const formatDateForBackend = (date) => {
+          const parts = date.split("/");
+          if (parts.length === 3) {
+            const [day, month, year] = parts.map((part) => parseInt(part, 10));
+            const currentYear = new Date().getFullYear();
+            let adjustedYear = year;
+
+            if (adjustedYear <= 30) {
+              // Asumir que los años menores o iguales a 30 pertenecen al siglo actual
+              adjustedYear += Math.floor(currentYear / 100) * 100;
+            } else {
+              // Asumir que los años mayores de 30 pertenecen al siglo anterior
+              adjustedYear += Math.floor((currentYear - 100) / 100) * 100;
+            }
+
+            const dateObject = new Date(adjustedYear, month - 1, day);
+
+            if (!isNaN(dateObject.getTime())) {
+              return dateObject.toISOString().split("T")[0];
+            }
+          }
+
+          return null;
+        };
+
+        console.log("state:", profile.dateofBirth);
+        console.log("formating:", formatDateForBackend(profile.dateofBirth));
         return {
           url: "profile.json",
           method: "POST",
-          // body: {
-          //   profile_json: {
-          //     first_name: profile.name,
-          //     last_name: profile.lastname,
-          //     phone_number: profile.phone,
-          //     date_of_birth: profile.dateofBirth,
-          //     sec_phone_number: profile.secondaryPhone,
-          //   },
+
           body: {
             profile: {
               first_name: profile.name,
@@ -78,7 +101,7 @@ export const profileApi = createApi({
               gender: profile.gender,
               // weight_goal: null,
               // goal_timing: "",
-              date_of_birth: profile.dateofBirth,
+              date_of_birth: formatDateForBackend(profile.dateofBirth),
               // is_profile_completed: true,
             },
           },

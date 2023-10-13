@@ -147,7 +147,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
             {/* Containers */}
 
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <MaterialIcons
                   name="all-inbox"
@@ -159,11 +159,11 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               onPress={() => {
                 props.navigation.navigate("ContainersTab");
               }}
-            />
+            /> */}
 
             {/* Donate */}
 
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <MaterialIcons
                   name="volunteer-activism"
@@ -175,7 +175,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               onPress={() => {
                 props.navigation.navigate("DonateTab");
               }}
-            />
+            /> */}
 
             {/* DIGITAL WALLET */}
 
@@ -229,7 +229,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             />
 
             {/* Pickup Glasssware  */}
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <Material name="truck-outline" color={color} size={size} />
               )}
@@ -237,7 +237,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               onPress={() => {
                 props.navigation.navigate("PickupTab");
               }}
-            />
+            /> */}
 
             {/* REFER EARN */}
 
@@ -253,7 +253,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             />
 
             {/* PASSWORD  */}
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <MaterialCommunityIcons
                   name="form-textbox-password"
@@ -266,7 +266,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               onPress={() => {
                 props.navigation.navigate("PasswordTab");
               }}
-            />
+            /> */}
             {/* <DrawerItem
               icon={({ color, size }) => (
                 <MaterialIcons name="storefront" color={color} size={size} />

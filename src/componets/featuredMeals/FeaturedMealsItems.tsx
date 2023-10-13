@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     color: "#262626",
     width: 118,
-    height: 60,
+    height: 40,
+    // paddingBottom: 10,
     textAlign: "center",
   },
   buttom: {
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 3, width: 3 },
     backgroundColor: "#fff",
     width: itemWidth,
-    height: 165,
+    // height: 165,
+    borderRightColor: "red",
   },
   imgContainer: {
     // width: 118,

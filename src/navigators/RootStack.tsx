@@ -1217,7 +1217,7 @@ export const FaqStackNavigator: FunctionComponent = () => {
     <Stack.Navigator>
       <Stack.Screen
         options={{
-          title: "Faq",
+          title: "FAQ",
           headerLeft: () =>
             id ? (
               <Icon

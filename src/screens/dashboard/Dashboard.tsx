@@ -182,6 +182,10 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
             featuredMeals={featuredMeals}
             navigation={navigation}
           />
+          <FeaturedMeals
+            featuredMeals={featuredMeals}
+            navigation={navigation}
+          />
         </ScrollView>
       </>
     );
