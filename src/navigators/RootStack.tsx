@@ -66,6 +66,7 @@ import PaleoMeal from "../screens/categoryPage/categoryCode/PaleoMeal";
 import FamilyMeal from "../screens/categoryPage/categoryCode/FamilyMeal";
 import VeganMeals from "../screens/categoryPage/categoryCode/VeganMeals";
 import DessertMenu from "../screens/categoryPage/categoryCode/DessertMenu";
+import Notification from "../screens/notification/Notification";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -1665,6 +1666,34 @@ export const WalletStackNavigator: FunctionComponent = () => {
         }}
         name="Transactions"
         component={Transactions}
+      />
+    </Stack.Navigator>
+  );
+};
+
+// NOTIFICATIONS
+
+export const NotificationStackNavigator: FunctionComponent = () => {
+  const navigation = useNavigation();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
+          title: "Notification",
+          headerLeft: () => (
+            <Icon
+              name="ios-menu"
+              size={25}
+              color="#3C3C3C"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            ></Icon>
+          ),
+          headerRight: () => <CartNotification />,
+        }}
+        name="NotificationStack"
+        component={Notification}
       />
     </Stack.Navigator>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Skeleton } from "moti/skeleton";
 import { MotiView } from "moti";
-import { ScreenWidth, mainColor } from "../../componets/shared";
+import { ScreenWidth, Screenheight, mainColor } from "../../componets/shared";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -55,7 +55,7 @@ export default function SkeletonDashboard() {
         <Skeleton
           width={"100%"}
           colorMode="light"
-          height={200}
+          height={Screenheight * 0.35}
           backgroundColor="#ff6f001a"
         />
       </View>

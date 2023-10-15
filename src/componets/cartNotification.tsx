@@ -30,7 +30,7 @@ const CartNotification = () => {
           size={25}
           color="#3C3C3C"
           style={{ marginRight: 20 }}
-          // onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Notification")}
         />
       </View>
       <View style={{ position: "relative" }}>
