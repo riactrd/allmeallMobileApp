@@ -21,6 +21,7 @@ import {
   MyCartStackNavigator,
   MyOrderstackNavigator,
   MyProfilestackNavigator,
+  NotificationStackNavigator,
   NutritionPackagesStackNavigator,
   PasswordstackNavigator,
   PickupStackNavigator,
@@ -318,7 +319,11 @@ const BottomTabNavigator = () => {
         options={{ tabBarItemStyle: { display: "none" } }}
       />
 
-      
+      <Tab.Screen
+        name="Notification"
+        component={NotificationStackNavigator}
+        options={{ tabBarItemStyle: { display: "none" } }}
+      />
     </Tab.Navigator>
   );
 };

@@ -149,11 +149,11 @@ export default function Signin({ navigation }) {
             }}
           >
             <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
-              Meal Prep
+              All Meal Prep
             </Text>
-            <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
-              Chicago
-            </Text>
+            {/* <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
+              Prep
+            </Text> */}
           </View>
         </ImageBackground>
       </View>

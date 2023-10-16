@@ -47,11 +47,11 @@ const Welcome: FunctionComponent<props> = ({ navigation }) => {
         }}
       >
         <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
-          Meal Prep
+          All Meal Prep
         </Text>
-        <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
+        {/* <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
           Chicago
-        </Text>
+        </Text> */}
       </View>
       <View
         style={{

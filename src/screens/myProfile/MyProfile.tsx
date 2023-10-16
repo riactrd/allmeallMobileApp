@@ -35,6 +35,7 @@ import {
   useUpdateprofileMutation,
 } from "../../redux/api/profileApi";
 import Spinner from "react-native-loading-spinner-overlay";
+import { format } from "date-fns";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -52,22 +53,48 @@ const MyProfile = () => {
   const [lastname, SetLastName] = useState(last_name);
   const [phone, SetPhone] = useState(phone_number);
   const [secondaryPhone, SetSecondaryPhone] = useState("");
-  const [dateofBirth, SetDateofBirth] = useState(date_of_birth);
   const [referrer, setReferrer] = useState("");
   const [referralEmail, setReferralEmail] = useState("");
+  const [dateofBirth, SetDateofBirth] = useState("");
 
   useEffect(() => {
     if (data) {
       SetName(data?.data.profile.first_name);
       SetLastName(data?.data.profile.last_name);
       SetPhone(data?.data.profile.phone_number);
-      SetDateofBirth(data?.data.profile.date_of_birth);
       SetSecondaryPhone(data?.data.profile.sec_phone_number);
       SetGender(data?.data.profile.gender);
       setReferrer(data?.data.profile.referral_email);
       setReferralEmail(data?.data.profile.referral_email);
+
+      // // SetDateofBirth
+      // if (data?.data.profile.date_of_birth) {
+      //   const isoDate = data?.data.profile.date_of_birth;
+      //   const dateObject = new Date(isoDate);
+      //   // Ajusta la fecha a la zona horaria local del usuario
+      //   const adjustedDate = new Date(
+      //     dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+      //   );
+      //   const formattedDate = format(adjustedDate, "dd/MM/yy");
+      //   SetDateofBirth(formattedDate);
+      // }
+      // SetDateofBirth;
+      if (data?.data.profile.date_of_birth) {
+        const isoDate = data?.data.profile.date_of_birth;
+        const dateObject = new Date(isoDate);
+        // Agrega un día a la fecha antes de ajustarla a la zona horaria local
+        dateObject.setDate(dateObject.getDate() + 1);
+        // Ajusta la fecha a la zona horaria local del usuario
+        const adjustedDate = new Date(
+          dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+        );
+        const formattedDate = format(adjustedDate, "dd/MM/yy");
+        SetDateofBirth(formattedDate);
+      }
     }
   }, [data]);
+  // console.log(data?.data.profile.date_of_birth);
+  // console.log(dateofBirth);
 
   useEffect(() => {
     dispatch(
@@ -76,6 +103,7 @@ const MyProfile = () => {
         lastname,
         phone,
         dateofBirth,
+        // dateofBirth: formatDateForBackend(dateofBirth),
         secondaryPhone,
         gender,
         referrer,
@@ -94,14 +122,42 @@ const MyProfile = () => {
   ]);
 
   useEffect(() => {
-    if (data) {
-      SetName(data?.data.profile.first_name);
-      SetLastName(data?.data.profile.last_name);
-      SetPhone(data?.data.profile.phone_number);
-      SetDateofBirth(data?.data.profile.date_of_birth);
-      SetSecondaryPhone(data?.data.profile.sec_phone_number);
-      SetGender(data?.data.profile.gender);
+    // if (data) {
+    //   SetName(data?.data.profile.first_name);
+    //   SetLastName(data?.data.profile.last_name);
+    //   SetPhone(data?.data.profile.phone_number);
+    //   if (data?.data.profile.date_of_birth) {
+    //     const isoDate = data?.data.profile.date_of_birth;
+    //     const dateObject = new Date(isoDate);
+    //     const formattedDate = format(dateObject, "dd/MM/yy");
+    //     SetDateofBirth(formattedDate);
+    //   }
+    //   SetSecondaryPhone(data?.data.profile.sec_phone_number);
+    //   SetGender(data?.data.profile.gender);
+    // }
+    // if (data?.data.profile.date_of_birth) {
+    //   const isoDate = data?.data.profile.date_of_birth;
+    //   const dateObject = new Date(isoDate);
+    //   // Ajusta la fecha a la zona horaria local del usuario
+    //   const adjustedDate = new Date(
+    //     dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+    //   );
+    //   const formattedDate = format(adjustedDate, "dd/MM/yy");
+    //   SetDateofBirth(formattedDate);
+    // }
+    if (data?.data.profile.date_of_birth) {
+      const isoDate = data?.data.profile.date_of_birth;
+      const dateObject = new Date(isoDate);
+      // Agrega un día a la fecha antes de ajustarla a la zona horaria local
+      dateObject.setDate(dateObject.getDate() + 1);
+      // Ajusta la fecha a la zona horaria local del usuario
+      const adjustedDate = new Date(
+        dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+      );
+      const formattedDate = format(adjustedDate, "dd/MM/yy");
+      SetDateofBirth(formattedDate);
     }
+    SetDateofBirth;
   }, [data]);
 
   useEffect(() => {
@@ -304,7 +360,7 @@ const MyProfile = () => {
                         selected === "4" ? styles.textActive : styles.text,
                       ]}
                     >
-                      Allergy Preferences
+                      Food Preferences
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -636,13 +692,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    fontSize: 24,
+    fontSize: 15,
     marginRight: 10,
   },
   saveButtom: {
     flexDirection: "row",
     justifyContent: "center",
-    width: 134,
+    width: 100,
     height: 40,
     marginBottom: 20,
     backgroundColor: mainColor,
@@ -653,7 +709,7 @@ const styles = StyleSheet.create({
   saveButtomText: {
     color: secundaryColor,
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: 12,
     letterSpacing: 1.25,
     lineHeight: 16,
   },
@@ -714,6 +770,8 @@ const styles = StyleSheet.create({
   },
   buttomContainer: {
     flexDirection: "row",
+    justifyContent: "center",
     width: ScreenWidth - 20,
+    paddingBottom: 20,
   },
 });

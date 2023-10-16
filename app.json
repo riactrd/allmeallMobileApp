@@ -7,7 +7,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/newSplash.png",
       "resizeMode": "contain",
@@ -15,7 +15,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/706b51b5-53a1-40ea-8b62-5278a2b3cb92"
+      "url": "https://u.expo.dev/3a94587a-6b89-4d09-848f-63b15d7923a1"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -38,7 +38,9 @@
       "policy": "appVersion"
     },
     "extra": {
-      
+      "eas": {
+        "projectId": "3a94587a-6b89-4d09-848f-63b15d7923a1"
+      }
     },
     "owner": "allmealprep"
   }
