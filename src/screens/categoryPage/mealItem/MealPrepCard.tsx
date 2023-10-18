@@ -1,28 +1,120 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { mainColor, secundaryColor } from "../../../componets/shared";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { useToast } from "react-native-toast-notifications";
+import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 
 export default function MealPrepCard({ item, navigation }) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, SetQuantity] = useState<number>(0);
+  const toast = useToast();
 
-  // console.log("los ingredientes son :", item.ingredients[0].name);
+  const [
+    createAddCart,
+    { data, isError, error, isLoading, isSuccess, isFetching },
+  ] = useCreateAddCartMutation();
 
-  // const increaseQuantity = () => {
-  //   if (quantity < 15) {
-  //     setQuantity(quantity + 1);
+  console.log(quantity);
+
+  // const handleControl = (direction: string) => {
+  //   if (direction === "increase") {
+  //     if (quantity <= 99) {
+  //       SetQuantity((currentQuantity) => currentQuantity + 1);
+  //       handlerAddCart();
+  //       console.log(quantity);
+  //     }
+  //   } else if (direction === "decrease") {
+  //     if (quantity >= 1) {
+  //       SetQuantity((currentQuantity) => currentQuantity - 1);
+  //       // handlerAddCart();
+  //       console.log(quantity);
+  //     }
   //   }
   // };
 
-  // const decreaseQuantity = () => {
-  //   if (quantity > 1) {
-  //     setQuantity(quantity - 1);
-  //   }
-  // };
+  const handleControl = (direction: string) => {
+    if (direction === "increase") {
+      if (quantity < 99) {
+        SetQuantity((currentQuantity) => {
+          const newQuantity = currentQuantity + 1;
+          console.log(newQuantity); // Esto mostrará la nueva cantidad
+          handlerAddCart(); // Llama a handlerAddCart después de actualizar la cantidad
+          return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
+        });
+      }
+    } else if (direction === "decrease") {
+      if (quantity > 1) {
+        SetQuantity((currentQuantity) => {
+          const newQuantity = currentQuantity - 1;
+          console.log(newQuantity); // Esto mostrará la nueva cantidad
+          handlerAddCart(); // Llama a handlerAddCart después de actualizar la cantidad
+          return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
+        });
+      }
+    }
+  };
 
-  // const navigateToDetails = () => {
-  //   navigation.navigate("MealprepItemScreen", { itemId: item.id });
-  // };
+  const cart = {
+    food_id: item.id,
+    quantity: quantity + 1,
+    food_combo_id: null,
+  };
+
+  const handlerAddCart = async () => {
+    if (quantity > 100) {
+      toast.show("No quantity added", {
+        type: "danger",
+        placement: "bottom",
+        duration: 4000,
+        animationType: "slide-in",
+      });
+    } else if (!item.id) {
+      toast.show("No id added", {
+        type: "danger",
+        placement: "bottom",
+        duration: 4000,
+        animationType: "slide-in",
+      });
+    } else {
+      await createAddCart({ cart });
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.show("Item Added to cart", {
+        type: "success",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+
+      // SetQuantity(1);
+      navigation.navigate("Category");
+
+      // navigation.navigate('VerifyUser',
+      // {
+      //   screen: 'VerifyUser',
+      //   params: {userId: data.data.user.id, message: data.message}
+      // }
+      // )
+    }
+
+    if (isError) {
+      if (error) {
+        if ("status" in error) {
+          // you can access all properties of `FetchBaseQueryError` here
+          toast.show(JSON.stringify("Internal error"), {
+            type: "error",
+            placement: "bottom",
+            duration: 8000,
+            animationType: "slide-in",
+          });
+        }
+      }
+    }
+  }, [data, isError]);
   {
     return (
       <TouchableOpacity
@@ -61,29 +153,6 @@ export default function MealPrepCard({ item, navigation }) {
             <View style={{ flexDirection: "row" }}>
               {/* <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={decreaseQuantity}
-                style={{
-                  backgroundColor: mainColor,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 20,
-                }}
-              >
-                <Icon name="remove" size={25} color={secundaryColor} />
-              </TouchableOpacity> */}
-              {/* <View
-                style={{
-                  marginHorizontal: 10,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text>{quantity}</Text>
-              </View> */}
-              <TouchableOpacity
-                activeOpacity={0.7}
                 onPress={() =>
                   navigation.navigate("MealItemPage", { meal: item })
                 }
@@ -96,7 +165,24 @@ export default function MealPrepCard({ item, navigation }) {
                 }}
               >
                 <Icon name="add" size={25} color={secundaryColor} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <View style={styles.buttom}>
+                <TouchableOpacity onPress={() => handleControl("decrease")}>
+                  <AntDesign
+                    name="minuscircle"
+                    type="ionicon"
+                    style={styles.headerButtomIcon}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.number}>{quantity}</Text>
+                <TouchableOpacity onPress={() => handleControl("increase")}>
+                  <AntDesign
+                    name="pluscircle"
+                    type="ionicon"
+                    style={styles.headerButtomIcon}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
@@ -157,5 +243,21 @@ const styles = StyleSheet.create({
     // flexDirection: "row",
     // justifyContent: "center",
     // alignContent: "center",
+  },
+  buttom: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  headerButtomIcon: {
+    color: "#FF6F00",
+    fontSize: 20,
+  },
+  number: {
+    marginLeft: 10,
+    marginRight: 10,
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: 20,
+    letterSpacing: 0.15,
   },
 });

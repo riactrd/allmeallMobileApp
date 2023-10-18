@@ -129,10 +129,12 @@ const MealItemPage = ({ route }) => {
     if (direction === "increase") {
       if (quantity <= 99) {
         SetQuantity((currentQuantity) => currentQuantity + 1);
+        handlerAddCart();
       }
     } else if (direction === "decrease") {
       if (quantity >= 1) {
         SetQuantity((currentQuantity) => currentQuantity - 1);
+        handlerAddCart();
       }
     }
   };
@@ -285,7 +287,7 @@ const MealItemPage = ({ route }) => {
                       style={{ marginTop: 10 }}
                       source={require("../../../../assets/img/minilogo.png")}
                     />
-                    {quantity ? (
+                    {/* {quantity ? (
                       <TouchableOpacity
                         style={{
                           backgroundColor: mainColor,
@@ -303,7 +305,7 @@ const MealItemPage = ({ route }) => {
                       </TouchableOpacity>
                     ) : (
                       <></>
-                    )}
+                    )} */}
                   </View>
                 </View>
               </View>
