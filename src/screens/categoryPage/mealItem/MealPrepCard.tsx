@@ -38,6 +38,8 @@ export default function MealPrepCard({ item, navigation }) {
     }
   }, [dataMycart, quantity]);
 
+  console.log("mycart", mycart);
+
   useEffect(() => {
     // && Array.isArray(mycart)
     if (mycart) {
@@ -48,7 +50,8 @@ export default function MealPrepCard({ item, navigation }) {
         const cantidad = quantity;
         const itemsState = { id, cantidad, idItemCart };
         dispatch(addItem(itemsState));
-        console.log(cantidad);
+
+        setIdCart(item.id);
       });
     } else {
       console.log(
@@ -79,14 +82,15 @@ export default function MealPrepCard({ item, navigation }) {
       }
     } else if (direction === "decrease") {
       if (quantity > 1) {
-        SetQuantity((currentQuantity) => {
-          const newQuantity = currentQuantity - 1;
+        // SetQuantity((currentQuantity) => {
+        //   const newQuantity = currentQuantity - 1;
 
-          // Llama a handlerAddCart después de actualizar la cantidad
-          handlerdecrease();
+        //   // Llama a handlerAddCart después de actualizar la cantidad
+        //   handlerdecrease();
 
-          return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
-        });
+        //   return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
+        // });
+        console.log("hola");
       }
     }
   };
@@ -128,7 +132,9 @@ export default function MealPrepCard({ item, navigation }) {
 
   const handlerdecrease = async () => {
     const result = await decreaseCart(idCart);
+
     SetQuantity(quantity - 1);
+    trigger();
 
     // Lógica adicional si es necesario
   };
@@ -171,7 +177,9 @@ export default function MealPrepCard({ item, navigation }) {
   {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("MealItemPage", { meal: item })}
+        onPress={() =>
+          navigation.navigate("MealItemPage", { meal: item, carroId: idCart })
+        }
         style={styles.orderCard}
       >
         {item.pictures?.length > 0 && (

@@ -32,6 +32,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useSelector } from "react-redux";
+import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
 
 // const itemsProps=[1,2,3,4,5,6]
 
@@ -44,7 +45,8 @@ const MealItemPage = ({ route }) => {
     { data, isError, error, isLoading, isSuccess, isFetching },
   ] = useCreateAddCartMutation();
   const toast = useToast();
-  const { meal } = route.params;
+  const { meal, carroId } = route.params;
+  console.log("idCart:", carroId);
   const {
     name,
     price,
@@ -63,6 +65,7 @@ const MealItemPage = ({ route }) => {
   const cartItemsState = useSelector((state) => state.cartQuantity);
 
   console.log("mealItemPage:", cartItemsState);
+  console.log("idItemCart:", cartItemsState.items);
 
   const nutritionFacts = [
     // { value: "377.0 g", name: "Calories" },
@@ -93,6 +96,18 @@ const MealItemPage = ({ route }) => {
   const testquantity = cartItems.items.find((cartItem) => {
     return cartItem.id === id;
   });
+
+  const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
+
+  const handlerdecrease = async () => {
+    const result = await decreaseCart(carroId);
+    console.log(result);
+    console.log(carroId);
+    SetQuantity(quantity - 1);
+    // trigger();
+
+    // Lógica adicional si es necesario
+  };
 
   useEffect(() => {
     if (testquantity) SetQuantity(testquantity.cantidad);
@@ -266,7 +281,8 @@ const MealItemPage = ({ route }) => {
                     </View>
                     <View style={styles.buttom}>
                       <TouchableOpacity
-                        onPress={() => handleControl("decrease")}
+                        // onPress={() => handleControl("decrease")}
+                        onPress={() => handlerdecrease()}
                       >
                         <AntDesign
                           name="minuscircle"
