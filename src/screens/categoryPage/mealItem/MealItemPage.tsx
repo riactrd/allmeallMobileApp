@@ -31,6 +31,7 @@ import {
 import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useSelector } from "react-redux";
 
 // const itemsProps=[1,2,3,4,5,6]
 
@@ -59,6 +60,10 @@ const MealItemPage = ({ route }) => {
     pictures,
   } = meal;
 
+  const cartItemsState = useSelector((state) => state.cartQuantity);
+
+  console.log("mealItemPage:", cartItemsState);
+
   const nutritionFacts = [
     // { value: "377.0 g", name: "Calories" },
     // { value: "31,0 g", name: "Carbs" },
@@ -78,10 +83,20 @@ const MealItemPage = ({ route }) => {
   ];
 
   const navigation = useNavigation();
-  const [quantity, SetQuantity] = useState<number>(1);
+  const [quantity, SetQuantity] = useState<number>(0);
   const dispatch = useDispatch();
 
   const total = price * quantity;
+
+  const cartItems = useSelector((state) => state.cartQuantity);
+
+  const testquantity = cartItems.items.find((cartItem) => {
+    return cartItem.id === id;
+  });
+
+  useEffect(() => {
+    if (testquantity) SetQuantity(testquantity.cantidad);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -123,7 +138,6 @@ const MealItemPage = ({ route }) => {
     quantity: quantity,
     food_combo_id: null,
   };
-  //   console.log(cart)
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {

@@ -5,70 +5,110 @@ import { mainColor, secundaryColor } from "../../../componets/shared";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
+import { useSelector } from "react-redux";
+import { selectcartItems } from "../../../redux/store";
+import { useIncreaseCartMutation } from "../../../redux/api/increaseCartApi";
+import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
+import {
+  useGetmyCartQuery,
+  useLazyGetmyCartQuery,
+} from "../../../redux/api/myCartApi";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../../redux/cartQuantitySlice";
 
 export default function MealPrepCard({ item, navigation }) {
   const [quantity, SetQuantity] = useState<number>(0);
+  const [idCart, setIdCart] = useState(null);
   const toast = useToast();
+  const [mycart, setMycart] = useState([]);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cartQuantity);
 
   const [
     createAddCart,
     { data, isError, error, isLoading, isSuccess, isFetching },
   ] = useCreateAddCartMutation();
 
-  console.log(quantity);
+  const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
 
-  // const handleControl = (direction: string) => {
-  //   if (direction === "increase") {
-  //     if (quantity <= 99) {
-  //       SetQuantity((currentQuantity) => currentQuantity + 1);
-  //       handlerAddCart();
-  //       console.log(quantity);
-  //     }
-  //   } else if (direction === "decrease") {
-  //     if (quantity >= 1) {
-  //       SetQuantity((currentQuantity) => currentQuantity - 1);
-  //       // handlerAddCart();
-  //       console.log(quantity);
-  //     }
-  //   }
-  // };
+  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({});
+  useEffect(() => {
+    if (dataMycart) {
+      setMycart(dataMycart?.data?.my_cart?.cart_items);
+    }
+  }, [dataMycart, quantity]);
+
+  useEffect(() => {
+    // && Array.isArray(mycart)
+    if (mycart) {
+      mycart.map((item, index) => {
+        const idItemCart = item.id;
+        const id = item.pictures[0].pictureable_id;
+        const { quantity } = item;
+        const cantidad = quantity;
+        const itemsState = { id, cantidad, idItemCart };
+        dispatch(addItem(itemsState));
+        console.log(cantidad);
+      });
+    } else {
+      console.log(
+        "Los elementos del carrito no están disponibles o no son un arreglo."
+      );
+    }
+  }, [mycart, quantity, SetQuantity]);
+
+  // Buscar el elemento en el estado del carrito con el mismo ID
+  const testquantity = cartItems.items.find((cartItem) => {
+    return cartItem.id === item.id;
+  });
+
+  useEffect(() => {
+    if (testquantity) {
+      SetQuantity(testquantity.cantidad);
+      setIdCart(testquantity.idItemCart);
+    }
+  }, []);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
       if (quantity < 99) {
-        SetQuantity((currentQuantity) => {
-          const newQuantity = currentQuantity + 1;
-          console.log(newQuantity); // Esto mostrará la nueva cantidad
-          handlerAddCart(); // Llama a handlerAddCart después de actualizar la cantidad
-          return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
-        });
+        SetQuantity(quantity + 1);
+        handlerAddCart();
+
+        // Llama a handlerAddCart después de actualizar la cantidad
       }
     } else if (direction === "decrease") {
       if (quantity > 1) {
         SetQuantity((currentQuantity) => {
           const newQuantity = currentQuantity - 1;
-          console.log(newQuantity); // Esto mostrará la nueva cantidad
-          handlerAddCart(); // Llama a handlerAddCart después de actualizar la cantidad
+
+          // Llama a handlerAddCart después de actualizar la cantidad
+          handlerdecrease();
+
           return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
         });
       }
     }
   };
 
-  const cart = {
-    food_id: item.id,
-    quantity: quantity + 1,
-    food_combo_id: null,
-  };
-
   const handlerAddCart = async () => {
-    if (quantity > 100) {
-      toast.show("No quantity added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
+    if (!quantity) {
+      SetQuantity(quantity + 1);
+
+      const response = await createAddCart({
+        food_id: item.id,
+        quantity: 1,
+        food_combo_id: null,
       });
+
+      trigger();
+
+      // toast.show("No quantity added", {
+      //   type: "danger",
+      //   placement: "bottom",
+      //   duration: 4000,
+      //   animationType: "slide-in",
+      // });
     } else if (!item.id) {
       toast.show("No id added", {
         type: "danger",
@@ -77,12 +117,25 @@ export default function MealPrepCard({ item, navigation }) {
         animationType: "slide-in",
       });
     } else {
-      await createAddCart({ cart });
+      await createAddCart({
+        food_id: item.id,
+        quantity: 1,
+        food_combo_id: null,
+      });
+      trigger();
     }
+  };
+
+  const handlerdecrease = async () => {
+    const result = await decreaseCart(idCart);
+    SetQuantity(quantity - 1);
+
+    // Lógica adicional si es necesario
   };
 
   useEffect(() => {
     if (isSuccess) {
+      trigger();
       toast.show("Item Added to cart", {
         type: "success",
         placement: "bottom",
@@ -149,6 +202,7 @@ export default function MealPrepCard({ item, navigation }) {
               <Text style={{ fontWeight: 800, color: mainColor }}>
                 ${item.price} / Meal
               </Text>
+              <Text>{item.id}</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               {/* <TouchableOpacity
@@ -167,7 +221,7 @@ export default function MealPrepCard({ item, navigation }) {
                 <Icon name="add" size={25} color={secundaryColor} />
               </TouchableOpacity> */}
               <View style={styles.buttom}>
-                <TouchableOpacity onPress={() => handleControl("decrease")}>
+                <TouchableOpacity onPress={() => handlerdecrease()}>
                   <AntDesign
                     name="minuscircle"
                     type="ionicon"
