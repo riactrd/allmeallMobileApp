@@ -8,8 +8,6 @@ const cartQuantity = createSlice({
   reducers: {
     addItem: (state, action) => {
       const { id, quantity, cantidad } = action.payload;
-      console.log(cantidad);
-      console.log("cartquantitySlice:", action.payload);
 
       // Buscar si ya existe un elemento con el mismo id en el carrito
       const existingItem = state.items.find((item) => item.id === id);

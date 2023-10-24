@@ -4,13 +4,17 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { mainColor, secundaryColor } from "../../../componets/shared";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useToast } from "react-native-toast-notifications";
-import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
+import {
+  useCreateAddCartMutation,
+  useDecreaseCartQuery,
+} from "../../../redux/api/addCartOld";
 import { useSelector } from "react-redux";
 import { selectcartItems } from "../../../redux/store";
-import { useIncreaseCartMutation } from "../../../redux/api/increaseCartApi";
+
 import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
 import {
   useGetmyCartQuery,
+  useIncreaseCartMutation,
   useLazyGetmyCartQuery,
 } from "../../../redux/api/myCartApi";
 import { useDispatch } from "react-redux";
@@ -22,7 +26,6 @@ export default function MealPrepCard({ item, navigation }) {
   const toast = useToast();
   const [mycart, setMycart] = useState([]);
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cartQuantity);
 
   const [
     createAddCart,
@@ -31,18 +34,21 @@ export default function MealPrepCard({ item, navigation }) {
 
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
 
-  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({});
+  const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
+
+  // -------------------------------------------------------------------------------
+  const [trigger, { data: dataMycart, refetch, isFetching: isFetchingMyCart }] =
+    useLazyGetmyCartQuery({});
   useEffect(() => {
     if (dataMycart) {
+      console.log("data mycart:", dataMycart.data?.my_cart?.cart_items);
       setMycart(dataMycart?.data?.my_cart?.cart_items);
     }
-  }, [dataMycart, quantity]);
-
-  console.log("mycart", mycart);
-
+  }, [dataMycart]);
+  // -------------------------------------------------------------------------------
+  const cartItems = useSelector((state) => state.cartQuantity);
   useEffect(() => {
-    // && Array.isArray(mycart)
-    if (mycart) {
+    if (mycart && Array.isArray(mycart)) {
       mycart.map((item, index) => {
         const idItemCart = item.id;
         const id = item.pictures[0].pictureable_id;
@@ -53,12 +59,10 @@ export default function MealPrepCard({ item, navigation }) {
 
         setIdCart(item.id);
       });
-    } else {
-      console.log(
-        "Los elementos del carrito no están disponibles o no son un arreglo."
-      );
     }
-  }, [mycart, quantity, SetQuantity]);
+  }, [mycart, cartItems]);
+
+  //---------------------------------------------------------------
 
   // Buscar el elemento en el estado del carrito con el mismo ID
   const testquantity = cartItems.items.find((cartItem) => {
@@ -70,13 +74,19 @@ export default function MealPrepCard({ item, navigation }) {
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
     }
-  }, []);
+  }, [cartItems]);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
-      if (quantity < 99) {
-        SetQuantity(quantity + 1);
+      if (quantity === 0) {
+        // SetQuantity(quantity + 1);
         handlerAddCart();
+
+        // Llama a handlerAddCart después de actualizar la cantidad
+      }
+      if (quantity > 0) {
+        handlerincrease();
+        SetQuantity(quantity + 1);
 
         // Llama a handlerAddCart después de actualizar la cantidad
       }
@@ -84,13 +94,10 @@ export default function MealPrepCard({ item, navigation }) {
       if (quantity > 1) {
         // SetQuantity((currentQuantity) => {
         //   const newQuantity = currentQuantity - 1;
-
         //   // Llama a handlerAddCart después de actualizar la cantidad
         //   handlerdecrease();
-
         //   return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
         // });
-        console.log("hola");
       }
     }
   };
@@ -98,12 +105,13 @@ export default function MealPrepCard({ item, navigation }) {
   const handlerAddCart = async () => {
     if (!quantity) {
       SetQuantity(quantity + 1);
+      console.log("addcart ready");
 
       const response = await createAddCart({
         food_id: item.id,
         quantity: 1,
         food_combo_id: null,
-      });
+      }).unwrap();
 
       trigger();
 
@@ -113,28 +121,36 @@ export default function MealPrepCard({ item, navigation }) {
       //   duration: 4000,
       //   animationType: "slide-in",
       // });
-    } else if (!item.id) {
-      toast.show("No id added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
-      });
-    } else {
-      await createAddCart({
-        food_id: item.id,
-        quantity: 1,
-        food_combo_id: null,
-      });
-      trigger();
+      // } else if (!item.id) {
+      //   toast.show("No id added", {
+      //     type: "danger",
+      //     placement: "bottom",
+      //     duration: 4000,
+      //     animationType: "slide-in",
+      //   });
+      // } else {
+      //   await createAddCart({
+      //     food_id: item.id,
+      //     quantity: 1,
+      //     food_combo_id: null,
+      //   });
+      //   trigger();
     }
   };
 
   const handlerdecrease = async () => {
-    const result = await decreaseCart(idCart);
-
+    const result = await decreaseCart(idCart).unwrap();
     SetQuantity(quantity - 1);
-    trigger();
+    refetch();
+
+    // Lógica adicional si es necesario
+  };
+
+  const handlerincrease = async () => {
+    console.log("increase Cart Ready");
+    const result = await increaseCart(idCart).unwrap();
+
+    // trigger();
 
     // Lógica adicional si es necesario
   };

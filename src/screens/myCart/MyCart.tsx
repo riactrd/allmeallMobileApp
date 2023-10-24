@@ -180,7 +180,7 @@ const MyCart = () => {
   useEffect(() => {
     refreshdata();
 
-    if (data?.data) {
+    if (data?.data?.my_cart?.cart_items) {
       try {
         SetMyItem(data?.data?.my_cart?.cart_items);
 

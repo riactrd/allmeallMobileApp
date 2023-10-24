@@ -33,6 +33,11 @@ import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useSelector } from "react-redux";
 import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
+import { addItem } from "../../../redux/cartQuantitySlice";
+import {
+  useGetmyCartQuery,
+  useIncreaseCartMutation,
+} from "../../../redux/api/myCartApi";
 
 // const itemsProps=[1,2,3,4,5,6]
 
@@ -40,13 +45,18 @@ const { width } = Dimensions.get("screen");
 const card = width / 3.9;
 
 const MealItemPage = ({ route }) => {
+  const navigation = useNavigation();
+  const [quantity, SetQuantity] = useState<number>(0);
+  const dispatch = useDispatch();
+  // -------------------------------------------------------------------------------
   const [
     createAddCart,
     { data, isError, error, isLoading, isSuccess, isFetching },
   ] = useCreateAddCartMutation();
+
   const toast = useToast();
   const { meal, carroId } = route.params;
-  console.log("idCart:", carroId);
+
   const {
     name,
     price,
@@ -62,10 +72,28 @@ const MealItemPage = ({ route }) => {
     pictures,
   } = meal;
 
+  // ---------------------------------------------------------------------------------
+
+  const { data: datagetmycart, refetch } = useGetmyCartQuery("bulbasaur", {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const myItemsCart = datagetmycart?.data.my_cart?.cart_items;
+
+  //---------------------------------------------------------------------------------
   const cartItemsState = useSelector((state) => state.cartQuantity);
 
-  console.log("mealItemPage:", cartItemsState);
-  console.log("idItemCart:", cartItemsState.items);
+  const findId = myItemsCart.find((item) => {
+    return item.pictures[0].pictureable_id === id;
+  });
+
+  useEffect(() => {
+    if (findId) {
+      SetQuantity(findId.quantity);
+    }
+  }, [findId]);
+
+  //--------------------------------------------------------------------------------
 
   const nutritionFacts = [
     // { value: "377.0 g", name: "Calories" },
@@ -85,33 +113,40 @@ const MealItemPage = ({ route }) => {
     { value: `${sodium ? sodium.toFixed(1) : "N/A"} mg`, name: "Sodium" },
   ];
 
-  const navigation = useNavigation();
-  const [quantity, SetQuantity] = useState<number>(0);
-  const dispatch = useDispatch();
-
   const total = price * quantity;
-
-  const cartItems = useSelector((state) => state.cartQuantity);
-
-  const testquantity = cartItems.items.find((cartItem) => {
-    return cartItem.id === id;
-  });
 
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
 
+  const [increaseCart, { data: dataincreaseCart }] = useIncreaseCartMutation();
+
   const handlerdecrease = async () => {
     const result = await decreaseCart(carroId);
-    console.log(result);
-    console.log(carroId);
+
     SetQuantity(quantity - 1);
+    const itemsState = { id, cantidad: quantity - 1 };
+
+    dispatch(addItem(itemsState));
+
     // trigger();
 
     // Lógica adicional si es necesario
   };
 
-  useEffect(() => {
-    if (testquantity) SetQuantity(testquantity.cantidad);
-  }, []);
+  const handlerincrease = async () => {
+    const result = await increaseCart(carroId);
+
+    SetQuantity(quantity + 1);
+    const itemsState = { id, cantidad: quantity + 1 };
+    dispatch(addItem(itemsState));
+
+    // trigger();
+
+    // Lógica adicional si es necesario
+  };
+
+  // useEffect(() => {
+  //   if (testquantity) SetQuantity(testquantity.cantidad);
+  // }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -159,11 +194,13 @@ const MealItemPage = ({ route }) => {
       if (quantity <= 99) {
         SetQuantity((currentQuantity) => currentQuantity + 1);
         handlerAddCart();
+        refetch();
       }
     } else if (direction === "decrease") {
       if (quantity >= 1) {
         SetQuantity((currentQuantity) => currentQuantity - 1);
         handlerAddCart();
+        refetch();
       }
     }
   };
@@ -291,9 +328,7 @@ const MealItemPage = ({ route }) => {
                         />
                       </TouchableOpacity>
                       <Text style={styles.number}>{quantity}</Text>
-                      <TouchableOpacity
-                        onPress={() => handleControl("increase")}
-                      >
+                      <TouchableOpacity onPress={() => handlerincrease()}>
                         <AntDesign
                           name="pluscircle"
                           type="ionicon"
