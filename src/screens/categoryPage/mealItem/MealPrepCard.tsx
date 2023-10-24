@@ -38,13 +38,25 @@ export default function MealPrepCard({ item, navigation }) {
 
   // -------------------------------------------------------------------------------
   const [trigger, { data: dataMycart, refetch, isFetching: isFetchingMyCart }] =
-    useLazyGetmyCartQuery({});
+    useLazyGetmyCartQuery({
+      refetchOnFocus: true,
+    });
+
+  const { data: dataMycartGet } = useGetmyCartQuery("", {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
+  useEffect(() => {
+    if (dataMycartGet) {
+      setMycart(dataMycartGet?.data?.my_cart?.cart_items);
+    }
+  }, [dataMycartGet]);
+
   useEffect(() => {
     if (dataMycart) {
-      console.log("data mycart:", dataMycart.data?.my_cart?.cart_items);
       setMycart(dataMycart?.data?.my_cart?.cart_items);
     }
-  }, [dataMycart]);
+  }, [dataMycart, isFetching, refetch]);
   // -------------------------------------------------------------------------------
   const cartItems = useSelector((state) => state.cartQuantity);
   useEffect(() => {
@@ -74,7 +86,7 @@ export default function MealPrepCard({ item, navigation }) {
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
     }
-  }, [cartItems]);
+  }, [cartItems, trigger, refetch]);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
@@ -149,8 +161,8 @@ export default function MealPrepCard({ item, navigation }) {
   const handlerincrease = async () => {
     console.log("increase Cart Ready");
     const result = await increaseCart(idCart).unwrap();
-
-    // trigger();
+    // refetch();
+    trigger("");
 
     // Lógica adicional si es necesario
   };
@@ -194,7 +206,11 @@ export default function MealPrepCard({ item, navigation }) {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("MealItemPage", { meal: item, carroId: idCart })
+          navigation.navigate("MealItemPage", {
+            meal: item,
+            carroId: idCart,
+            mycart,
+          })
         }
         style={styles.orderCard}
       >

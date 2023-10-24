@@ -48,6 +48,7 @@ const MealItemPage = ({ route }) => {
   const navigation = useNavigation();
   const [quantity, SetQuantity] = useState<number>(0);
   const dispatch = useDispatch();
+  const [carting, setCarting] = useState(null);
   // -------------------------------------------------------------------------------
   const [
     createAddCart,
@@ -55,7 +56,9 @@ const MealItemPage = ({ route }) => {
   ] = useCreateAddCartMutation();
 
   const toast = useToast();
-  const { meal, carroId } = route.params;
+  const { meal, carroId, mycart } = route.params;
+
+  const mycartArry = Object.values(mycart);
 
   const {
     name,
@@ -74,24 +77,58 @@ const MealItemPage = ({ route }) => {
 
   // ---------------------------------------------------------------------------------
 
-  const { data: datagetmycart, refetch } = useGetmyCartQuery("bulbasaur", {
+  const {
+    data: datagetmycart,
+    refetch,
+    isLoading: loading,
+  } = useGetmyCartQuery("bulbasaur", {
     refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
   });
-
-  const myItemsCart = datagetmycart?.data.my_cart?.cart_items;
 
   //---------------------------------------------------------------------------------
-  const cartItemsState = useSelector((state) => state.cartQuantity);
-
-  const findId = myItemsCart.find((item) => {
-    return item.pictures[0].pictureable_id === id;
-  });
 
   useEffect(() => {
-    if (findId) {
-      SetQuantity(findId.quantity);
+    if (datagetmycart) {
+      setCarting(datagetmycart?.data.my_cart?.cart_items);
     }
-  }, [findId]);
+  }, [datagetmycart]);
+
+  // if (datagetmycart?.data.my_cart?.cart_items) {
+  //
+  //   console.log(myItemsCart);
+
+  //   const findId = myItemsCart.find((item) => {
+  //     return item.pictures[0].pictureable_id === id;
+  //   });
+  //   useEffect(() => {
+  //     if (findId) {
+  //       SetQuantity(findId.quantity);
+  //     }
+  //   }, [findId]);
+  // }
+
+  useEffect(() => {
+    if (carting && carting.length > 0) {
+      console.log("carting", carting);
+      const findId = carting.find((item) => {
+        return item.pictures[0].pictureable_id === id;
+      });
+
+      if (findId) {
+        SetQuantity(findId.quantity);
+      }
+    } else if (mycart) {
+      const findId = mycart.find((item) => {
+        return item.pictures[0].pictureable_id === id;
+      });
+
+      if (findId) {
+        console.log("se encontro finid!!:", findId.quantity);
+        SetQuantity(findId.quantity);
+      }
+    }
+  }, [carting, id]);
 
   //--------------------------------------------------------------------------------
 
