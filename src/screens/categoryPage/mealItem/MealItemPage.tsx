@@ -37,6 +37,7 @@ import { addItem } from "../../../redux/cartQuantitySlice";
 import {
   useGetmyCartQuery,
   useIncreaseCartMutation,
+  useLazyGetmyCartQuery,
 } from "../../../redux/api/myCartApi";
 
 // const itemsProps=[1,2,3,4,5,6]
@@ -76,6 +77,11 @@ const MealItemPage = ({ route }) => {
   } = meal;
 
   // ---------------------------------------------------------------------------------
+  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
+    refetchOnFocus: true,
+  });
+
+  // ---------------------------------------------------------------------------------
 
   const {
     data: datagetmycart,
@@ -91,12 +97,13 @@ const MealItemPage = ({ route }) => {
   useEffect(() => {
     if (datagetmycart) {
       setCarting(datagetmycart?.data.my_cart?.cart_items);
+    } else if (dataMycart) {
+      setCarting(dataMycart?.data.my_cart?.cart_items);
     }
-  }, [datagetmycart]);
+  }, [datagetmycart, dataMycart]);
 
   // if (datagetmycart?.data.my_cart?.cart_items) {
   //
-  //   console.log(myItemsCart);
 
   //   const findId = myItemsCart.find((item) => {
   //     return item.pictures[0].pictureable_id === id;
@@ -110,7 +117,6 @@ const MealItemPage = ({ route }) => {
 
   useEffect(() => {
     if (carting && carting.length > 0) {
-      console.log("carting", carting);
       const findId = carting.find((item) => {
         return item.pictures[0].pictureable_id === id;
       });
@@ -124,7 +130,6 @@ const MealItemPage = ({ route }) => {
       });
 
       if (findId) {
-        console.log("se encontro finid!!:", findId.quantity);
         SetQuantity(findId.quantity);
       }
     }
@@ -157,7 +162,8 @@ const MealItemPage = ({ route }) => {
   const [increaseCart, { data: dataincreaseCart }] = useIncreaseCartMutation();
 
   const handlerdecrease = async () => {
-    const result = await decreaseCart(carroId);
+    const result = await decreaseCart(carroId).unwrap();
+    trigger("");
 
     SetQuantity(quantity - 1);
     const itemsState = { id, cantidad: quantity - 1 };
@@ -170,7 +176,8 @@ const MealItemPage = ({ route }) => {
   };
 
   const handlerincrease = async () => {
-    const result = await increaseCart(carroId);
+    const result = await increaseCart(carroId).unwrap();
+    trigger("");
 
     SetQuantity(quantity + 1);
     const itemsState = { id, cantidad: quantity + 1 };

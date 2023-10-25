@@ -27,36 +27,35 @@ export default function MealPrepCard({ item, navigation }) {
   const [mycart, setMycart] = useState([]);
   const dispatch = useDispatch();
 
-  const [
-    createAddCart,
-    { data, isError, error, isLoading, isSuccess, isFetching },
-  ] = useCreateAddCartMutation();
+  const [createAddCart, { data, isError, error, isSuccess, reset }] =
+    useCreateAddCartMutation();
 
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
 
   const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
 
   // -------------------------------------------------------------------------------
-  const [trigger, { data: dataMycart, refetch, isFetching: isFetchingMyCart }] =
-    useLazyGetmyCartQuery({
-      refetchOnFocus: true,
-    });
-
-  const { data: dataMycartGet } = useGetmyCartQuery("", {
+  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   });
-  useEffect(() => {
-    if (dataMycartGet) {
-      setMycart(dataMycartGet?.data?.my_cart?.cart_items);
-    }
-  }, [dataMycartGet]);
+  //------------------------------------------------------------------------------------
+  const {
+    data: testing,
+    isFetching,
+    isLoading,
+  } = useGetmyCartQuery("", {
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    // pollingInterval: 5,
+  });
+  //---------------------------------------------------------------------------
 
   useEffect(() => {
     if (dataMycart) {
       setMycart(dataMycart?.data?.my_cart?.cart_items);
     }
-  }, [dataMycart, isFetching, refetch]);
+  }, [dataMycart, isFetching]);
   // -------------------------------------------------------------------------------
   const cartItems = useSelector((state) => state.cartQuantity);
   useEffect(() => {
@@ -86,7 +85,7 @@ export default function MealPrepCard({ item, navigation }) {
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
     }
-  }, [cartItems, trigger, refetch]);
+  }, [cartItems, trigger]);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
@@ -117,7 +116,6 @@ export default function MealPrepCard({ item, navigation }) {
   const handlerAddCart = async () => {
     if (!quantity) {
       SetQuantity(quantity + 1);
-      console.log("addcart ready");
 
       const response = await createAddCart({
         food_id: item.id,
@@ -153,15 +151,13 @@ export default function MealPrepCard({ item, navigation }) {
   const handlerdecrease = async () => {
     const result = await decreaseCart(idCart).unwrap();
     SetQuantity(quantity - 1);
-    refetch();
 
     // Lógica adicional si es necesario
   };
 
   const handlerincrease = async () => {
-    console.log("increase Cart Ready");
     const result = await increaseCart(idCart).unwrap();
-    // refetch();
+
     trigger("");
 
     // Lógica adicional si es necesario
