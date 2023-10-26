@@ -58,7 +58,7 @@ export default function MealPrepCard({ item, navigation }) {
     if (mycart && Array.isArray(mycart)) {
       mycart.map((item, index) => {
         const idItemCart = item.id;
-        const id = item.pictures[0].pictureable_id;
+        const id = item?.pictures[0]?.pictureable_id;
         const { quantity } = item;
         const cantidad = quantity;
         const itemsState = { id, cantidad, idItemCart };
@@ -124,27 +124,6 @@ export default function MealPrepCard({ item, navigation }) {
       }).unwrap();
 
       trigger();
-
-      // toast.show("No quantity added", {
-      //   type: "danger",
-      //   placement: "bottom",
-      //   duration: 4000,
-      //   animationType: "slide-in",
-      // });
-      // } else if (!item.id) {
-      //   toast.show("No id added", {
-      //     type: "danger",
-      //     placement: "bottom",
-      //     duration: 4000,
-      //     animationType: "slide-in",
-      //   });
-      // } else {
-      //   await createAddCart({
-      //     food_id: item.id,
-      //     quantity: 1,
-      //     food_combo_id: null,
-      //   });
-      //   trigger();
     }
   };
 

@@ -206,7 +206,8 @@ const MealItemPage = ({ route }) => {
       });
 
       SetQuantity(1);
-      navigation.navigate("Category");
+      trigger("");
+      navigation.navigate("MyCart");
 
       // navigation.navigate('VerifyUser',
       // {
@@ -229,7 +230,7 @@ const MealItemPage = ({ route }) => {
         }
       }
     }
-  }, [data, isError]);
+  }, [data, isError, trigger, isSuccess]);
 
   const cart = {
     food_id: id,
@@ -239,16 +240,26 @@ const MealItemPage = ({ route }) => {
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
-      if (quantity <= 99) {
-        SetQuantity((currentQuantity) => currentQuantity + 1);
+      if (quantity === 0) {
+        // SetQuantity(quantity + 1);
         handlerAddCart();
-        refetch();
+
+        // Llama a handlerAddCart después de actualizar la cantidad
+      }
+      if (quantity > 0) {
+        handlerincrease();
+        SetQuantity(quantity + 1);
+
+        // Llama a handlerAddCart después de actualizar la cantidad
       }
     } else if (direction === "decrease") {
-      if (quantity >= 1) {
-        SetQuantity((currentQuantity) => currentQuantity - 1);
-        handlerAddCart();
-        refetch();
+      if (quantity > 1) {
+        // SetQuantity((currentQuantity) => {
+        //   const newQuantity = currentQuantity - 1;
+        //   // Llama a handlerAddCart después de actualizar la cantidad
+        //   handlerdecrease();
+        //   return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
+        // });
       }
     }
   };
@@ -267,21 +278,15 @@ const MealItemPage = ({ route }) => {
 
   const handlerAddCart = async () => {
     if (!quantity) {
-      toast.show("No quantity added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
-      });
-    } else if (!id) {
-      toast.show("No id added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
-      });
-    } else {
-      await createAddCart({ cart });
+      SetQuantity(quantity + 1);
+
+      const response = await createAddCart({
+        food_id: id,
+        quantity: 1,
+        food_combo_id: null,
+      }).unwrap();
+
+      trigger("");
     }
   };
   useEffect(() => {
@@ -372,8 +377,8 @@ const MealItemPage = ({ route }) => {
                     </View>
                     <View style={styles.buttom}>
                       <TouchableOpacity
-                        // onPress={() => handleControl("decrease")}
                         onPress={() => handlerdecrease()}
+                        // onPress={() => handlerdecrease()}
                       >
                         <AntDesign
                           name="minuscircle"
@@ -382,7 +387,9 @@ const MealItemPage = ({ route }) => {
                         />
                       </TouchableOpacity>
                       <Text style={styles.number}>{quantity}</Text>
-                      <TouchableOpacity onPress={() => handlerincrease()}>
+                      <TouchableOpacity
+                        onPress={() => handleControl("increase")}
+                      >
                         <AntDesign
                           name="pluscircle"
                           type="ionicon"
