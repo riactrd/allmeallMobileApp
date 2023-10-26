@@ -1,13 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { mainColor, secundaryColor } from "../../../componets/shared";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useToast } from "react-native-toast-notifications";
-import {
-  useCreateAddCartMutation,
-  useDecreaseCartQuery,
-} from "../../../redux/api/addCartOld";
+import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import { useSelector } from "react-redux";
 import { selectcartItems } from "../../../redux/store";
 
@@ -29,9 +25,7 @@ export default function MealPrepCard({ item, navigation }) {
 
   const [createAddCart, { data, isError, error, isSuccess, reset }] =
     useCreateAddCartMutation();
-
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
-
   const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
 
   // -------------------------------------------------------------------------------
@@ -49,6 +43,7 @@ export default function MealPrepCard({ item, navigation }) {
     refetchOnMountOrArgChange: true,
     // pollingInterval: 5,
   });
+  cartItems;
   //---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -58,6 +53,7 @@ export default function MealPrepCard({ item, navigation }) {
   }, [dataMycart, isFetching]);
   // -------------------------------------------------------------------------------
   const cartItems = useSelector((state) => state.cartQuantity);
+
   useEffect(() => {
     if (mycart && Array.isArray(mycart)) {
       mycart.map((item, index) => {
@@ -71,7 +67,7 @@ export default function MealPrepCard({ item, navigation }) {
         setIdCart(item.id);
       });
     }
-  }, [mycart, cartItems]);
+  }, [mycart]);
 
   //---------------------------------------------------------------
 
@@ -81,11 +77,15 @@ export default function MealPrepCard({ item, navigation }) {
   });
 
   useEffect(() => {
-    if (testquantity) {
+    if (testquantity != undefined) {
+      console.log("viendo el estado desade PrepCard:", cartItems);
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
+    } else {
+      console.log("viendo el estado desade CERO:", cartItems);
+      SetQuantity(0);
     }
-  }, [cartItems, trigger]);
+  }, [cartItems, trigger, testquantity]);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {

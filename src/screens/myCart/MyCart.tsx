@@ -55,6 +55,8 @@ import {
 import MyAdresses from "../myCart/MyAdresses";
 import MycartItem from "../categoryPage/mealItem/MycartItem";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../redux/cartQuantitySlice";
 
 const wait = (timeout: number | undefined) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -84,6 +86,7 @@ const MyCart = () => {
   const itemMeals = useSelector(selectcartItems);
   // const totalQuantity = useSelector(selectcartTotalQuantity);
   // const totalAmount = useSelector(selectTotalAmount);
+  const dispatch = useDispatch();
 
   //------------------------------------------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
@@ -124,7 +127,6 @@ const MyCart = () => {
     subscription_for: "",
     exp_delivery_date: "",
     is_gift: "",
-
     zipcode: "",
     referrer_id: "",
     is_note_removed: "",

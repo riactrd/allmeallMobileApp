@@ -115,6 +115,10 @@ const MealItemPage = ({ route }) => {
   //   }, [findId]);
   // }
 
+  //--------------------------------------------------------------
+
+  //--------------------------------------------------------------
+
   useEffect(() => {
     if (carting && carting.length > 0) {
       const findId = carting.find((item) => {
@@ -280,6 +284,12 @@ const MealItemPage = ({ route }) => {
       await createAddCart({ cart });
     }
   };
+  useEffect(() => {
+    console.log("carting:", carting);
+    if (!carting) {
+      SetQuantity(0);
+    }
+  }, [carting, trigger]);
 
   const nutricion = {
     calories,
