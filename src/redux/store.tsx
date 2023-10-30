@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
+import cartQuantityReducer from "./cartQuantitySlice";
 import { authApi } from "./api/authApi";
 import { categoriesApi } from "./api/categoriesApi";
 import imageReducer from "./imageSlice";
@@ -62,6 +63,7 @@ const store = configureStore({
     cart: cartReducer,
     meal: mealReducer,
     notifications: notificationsReducer,
+    cartQuantity: cartQuantityReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(

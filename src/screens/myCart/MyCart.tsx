@@ -50,10 +50,13 @@ import {
   useDeleteItemCartMutation,
   useGetmyCartQuery,
   useIncreaseCartMutation,
+  useLazyGetmyCartQuery,
 } from "../../redux/api/myCartApi";
 import MyAdresses from "../myCart/MyAdresses";
 import MycartItem from "../categoryPage/mealItem/MycartItem";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../redux/cartQuantitySlice";
 
 const wait = (timeout: number | undefined) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -83,8 +86,18 @@ const MyCart = () => {
   const itemMeals = useSelector(selectcartItems);
   // const totalQuantity = useSelector(selectcartTotalQuantity);
   // const totalAmount = useSelector(selectTotalAmount);
+  const dispatch = useDispatch();
+
+  //------------------------------------------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
     useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
+
+  //--------------------------------------------------------------------
+  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
+    refetchOnFocus: true,
+  });
+
+  //---------------------------------------------------------------------
   const [myItem, SetMyItem] = useState<CartItems[]>([]);
   const [updateItem, SetupdateItem] = useState({
     id: "",
@@ -96,6 +109,10 @@ const MyCart = () => {
     useDecreaseCartMutation();
   const [DeleteIteCart, { isSuccess: deleteSuccess }] =
     useDeleteItemCartMutation();
+
+  useEffect(() => {
+    trigger("");
+  }, [increseSuccess, descreseSuccess]);
 
   const [updateCart, SetupdateCart] = useState<UpdateMyCart>({
     is_prime_membership: isMembership?.checked.toString(),
@@ -110,7 +127,6 @@ const MyCart = () => {
     subscription_for: "",
     exp_delivery_date: "",
     is_gift: "",
-
     zipcode: "",
     referrer_id: "",
     is_note_removed: "",
@@ -180,7 +196,7 @@ const MyCart = () => {
   useEffect(() => {
     refreshdata();
 
-    if (data?.data) {
+    if (data?.data?.my_cart?.cart_items) {
       try {
         SetMyItem(data?.data?.my_cart?.cart_items);
 
@@ -200,8 +216,18 @@ const MyCart = () => {
       } catch (error) {
         console.log(error);
       }
+    } else if (dataMycart) {
+      SetMyItem(dataMycart?.data?.my_cart?.cart_items);
     }
-  }, [data, error, isFocused, increseSuccess, descreseSuccess, deleteSuccess]);
+  }, [
+    data,
+    error,
+    isFocused,
+    increseSuccess,
+    descreseSuccess,
+    deleteSuccess,
+    dataMycart,
+  ]);
 
   const onChangeGlasswares = (): void => {
     // const value = e.nativeEvent.text;

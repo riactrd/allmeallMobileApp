@@ -35,6 +35,8 @@ import { RootStackParamList } from "../../navigators/RootStack";
 import DashInfo from "../../componets/dashInfo/DashInfo";
 import SkeletonDashboard from "./SkeletonDashboard";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useGetmyCartQuery } from "../../redux/api/myCartApi";
+import { addItem } from "../../redux/cartQuantitySlice";
 
 type props = StackScreenProps<RootStackParamList, "Home">;
 
@@ -53,6 +55,36 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     existingOrders: 0,
     rewardPoints: 0,
   });
+
+  const {
+    data: cart,
+    error: cartError,
+    isLoading: cartIsLoading,
+    refetch: cartRefetch,
+    isFetching,
+  } = useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
+
+  const cartItemQuantity = cart?.data?.my_cart?.cart_items;
+  // console.log(cartItemQuantity);
+
+  useEffect(() => {
+    if (cartItemQuantity && Array.isArray(cartItemQuantity)) {
+      cartItemQuantity.map((item, index) => {
+        const idItemCart = item.id;
+        const id = item?.pictures[0]?.pictureable_id;
+        const { quantity } = item;
+        const cantidad = quantity;
+        // console.log(`Ítem ${index + 1}: id=${id}, cantidad=${quantity}`);
+        const itemsState = { id, cantidad, idItemCart };
+        dispatch(addItem(itemsState));
+        // console.log(itemsState);
+      });
+    } else {
+      console.log(
+        "Los elementos del carrito no están disponibles o no son un arreglo."
+      );
+    }
+  }, [cart]);
 
   const handleLogout = () => {
     dispatch(

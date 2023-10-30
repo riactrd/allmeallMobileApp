@@ -31,6 +31,14 @@ import {
 import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useSelector } from "react-redux";
+import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
+import { addItem } from "../../../redux/cartQuantitySlice";
+import {
+  useGetmyCartQuery,
+  useIncreaseCartMutation,
+  useLazyGetmyCartQuery,
+} from "../../../redux/api/myCartApi";
 
 // const itemsProps=[1,2,3,4,5,6]
 
@@ -38,12 +46,21 @@ const { width } = Dimensions.get("screen");
 const card = width / 3.9;
 
 const MealItemPage = ({ route }) => {
+  const navigation = useNavigation();
+  const [quantity, SetQuantity] = useState<number>(0);
+  const dispatch = useDispatch();
+  const [carting, setCarting] = useState(null);
+  // -------------------------------------------------------------------------------
   const [
     createAddCart,
     { data, isError, error, isLoading, isSuccess, isFetching },
   ] = useCreateAddCartMutation();
+
   const toast = useToast();
-  const { meal } = route.params;
+  const { meal, carroId, mycart } = route.params;
+
+  const mycartArry = Object.values(mycart);
+
   const {
     name,
     price,
@@ -58,6 +75,71 @@ const MealItemPage = ({ route }) => {
     sodium,
     pictures,
   } = meal;
+
+  // ---------------------------------------------------------------------------------
+  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
+    refetchOnFocus: true,
+  });
+
+  // ---------------------------------------------------------------------------------
+
+  const {
+    data: datagetmycart,
+    refetch,
+    isLoading: loading,
+  } = useGetmyCartQuery("bulbasaur", {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
+
+  //---------------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (datagetmycart) {
+      setCarting(datagetmycart?.data.my_cart?.cart_items);
+    } else if (dataMycart) {
+      setCarting(dataMycart?.data.my_cart?.cart_items);
+    }
+  }, [datagetmycart, dataMycart]);
+
+  // if (datagetmycart?.data.my_cart?.cart_items) {
+  //
+
+  //   const findId = myItemsCart.find((item) => {
+  //     return item.pictures[0].pictureable_id === id;
+  //   });
+  //   useEffect(() => {
+  //     if (findId) {
+  //       SetQuantity(findId.quantity);
+  //     }
+  //   }, [findId]);
+  // }
+
+  //--------------------------------------------------------------
+
+  //--------------------------------------------------------------
+
+  useEffect(() => {
+    if (carting && carting.length > 0) {
+      const findId = carting.find((item) => {
+        return item.pictures[0].pictureable_id === id;
+      });
+
+      if (findId) {
+        SetQuantity(findId.quantity);
+      }
+    } else if (mycart) {
+      const findId = mycart.find((item) => {
+        return item.pictures[0].pictureable_id === id;
+      });
+
+      if (findId) {
+        SetQuantity(findId.quantity);
+      }
+    }
+  }, [carting, id]);
+
+  //--------------------------------------------------------------------------------
 
   const nutritionFacts = [
     // { value: "377.0 g", name: "Calories" },
@@ -77,11 +159,42 @@ const MealItemPage = ({ route }) => {
     { value: `${sodium ? sodium.toFixed(1) : "N/A"} mg`, name: "Sodium" },
   ];
 
-  const navigation = useNavigation();
-  const [quantity, SetQuantity] = useState<number>(1);
-  const dispatch = useDispatch();
-
   const total = price * quantity;
+
+  const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
+
+  const [increaseCart, { data: dataincreaseCart }] = useIncreaseCartMutation();
+
+  const handlerdecrease = async () => {
+    const result = await decreaseCart(carroId).unwrap();
+    trigger("");
+
+    SetQuantity(quantity - 1);
+    const itemsState = { id, cantidad: quantity - 1 };
+
+    dispatch(addItem(itemsState));
+
+    // trigger();
+
+    // Lógica adicional si es necesario
+  };
+
+  const handlerincrease = async () => {
+    const result = await increaseCart(carroId).unwrap();
+    trigger("");
+
+    SetQuantity(quantity + 1);
+    const itemsState = { id, cantidad: quantity + 1 };
+    dispatch(addItem(itemsState));
+
+    // trigger();
+
+    // Lógica adicional si es necesario
+  };
+
+  // useEffect(() => {
+  //   if (testquantity) SetQuantity(testquantity.cantidad);
+  // }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -93,7 +206,8 @@ const MealItemPage = ({ route }) => {
       });
 
       SetQuantity(1);
-      navigation.navigate("Category");
+      trigger("");
+      navigation.navigate("MyCart");
 
       // navigation.navigate('VerifyUser',
       // {
@@ -116,23 +230,36 @@ const MealItemPage = ({ route }) => {
         }
       }
     }
-  }, [data, isError]);
+  }, [data, isError, trigger, isSuccess]);
 
   const cart = {
     food_id: id,
     quantity: quantity,
     food_combo_id: null,
   };
-  //   console.log(cart)
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
-      if (quantity <= 99) {
-        SetQuantity((currentQuantity) => currentQuantity + 1);
+      if (quantity === 0) {
+        // SetQuantity(quantity + 1);
+        handlerAddCart();
+
+        // Llama a handlerAddCart después de actualizar la cantidad
+      }
+      if (quantity > 0) {
+        handlerincrease();
+        SetQuantity(quantity + 1);
+
+        // Llama a handlerAddCart después de actualizar la cantidad
       }
     } else if (direction === "decrease") {
-      if (quantity >= 1) {
-        SetQuantity((currentQuantity) => currentQuantity - 1);
+      if (quantity > 1) {
+        // SetQuantity((currentQuantity) => {
+        //   const newQuantity = currentQuantity - 1;
+        //   // Llama a handlerAddCart después de actualizar la cantidad
+        //   handlerdecrease();
+        //   return newQuantity; // Devuelve la nueva cantidad para actualizar el estado
+        // });
       }
     }
   };
@@ -151,23 +278,23 @@ const MealItemPage = ({ route }) => {
 
   const handlerAddCart = async () => {
     if (!quantity) {
-      toast.show("No quantity added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
-      });
-    } else if (!id) {
-      toast.show("No id added", {
-        type: "danger",
-        placement: "bottom",
-        duration: 4000,
-        animationType: "slide-in",
-      });
-    } else {
-      await createAddCart({ cart });
+      SetQuantity(quantity + 1);
+
+      const response = await createAddCart({
+        food_id: id,
+        quantity: 1,
+        food_combo_id: null,
+      }).unwrap();
+
+      trigger("");
     }
   };
+  useEffect(() => {
+    console.log("carting:", carting);
+    if (!carting) {
+      SetQuantity(0);
+    }
+  }, [carting, trigger]);
 
   const nutricion = {
     calories,
@@ -250,7 +377,8 @@ const MealItemPage = ({ route }) => {
                     </View>
                     <View style={styles.buttom}>
                       <TouchableOpacity
-                        onPress={() => handleControl("decrease")}
+                        onPress={() => handlerdecrease()}
+                        // onPress={() => handlerdecrease()}
                       >
                         <AntDesign
                           name="minuscircle"
@@ -285,7 +413,7 @@ const MealItemPage = ({ route }) => {
                       style={{ marginTop: 10 }}
                       source={require("../../../../assets/img/minilogo.png")}
                     />
-                    {quantity ? (
+                    {/* {quantity ? (
                       <TouchableOpacity
                         style={{
                           backgroundColor: mainColor,
@@ -303,7 +431,7 @@ const MealItemPage = ({ route }) => {
                       </TouchableOpacity>
                     ) : (
                       <></>
-                    )}
+                    )} */}
                   </View>
                 </View>
               </View>

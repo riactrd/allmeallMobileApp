@@ -15,6 +15,8 @@ import {
   useDecreaseCartMutation,
   useDeleteItemCartMutation,
 } from "../../../redux/api/myCartApi";
+import { useDispatch } from "react-redux";
+import { deleteItem } from "../../../redux/cartQuantitySlice";
 
 {
   /* <FlatList<CartItems>
@@ -48,6 +50,7 @@ const MycartItem: FunctionComponent<Props> = ({
   deleteSuccess,
 }) => {
   const toast = useToast();
+  const dispatch = useDispatch();
   // const [increaseCart,{isSuccess: increseSuccess}] = useIncreaseCartMutation();
   // const [decreaseCart,{isSuccess: descreseSuccess} ] = useDecreaseCartMutation();
   // const [DeleteIteCart,{isSuccess: deleteSuccess}] = useDeleteItemCartMutation();
@@ -81,6 +84,13 @@ const MycartItem: FunctionComponent<Props> = ({
     //       });
     // }
   }, [deleteSuccess, descreseSuccess, increseSuccess]);
+
+  const handlerDeleteCart = async (id) => {
+    const result = await DeleteIteCart(id).unwrap();
+    dispatch(deleteItem({ id: id }));
+
+    // Lógica adicional si es necesario
+  };
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -154,7 +164,8 @@ const MycartItem: FunctionComponent<Props> = ({
               onPress={() => {
                 // SetNewId(28224)
                 // refetch()
-                DeleteIteCart(item.id);
+                handlerDeleteCart(item.id);
+                // DeleteIteCart(item.id);
                 refreshdata();
               }}
             >

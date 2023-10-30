@@ -22,7 +22,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 export default function Signin({ navigation }) {
   const [loginUser, { data, isError, error, isLoading }] =
     useLoginUserMutation();
-  const [email, SetUserEmail] = useState<string>("morbanjunior@gmail.com");
+  const [email, SetUserEmail] = useState<string>("tico81641@gmail.com");
   const [password, SetPassword] = useState<string>("123456");
   const toast = useToast();
   const dispatch = useDispatch();
