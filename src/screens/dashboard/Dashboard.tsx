@@ -37,6 +37,7 @@ import SkeletonDashboard from "./SkeletonDashboard";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useGetmyCartQuery } from "../../redux/api/myCartApi";
 import { addItem } from "../../redux/cartQuantitySlice";
+import { useLazySearchCategoriesQuery } from "../../redux/api/categoriesApi";
 
 type props = StackScreenProps<RootStackParamList, "Home">;
 
@@ -45,8 +46,25 @@ const wait = (timeout: number | undefined) => {
 };
 
 const Dashboard: FunctionComponent<props> = ({ navigation }) => {
+  const [search, setSearch] = useState("");
+  const [dataSearchApi, setDataSearchApi] = useState([]);
+
   const { data, isError, error, isLoading, isSuccess, refetch } =
     useGetdashboardQuery("");
+
+  const [trigger, { data: dataSearch }] = useLazySearchCategoriesQuery(search);
+  useEffect(() => {
+    if (dataSearch) {
+      // console.log("response api:", dataSearch.data.menu);
+      setDataSearchApi(dataSearch.data.menu);
+    }
+  }, [dataSearch]);
+
+  console.log("response Api", dataSearchApi);
+
+  // useEffect(() => {
+  //   if (dataSearch) SetfeaturedMeals(dataSearch);
+  // }, [dataSearch]);
 
   const dispatch = useDispatch();
   const toast = useToast();
@@ -126,10 +144,11 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         rewardPoints: data.data.dashboard.reward_points,
       });
       SetfeaturedMeals(data.data.dashboard.featured_meals);
-      // console.log("Featured Meals: " + featuredMeals);
+      console.log("Featured Meals: ", featuredMeals);
     } else if (isError) {
       console.log(error);
     }
+
     if (isError) {
       if (error) {
         if ("status" in error) {
@@ -208,16 +227,26 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
           }}
         >
           <DashInfo dash={dash} />
-          <Search />
+          <Search trigger={trigger} search={search} setSearch={setSearch} />
           <Categories navigation={navigation} />
-          <FeaturedMeals
-            featuredMeals={featuredMeals}
-            navigation={navigation}
-          />
-          <FeaturedMeals
-            featuredMeals={featuredMeals}
-            navigation={navigation}
-          />
+          {!dataSearch ? (
+            <FeaturedMeals
+              featuredMeals={featuredMeals}
+              navigation={navigation}
+            />
+          ) : (
+            <FeaturedMeals
+              featuredMeals={dataSearchApi}
+              navigation={navigation}
+            />
+          )}
+
+          {!dataSearch && (
+            <FeaturedMeals
+              featuredMeals={featuredMeals}
+              navigation={navigation}
+            />
+          )}
         </ScrollView>
       </>
     );

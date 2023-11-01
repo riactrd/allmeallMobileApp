@@ -3,33 +3,33 @@ import React, { useState } from "react";
 import FeaturedMealsItems from "./FeaturedMealsItems";
 import { FeaturedMeal } from "../../model/DashboardModel";
 
-const featuredMealsItems = [
-  {
-    id: 1,
-    name: "Blackened Grilled Chicken",
-    img: require("../../../assets/img/MaskGroup.png"),
-  },
-  {
-    id: 2,
-    name: "Blackened Shrimp and Seasonal Veggies",
-    img: require("../../../assets/img/MaskGroup1.png"),
-  },
-  {
-    id: 3,
-    name: "Chicken Burger",
-    img: require("../../../assets/img/MaskGroup2.png"),
-  },
-  {
-    id: 4,
-    name: "Sushi Makizushi",
-    img: require("../../../assets/img/chickenBurger.png"),
-  },
-  {
-    id: 5,
-    name: "Keto Meals",
-    img: require("../../../assets/img/MaskGroup.png"),
-  },
-];
+// const featuredMealsItems = [
+//   {
+//     id: 1,
+//     name: "Blackened Grilled Chicken",
+//     img: require("../../../assets/img/MaskGroup.png"),
+//   },
+//   {
+//     id: 2,
+//     name: "Blackened Shrimp and Seasonal Veggies",
+//     img: require("../../../assets/img/MaskGroup1.png"),
+//   },
+//   {
+//     id: 3,
+//     name: "Chicken Burger",
+//     img: require("../../../assets/img/MaskGroup2.png"),
+//   },
+//   {
+//     id: 4,
+//     name: "Sushi Makizushi",
+//     img: require("../../../assets/img/chickenBurger.png"),
+//   },
+//   {
+//     id: 5,
+//     name: "Keto Meals",
+//     img: require("../../../assets/img/MaskGroup.png"),
+//   },
+// ];
 
 type Props = {
   featuredMeals: FeaturedMeal[];
