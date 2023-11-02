@@ -38,6 +38,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { useGetmyCartQuery } from "../../redux/api/myCartApi";
 import { addItem } from "../../redux/cartQuantitySlice";
 import { useLazySearchCategoriesQuery } from "../../redux/api/categoriesApi";
+import { MaterialIcons } from "@expo/vector-icons";
 
 type props = StackScreenProps<RootStackParamList, "Home">;
 
@@ -253,29 +254,56 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
               isFetching={isFetching}
             />
           ) : (
-            <Text
-              style={{
-                fontStyle: "normal",
-                fontWeight: "600",
-                fontSize: 16,
-                lineHeight: 30,
-                letterSpacing: 0.15,
-                color: "#262626ad",
-                // paddingLeft: 20,
-                marginTop: 40,
-                alignSelf: "center",
-              }}
-            >
-              No item found
-            </Text>
-          )}
+            <>
+              <Text
+                style={{
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  fontSize: 16,
+                  lineHeight: 30,
+                  letterSpacing: 0.15,
+                  color: "#262626",
+                  paddingLeft: 20,
+                }}
+              >
+                Search Result
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginVertical: 40,
+                }}
+              >
+                <Text
+                  style={{
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    fontSize: 16,
+                    lineHeight: 30,
+                    letterSpacing: 0.15,
+                    color: "#262626ad",
+                    // paddingLeft: 20,
 
-          {/* {!dataSearch && (
-            <FeaturedMeals
-              featuredMeals={featuredMeals}
-              navigation={navigation}
-            />
-          )} */}
+                    alignSelf: "center",
+                  }}
+                >
+                  No item found
+                </Text>
+                <MaterialIcons
+                  name="search-off"
+                  size={30}
+                  color="#262626ad"
+                  style={{ marginLeft: 5 }}
+                />
+              </View>
+            </>
+          )}
+          <FeaturedMeals
+            featuredMeals={featuredMeals}
+            navigation={navigation}
+          />
         </ScrollView>
       </>
     );
