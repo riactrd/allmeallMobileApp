@@ -16,18 +16,26 @@ const Search = ({ search, setSearch, trigger }) => {
   ): void => {
     const value = e.nativeEvent.text;
     setSearch(value);
-    console.log(value);
+    console.log("search:", value);
   };
 
   const handleSubmit = () => {
-    console.log("Submitted");
-    // console.log(search);
-    trigger(search);
+    if (search.trim() === "") {
+      setSearch("");
+      console.log("El string de búsqueda está vacío, no se hará nada.");
+    } else {
+      // Hacer algo con search si no está vacío
+      trigger(search);
+    }
+    // console.log("Submitted");
+    // // console.log(search);
+    // trigger(search);
   };
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Ionicons name="search" type="ionicon" style={styles.icon} />
+
         <TextInput
           style={styles.input}
           placeholder="Search for meals"
@@ -35,6 +43,7 @@ const Search = ({ search, setSearch, trigger }) => {
           onChange={onChangeSearch}
           onSubmitEditing={handleSubmit}
         />
+
         <View style={styles.backIcom}>
           <Ionicons2 name="tune" type="ionicon" style={styles.icon2} />
         </View>

@@ -47,12 +47,15 @@ const wait = (timeout: number | undefined) => {
 
 const Dashboard: FunctionComponent<props> = ({ navigation }) => {
   const [search, setSearch] = useState("");
-  const [dataSearchApi, setDataSearchApi] = useState([]);
+  const [dataSearchApi, setDataSearchApi] = useState(null);
 
   const { data, isError, error, isLoading, isSuccess, refetch } =
     useGetdashboardQuery("");
 
-  const [trigger, { data: dataSearch }] = useLazySearchCategoriesQuery(search);
+  const [
+    trigger,
+    { data: dataSearch, isLoading: isLoadingDataSearch, isFetching },
+  ] = useLazySearchCategoriesQuery(search);
   useEffect(() => {
     if (dataSearch) {
       // console.log("response api:", dataSearch.data.menu);
@@ -60,7 +63,11 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     }
   }, [dataSearch]);
 
-  console.log("response Api", dataSearchApi);
+  useEffect(() => {
+    if (search === "") {
+      setDataSearchApi(null);
+    }
+  }, [search]);
 
   // useEffect(() => {
   //   if (dataSearch) SetfeaturedMeals(dataSearch);
@@ -79,7 +86,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     error: cartError,
     isLoading: cartIsLoading,
     refetch: cartRefetch,
-    isFetching,
+    // isFetching,
   } = useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
 
   const cartItemQuantity = cart?.data?.my_cart?.cart_items;
@@ -144,7 +151,6 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         rewardPoints: data.data.dashboard.reward_points,
       });
       SetfeaturedMeals(data.data.dashboard.featured_meals);
-      console.log("Featured Meals: ", featuredMeals);
     } else if (isError) {
       console.log(error);
     }
@@ -229,24 +235,47 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
           <DashInfo dash={dash} />
           <Search trigger={trigger} search={search} setSearch={setSearch} />
           <Categories navigation={navigation} />
-          {!dataSearch ? (
+          {!dataSearchApi ? (
             <FeaturedMeals
               featuredMeals={featuredMeals}
               navigation={navigation}
+              cart={cart}
+              isLoadingDataSearch={isLoadingDataSearch}
+              isFetching={isFetching}
             />
-          ) : (
+          ) : dataSearchApi.length > 0 ? (
             <FeaturedMeals
+              isLoadingDataSearch={isLoadingDataSearch}
+              dataSearchApi={dataSearchApi}
               featuredMeals={dataSearchApi}
               navigation={navigation}
+              isLoadingDataSearch={isLoadingDataSearch}
+              isFetching={isFetching}
             />
+          ) : (
+            <Text
+              style={{
+                fontStyle: "normal",
+                fontWeight: "600",
+                fontSize: 16,
+                lineHeight: 30,
+                letterSpacing: 0.15,
+                color: "#262626ad",
+                // paddingLeft: 20,
+                marginTop: 40,
+                alignSelf: "center",
+              }}
+            >
+              No item found
+            </Text>
           )}
 
-          {!dataSearch && (
+          {/* {!dataSearch && (
             <FeaturedMeals
               featuredMeals={featuredMeals}
               navigation={navigation}
             />
-          )}
+          )} */}
         </ScrollView>
       </>
     );
