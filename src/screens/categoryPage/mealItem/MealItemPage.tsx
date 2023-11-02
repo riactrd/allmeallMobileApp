@@ -57,7 +57,18 @@ const MealItemPage = ({ route }) => {
   ] = useCreateAddCartMutation();
 
   const toast = useToast();
-  const { meal, carroId, mycart } = route.params;
+  // const { meal, carroId, mycart } = route.params;
+  const { meal, carroId, mycart } = route.params || {};
+
+  console.log(mycart);
+
+  if (!meal || !carroId || !mycart) {
+    // Manejar el caso en el que alguna propiedad sea undefined
+
+    return (
+      <Text style={{ marginTop: 100 }}>Algunas propiedades son undefined.</Text>
+    );
+  }
 
   const mycartArry = Object.values(mycart);
 

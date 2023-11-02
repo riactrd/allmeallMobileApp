@@ -37,6 +37,8 @@ import SkeletonDashboard from "./SkeletonDashboard";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useGetmyCartQuery } from "../../redux/api/myCartApi";
 import { addItem } from "../../redux/cartQuantitySlice";
+import { useLazySearchCategoriesQuery } from "../../redux/api/categoriesApi";
+import { MaterialIcons } from "@expo/vector-icons";
 
 type props = StackScreenProps<RootStackParamList, "Home">;
 
@@ -45,8 +47,32 @@ const wait = (timeout: number | undefined) => {
 };
 
 const Dashboard: FunctionComponent<props> = ({ navigation }) => {
+  const [search, setSearch] = useState("");
+  const [dataSearchApi, setDataSearchApi] = useState(null);
+
   const { data, isError, error, isLoading, isSuccess, refetch } =
     useGetdashboardQuery("");
+
+  const [
+    trigger,
+    { data: dataSearch, isLoading: isLoadingDataSearch, isFetching },
+  ] = useLazySearchCategoriesQuery(search);
+  useEffect(() => {
+    if (dataSearch) {
+      // console.log("response api:", dataSearch.data.menu);
+      setDataSearchApi(dataSearch.data.menu);
+    }
+  }, [dataSearch]);
+
+  useEffect(() => {
+    if (search === "") {
+      setDataSearchApi(null);
+    }
+  }, [search]);
+
+  // useEffect(() => {
+  //   if (dataSearch) SetfeaturedMeals(dataSearch);
+  // }, [dataSearch]);
 
   const dispatch = useDispatch();
   const toast = useToast();
@@ -61,7 +87,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     error: cartError,
     isLoading: cartIsLoading,
     refetch: cartRefetch,
-    isFetching,
+    // isFetching,
   } = useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
 
   const cartItemQuantity = cart?.data?.my_cart?.cart_items;
@@ -126,10 +152,10 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         rewardPoints: data.data.dashboard.reward_points,
       });
       SetfeaturedMeals(data.data.dashboard.featured_meals);
-      // console.log("Featured Meals: " + featuredMeals);
     } else if (isError) {
       console.log(error);
     }
+
     if (isError) {
       if (error) {
         if ("status" in error) {
@@ -208,12 +234,72 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
           }}
         >
           <DashInfo dash={dash} />
-          <Search />
+          <Search trigger={trigger} search={search} setSearch={setSearch} />
           <Categories navigation={navigation} />
-          <FeaturedMeals
-            featuredMeals={featuredMeals}
-            navigation={navigation}
-          />
+          {!dataSearchApi ? (
+            <FeaturedMeals
+              featuredMeals={featuredMeals}
+              navigation={navigation}
+              cart={cart}
+              isLoadingDataSearch={isLoadingDataSearch}
+              isFetching={isFetching}
+            />
+          ) : dataSearchApi.length > 0 ? (
+            <FeaturedMeals
+              isLoadingDataSearch={isLoadingDataSearch}
+              dataSearchApi={dataSearchApi}
+              featuredMeals={dataSearchApi}
+              navigation={navigation}
+              isLoadingDataSearch={isLoadingDataSearch}
+              isFetching={isFetching}
+            />
+          ) : (
+            <>
+              <Text
+                style={{
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  fontSize: 16,
+                  lineHeight: 30,
+                  letterSpacing: 0.15,
+                  color: "#262626",
+                  paddingLeft: 20,
+                }}
+              >
+                Search Result
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginVertical: 40,
+                }}
+              >
+                <Text
+                  style={{
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    fontSize: 16,
+                    lineHeight: 30,
+                    letterSpacing: 0.15,
+                    color: "#262626ad",
+                    // paddingLeft: 20,
+
+                    alignSelf: "center",
+                  }}
+                >
+                  No item found
+                </Text>
+                <MaterialIcons
+                  name="search-off"
+                  size={30}
+                  color="#262626ad"
+                  style={{ marginLeft: 5 }}
+                />
+              </View>
+            </>
+          )}
           <FeaturedMeals
             featuredMeals={featuredMeals}
             navigation={navigation}

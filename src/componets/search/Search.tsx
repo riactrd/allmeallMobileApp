@@ -1,14 +1,49 @@
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/EvilIcons";
 import Ionicons2 from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  useLazySearchCategoriesQuery,
+  useSearchCategoriesQuery,
+} from "../../redux/api/categoriesApi";
 
-const Search = () => {
+const Search = ({ search, setSearch, trigger }) => {
+  // const [search, setSearch] = useState("");
+  // const [trigger, { data }] = useLazySearchCategoriesQuery(search);
+
+  const onChangeSearch = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setSearch(value);
+    console.log("search:", value);
+  };
+
+  const handleSubmit = () => {
+    if (search.trim() === "") {
+      setSearch("");
+      console.log("El string de búsqueda está vacío, no se hará nada.");
+    } else {
+      // Hacer algo con search si no está vacío
+      trigger(search);
+    }
+    // console.log("Submitted");
+    // // console.log(search);
+    // trigger(search);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Ionicons name="search" type="ionicon" style={styles.icon} />
-        <TextInput style={styles.input} placeholder="Search for meals" />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Search for meals"
+          value={search}
+          onChange={onChangeSearch}
+          onSubmitEditing={handleSubmit}
+        />
+
         <View style={styles.backIcom}>
           <Ionicons2 name="tune" type="ionicon" style={styles.icon2} />
         </View>

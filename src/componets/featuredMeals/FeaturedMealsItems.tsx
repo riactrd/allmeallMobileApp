@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FeaturedMeal } from "../../model/DashboardModel";
 
 import { ScreenWidth } from "../shared";
@@ -19,8 +19,28 @@ const FeaturedMealsItems: React.FC<Props> = ({
   selected,
   index,
   Setselected,
+  cart,
 }) => {
   const navigation = useNavigation();
+  const [idCart, setIdCart] = useState(1);
+  const [mycart, setMycart] = useState([]);
+
+  useEffect(() => {
+    if (cart && Array.isArray(cart)) {
+      cart.map((item, index) => {
+        const idItemCart = item.id;
+        const id = item?.pictures[0]?.pictureable_id;
+        const { quantity } = item;
+        const cantidad = quantity;
+        const itemsState = { id, cantidad, idItemCart };
+        // dispatch(addItem(itemsState));
+
+        setIdCart(item.id);
+        setMycart(cart?.data?.my_cart?.cart_items);
+      });
+    }
+  }, [cart]);
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -28,7 +48,11 @@ const FeaturedMealsItems: React.FC<Props> = ({
       onPress={() =>
         navigation.navigate("CategoryTab", {
           screen: "MealItemPage",
-          params: { meal: item },
+          params: {
+            meal: item,
+            mycart: mycart,
+            carroId: idCart,
+          },
         })
       }
     >
