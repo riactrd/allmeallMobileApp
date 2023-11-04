@@ -1,5 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import {
   ScreenWidth,
   mainColor,
@@ -7,40 +13,65 @@ import {
   thirdColor,
 } from "../../componets/shared";
 import { useGetListReferEarnQuery } from "../../redux/api/referEarnApi";
+import { ScrollView } from "react-native-gesture-handler";
+import Entypo from "react-native-vector-icons/Entypo";
+import PickupItem from "../pickup/PickupItem";
+import ReferItem from "./ReferItem";
+import Ionicons from "react-native-vector-icons/EvilIcons";
+import Ionicons2 from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function ReferList() {
   const { data } = useGetListReferEarnQuery();
   const [referList, setReferList] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (data) {
-      setReferList(data.data);
+      setReferList(data.data.referrals);
     }
   }, [data]);
 
-  console.log(referList);
+  const onChangeSearch = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setSearch(value);
+    console.log("search:", value);
+  };
+
+  const handleSubmit = () => {
+    // if (search.trim() === "") {
+    //   setSearch("");
+    //   console.log("El string de búsqueda está vacío, no se hará nada.");
+    // } else {
+    //   // Hacer algo con search si no está vacío
+    //   trigger(search);
+    console.log("El string de búsqueda está vacío, no se hará nada.");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.saveButtom}
-          // onPress={handleaddPickup}
-        >
-          <Text style={styles.saveButtomText}>Pickup Glassware Request</Text>
-        </TouchableOpacity>
-        <View style={styles.textDivide}>
-          <Entypo name="back-in-time" color={mainColor} style={styles.icon} />
-          <Text style={styles.textDivideFont}>Old Requests</Text>
-        </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ width: ScreenWidth, marginBottom: 5 }}
         >
+          <View style={{}}>
+            <View style={styles.inputContainer}>
+              {/* <Ionicons name="search" type="ionicon" style={styles.icon} /> */}
+
+              <TextInput
+                style={styles.input}
+                placeholder="Search User"
+                value={search}
+                onChange={onChangeSearch}
+                onSubmitEditing={handleSubmit}
+              />
+            </View>
+          </View>
           <View style={styles.viewScroll}>
-            {pickupRequests.map((item, index) => (
+            {referList.map((item, index) => (
               <View key={index}>
-                <PickupItem item={item} />
+                <ReferItem item={item} />
               </View>
             ))}
           </View>
@@ -97,13 +128,24 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     color: thirdColor,
   },
-  viewScroll: {
-    // width: ScreenWidth-20,
-    flexDirection: "column",
-    alignItems: "center",
-    // padding:1,
-    // marginBottom:320,
-    marginBottom: "auto",
-    marginTop: 20,
+  viewScroll: { marginTop: 20 },
+
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    // paddingBottom: 10,
+    // position: "relative",
+  },
+
+  input: {
+    width: "100%",
+    height: 56,
+    borderColor: "#DADADA",
+    borderWidth: 1.5,
+    padding: 10,
+    paddingLeft: 25,
+    borderRadius: 5,
+    backgroundColor: "white",
   },
 });

@@ -8,7 +8,6 @@ import {
 } from "../../redux/api/categoriesApi";
 
 const Search = ({ search, setSearch, trigger }) => {
-  // const [search, setSearch] = useState("");
   // const [trigger, { data }] = useLazySearchCategoriesQuery(search);
 
   const onChangeSearch = (
