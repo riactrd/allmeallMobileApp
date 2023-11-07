@@ -34,6 +34,7 @@ export const referEarnApi = createApi({
       return headers;
     },
   }) as BaseQueryFn<string | FetchArgs, unknown, errorModel, {}>,
+  tagTypes: ["ReferList"],
 
   endpoints: (builder) => ({
     getListReferEarn: builder.query<PickupGlasswareModel, string | boolean>({
@@ -41,6 +42,7 @@ export const referEarnApi = createApi({
         url: "referrals",
         method: "GET",
       }),
+      providesTags: ["ReferList"],
     }),
     // getaddressesId: builder.query({
     //     query: (id) => `addresses/${id}`,
@@ -58,6 +60,7 @@ export const referEarnApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["ReferList"],
     }),
 
     generatePromoCode: builder.mutation({

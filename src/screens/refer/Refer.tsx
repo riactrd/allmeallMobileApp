@@ -36,12 +36,22 @@ const Refer = () => {
 
   const [
     generateCode,
-    { data: dataCode, isError: isErrorCode, error: errorCode },
+    {
+      data: dataCode,
+      isError: isErrorCode,
+      error: errorCode,
+      isSuccess: isSuccessCode,
+    },
   ] = useGeneratePromoCodeMutation();
 
   useEffect(() => {
-    if (dataCode) {
-      // console.log(dataCode);
+    if (isSuccessCode) {
+      toast.show("Promo code success", {
+        type: "success",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
     }
     if (isErrorCode) {
       console.log(errorCode?.data?.error?.message);
@@ -108,6 +118,7 @@ const Refer = () => {
 
   const handlerSubitGenerateCode = async () => {
     await generateCode(promoCode);
+    setPromoCode("");
   };
 
   return (
@@ -138,6 +149,7 @@ const Refer = () => {
               placeholder="Type Promo Code..."
               style={styles.input}
               onChange={onChangePromoCode}
+              value={promoCode}
             />
           </View>
           <TouchableOpacity
