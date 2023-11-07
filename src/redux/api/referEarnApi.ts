@@ -52,23 +52,30 @@ export const referEarnApi = createApi({
     //       body: cart
     //   })
     // }),
-    createpickupGlassware: builder.mutation({
-      query: () => ({
-        url: `pickup-glassware-requests/create`,
+    createReferEarn: builder.mutation({
+      query: (body) => ({
+        url: "referrals",
         method: "POST",
+        body,
       }),
-      invalidatesTags: ["getPickupG"],
     }),
-    deletpickupGlassware: builder.mutation({
-      query: (id) => ({
-        url: `pickup-glassware-requests/${id}/cancel`,
+
+    generatePromoCode: builder.mutation({
+      query: (promoCode) => ({
+        url: `referrals/generate-promo-code`,
         method: "POST",
+        body: {
+          promo_code: promoCode,
+        },
       }),
-      invalidatesTags: ["getPickupG"],
     }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetListReferEarnQuery } = referEarnApi;
+export const {
+  useGetListReferEarnQuery,
+  useCreateReferEarnMutation,
+  useGeneratePromoCodeMutation,
+} = referEarnApi;

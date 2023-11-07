@@ -8,7 +8,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   mainColor,
   ScreenWidth,
@@ -18,9 +18,98 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import {
+  useCreateReferEarnMutation,
+  useGeneratePromoCodeMutation,
+} from "../../redux/api/referEarnApi";
+import { useToast } from "react-native-toast-notifications";
 
 const Refer = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const toast = useToast();
+
+  const [createRefer, { data, isError, error, isSuccess }] =
+    useCreateReferEarnMutation();
+
+  const [
+    generateCode,
+    { data: dataCode, isError: isErrorCode, error: errorCode },
+  ] = useGeneratePromoCodeMutation();
+
+  useEffect(() => {
+    if (dataCode) {
+      // console.log(dataCode);
+    }
+    if (isErrorCode) {
+      console.log(errorCode?.data?.error?.message);
+      toast.show(JSON.stringify(errorCode.data.error.message), {
+        type: "danger",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    }
+  }, [dataCode, isErrorCode]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.show(JSON.stringify(data?.data?.message), {
+        type: "success",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    }
+    if (isError) {
+      // console.log(error.data.error.message);
+      toast.show(JSON.stringify(error.data.error.message), {
+        type: "danger",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    }
+  }, [data, isError]);
+
+  const onChangePromoCode = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setPromoCode(value);
+  };
+
+  const onChangeName = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setName(value);
+  };
+  const onChangeEmail = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ): void => {
+    const value = e.nativeEvent.text;
+    setEmail(value);
+  };
+
+  const sendApiRefer = {
+    referral: {
+      email: email,
+      name: name,
+    },
+  };
+
+  const handlerSubmit = async () => {
+    await createRefer(sendApiRefer);
+    setName(""), setEmail("");
+  };
+
+  const handlerSubitGenerateCode = async () => {
+    await generateCode(promoCode);
+  };
+
   return (
     <KeyboardAwareScrollView
       style={{ flex: 1, backgroundColor: secundaryColor }}
@@ -45,9 +134,17 @@ const Refer = () => {
                 <Text style={styles.headerTextInput}>History </Text>
               </TouchableOpacity>
             </View>
-            <TextInput placeholder="Type Promo Code..." style={styles.input} />
+            <TextInput
+              placeholder="Type Promo Code..."
+              style={styles.input}
+              onChange={onChangePromoCode}
+            />
           </View>
-          <TouchableOpacity activeOpacity={0.7} style={styles.saveButtom}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.saveButtom}
+            onPress={handlerSubitGenerateCode}
+          >
             <Text style={styles.saveButtomText}>Generate Promo Code</Text>
           </TouchableOpacity>
           <View style={styles.containerheaderText}>
@@ -58,7 +155,12 @@ const Refer = () => {
             <Text style={styles.headerTextInput}>
               Name<Text style={{ color: mainColor }}>*</Text>
             </Text>
-            <TextInput placeholder="Type Name..." style={styles.input} />
+            <TextInput
+              placeholder="Type Name..."
+              style={styles.input}
+              onChange={onChangeName}
+              value={name}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.headerTextInput}>
@@ -67,9 +169,15 @@ const Refer = () => {
             <TextInput
               placeholder="Type Email Address..."
               style={styles.input}
+              value={email}
+              onChange={onChangeEmail}
             />
           </View>
-          <TouchableOpacity activeOpacity={0.7} style={styles.saveButtom}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.saveButtom}
+            onPress={handlerSubmit}
+          >
             <Text style={styles.saveButtomText}>Refer & Earn</Text>
           </TouchableOpacity>
         </View>

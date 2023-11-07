@@ -24,6 +24,7 @@ export default function ReferList() {
   const { data } = useGetListReferEarnQuery();
   const [referList, setReferList] = useState([]);
   const [search, setSearch] = useState("");
+  const [found, setFound] = useState([]);
 
   useEffect(() => {
     if (data) {
@@ -36,7 +37,6 @@ export default function ReferList() {
   ): void => {
     const value = e.nativeEvent.text;
     setSearch(value);
-    console.log("search:", value);
   };
 
   const handleSubmit = () => {
@@ -46,8 +46,34 @@ export default function ReferList() {
     // } else {
     //   // Hacer algo con search si no está vacío
     //   trigger(search);
-    console.log("El string de búsqueda está vacío, no se hará nada.");
+    // console.log("El string de búsqueda está vacío, no se hará nada.");
   };
+
+  const searchResults = referList.filter((item) => {
+    return item.name.toLowerCase().includes(search.toLowerCase());
+  });
+
+  // useEffect(() => {
+  //   if (searchResults.length > 0) {
+  //     console.log("Resultados encontrados:");
+  //     searchResults.forEach((result) => {
+  //       console.log(result);
+  //       setFound(result);
+  //       console.log(result);
+  //     });
+  //   } else {
+  //     console.log("No se encontraron resultados para la búsqueda: ", search);
+  //   }
+  // }, [search]);
+
+  useEffect(() => {
+    const searchResults = referList.filter((item) => {
+      return item.name.toLowerCase().includes(search.toLowerCase());
+    });
+
+    setFound(searchResults); // Almacena todos los resultados en el arreglo 'found'
+  }, [search]);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -69,11 +95,17 @@ export default function ReferList() {
             </View>
           </View>
           <View style={styles.viewScroll}>
-            {referList.map((item, index) => (
-              <View key={index}>
-                <ReferItem item={item} />
-              </View>
-            ))}
+            {found && found.length > 0
+              ? found.map((item, index) => (
+                  <View key={index}>
+                    <ReferItem item={item} />
+                  </View>
+                ))
+              : referList.map((item, index) => (
+                  <View key={index}>
+                    <ReferItem item={item} />
+                  </View>
+                ))}
           </View>
         </ScrollView>
       </View>
