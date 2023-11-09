@@ -61,8 +61,6 @@ const MealItemPage = ({ route }) => {
   // const { meal, carroId, mycart } = route.params;
   const { meal, carroId, mycart } = route.params || {};
 
-  console.log("carroId:", carroId);
-
   // if (!meal || !carroId || !mycart) {
   //   // Manejar el caso en el que alguna propiedad sea undefined
 
@@ -113,8 +111,6 @@ const MealItemPage = ({ route }) => {
       setCarting(dataMycart?.data.my_cart?.cart_items);
     }
   }, [datagetmycart, dataMycart]);
-
-  console.log("carting:", carting);
 
   // if (datagetmycart?.data.my_cart?.cart_items) {
   //
@@ -194,7 +190,6 @@ const MealItemPage = ({ route }) => {
   const handlerincrease = async () => {
     if (carroId) {
       const result = await increaseCart(carroId).unwrap();
-      console.log("result", result);
       trigger("");
 
       SetQuantity(quantity + 1);
@@ -302,10 +297,11 @@ const MealItemPage = ({ route }) => {
       }).unwrap();
 
       trigger("");
+      // navigation.navigate("MyCart");
+      navigation.goBack();
     }
   };
   useEffect(() => {
-    console.log("carting:", carting);
     if (!carting) {
       SetQuantity(0);
     }

@@ -105,10 +105,6 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
         dispatch(addItem(itemsState));
         // console.log(itemsState);
       });
-    } else {
-      console.log(
-        "Los elementos del carrito no están disponibles o no son un arreglo."
-      );
     }
   }, [cart]);
 

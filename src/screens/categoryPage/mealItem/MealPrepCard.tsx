@@ -77,11 +77,9 @@ export default function MealPrepCard({ item, navigation }) {
 
   useEffect(() => {
     if (testquantity != undefined) {
-      console.log("viendo el estado desade PrepCard:", cartItems);
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
     } else {
-      console.log("viendo el estado desade CERO:", cartItems);
       SetQuantity(0);
     }
   }, [cartItems, trigger, testquantity]);

@@ -279,8 +279,6 @@ const MyCart = () => {
     refetch();
   };
 
-  console.log(error);
-
   return (
     <>
       {isFetching && (
