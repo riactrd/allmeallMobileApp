@@ -50,6 +50,7 @@ const MealItemPage = ({ route }) => {
   const [quantity, SetQuantity] = useState<number>(0);
   const dispatch = useDispatch();
   const [carting, setCarting] = useState(null);
+
   // -------------------------------------------------------------------------------
   const [
     createAddCart,
@@ -60,15 +61,15 @@ const MealItemPage = ({ route }) => {
   // const { meal, carroId, mycart } = route.params;
   const { meal, carroId, mycart } = route.params || {};
 
-  console.log(mycart);
+  console.log("carroId:", carroId);
 
-  if (!meal || !carroId || !mycart) {
-    // Manejar el caso en el que alguna propiedad sea undefined
+  // if (!meal || !carroId || !mycart) {
+  //   // Manejar el caso en el que alguna propiedad sea undefined
 
-    return (
-      <Text style={{ marginTop: 100 }}>Algunas propiedades son undefined.</Text>
-    );
-  }
+  //   return (
+  //     <Text style={{ marginTop: 100 }}>Algunas propiedades son undefined.</Text>
+  //   );
+  // }
 
   const mycartArry = Object.values(mycart);
 
@@ -113,6 +114,8 @@ const MealItemPage = ({ route }) => {
     }
   }, [datagetmycart, dataMycart]);
 
+  console.log("carting:", carting);
+
   // if (datagetmycart?.data.my_cart?.cart_items) {
   //
 
@@ -133,7 +136,7 @@ const MealItemPage = ({ route }) => {
   useEffect(() => {
     if (carting && carting.length > 0) {
       const findId = carting.find((item) => {
-        return item.pictures[0].pictureable_id === id;
+        return item.food_id === id;
       });
 
       if (findId) {
@@ -141,7 +144,7 @@ const MealItemPage = ({ route }) => {
       }
     } else if (mycart) {
       const findId = mycart.find((item) => {
-        return item.pictures[0].pictureable_id === id;
+        return item.food_id === id;
       });
 
       if (findId) {
@@ -177,26 +180,27 @@ const MealItemPage = ({ route }) => {
   const [increaseCart, { data: dataincreaseCart }] = useIncreaseCartMutation();
 
   const handlerdecrease = async () => {
-    const result = await decreaseCart(carroId).unwrap();
-    trigger("");
+    if (carroId) {
+      const result = await decreaseCart(carroId).unwrap();
+      trigger("");
 
-    SetQuantity(quantity - 1);
-    const itemsState = { id, cantidad: quantity - 1 };
+      SetQuantity(quantity - 1);
+      const itemsState = { id, cantidad: quantity - 1 };
 
-    dispatch(addItem(itemsState));
-
-    // trigger();
-
-    // Lógica adicional si es necesario
+      dispatch(addItem(itemsState));
+    }
   };
 
   const handlerincrease = async () => {
-    const result = await increaseCart(carroId).unwrap();
-    trigger("");
+    if (carroId) {
+      const result = await increaseCart(carroId).unwrap();
+      console.log("result", result);
+      trigger("");
 
-    SetQuantity(quantity + 1);
-    const itemsState = { id, cantidad: quantity + 1 };
-    dispatch(addItem(itemsState));
+      SetQuantity(quantity + 1);
+      const itemsState = { id, cantidad: quantity + 1 };
+      dispatch(addItem(itemsState));
+    }
 
     // trigger();
 
@@ -218,7 +222,7 @@ const MealItemPage = ({ route }) => {
 
       SetQuantity(1);
       trigger("");
-      navigation.navigate("MyCart");
+      // navigation.navigate("MyCart");
 
       // navigation.navigate('VerifyUser',
       // {

@@ -97,7 +97,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
     if (cartItemQuantity && Array.isArray(cartItemQuantity)) {
       cartItemQuantity.map((item, index) => {
         const idItemCart = item.id;
-        const id = item?.pictures[0]?.pictureable_id;
+        const id = item?.food_id;
         const { quantity } = item;
         const cantidad = quantity;
         // console.log(`Ítem ${index + 1}: id=${id}, cantidad=${quantity}`);
