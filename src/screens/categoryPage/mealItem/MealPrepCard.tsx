@@ -29,7 +29,7 @@ export default function MealPrepCard({ item, navigation }) {
   const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
 
   // -------------------------------------------------------------------------------
-  const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
+  const [trigger, { data: dataGetcartTrigger }] = useLazyGetmyCartQuery({
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   });
@@ -43,14 +43,14 @@ export default function MealPrepCard({ item, navigation }) {
     refetchOnMountOrArgChange: true,
     // pollingInterval: 5,
   });
-  cartItems;
+
   //---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (dataMycart) {
-      setMycart(dataMycart?.data?.my_cart?.cart_items);
+    if (dataGetcartTrigger) {
+      setMycart(dataGetcartTrigger?.data?.my_cart?.cart_items);
     }
-  }, [dataMycart, isFetching]);
+  }, [dataGetcartTrigger, isFetching]);
   // -------------------------------------------------------------------------------
   const cartItems = useSelector((state) => state.cartQuantity);
 
@@ -58,12 +58,11 @@ export default function MealPrepCard({ item, navigation }) {
     if (mycart && Array.isArray(mycart)) {
       mycart.map((item, index) => {
         const idItemCart = item.id;
-        const id = item?.pictures[0]?.pictureable_id;
+        const id = item?.food_id;
         const { quantity } = item;
         const cantidad = quantity;
         const itemsState = { id, cantidad, idItemCart };
         dispatch(addItem(itemsState));
-
         setIdCart(item.id);
       });
     }
@@ -78,11 +77,9 @@ export default function MealPrepCard({ item, navigation }) {
 
   useEffect(() => {
     if (testquantity != undefined) {
-      console.log("viendo el estado desade PrepCard:", cartItems);
       SetQuantity(testquantity.cantidad);
       setIdCart(testquantity.idItemCart);
     } else {
-      console.log("viendo el estado desade CERO:", cartItems);
       SetQuantity(0);
     }
   }, [cartItems, trigger, testquantity]);
@@ -123,6 +120,8 @@ export default function MealPrepCard({ item, navigation }) {
         food_combo_id: null,
       }).unwrap();
 
+      setIdCart(item.id);
+
       trigger();
     }
   };
@@ -153,7 +152,7 @@ export default function MealPrepCard({ item, navigation }) {
       });
 
       // SetQuantity(1);
-      navigation.navigate("Category");
+      // navigation.navigate("MyCart");
 
       // navigation.navigate('VerifyUser',
       // {

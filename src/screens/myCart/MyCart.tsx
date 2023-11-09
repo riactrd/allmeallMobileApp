@@ -180,7 +180,9 @@ const MyCart = () => {
   // const {isSuccess} = useUpdatecartQuery('bulbasaur', { refetchOnMountOrArgChange: true});
 
   function refreshdata() {
-    refetch();
+    if (!isError) {
+      refetch();
+    }
   }
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -317,7 +319,11 @@ const MyCart = () => {
             <View style={styles.viewScroll}>
               {/* scroll */}
 
-              {data?.message !== "No Items in your cart!" ? (
+              {isError ? (
+                <Text>
+                  {error?.data?.error} {error?.data?.status}
+                </Text>
+              ) : data?.message !== "No Items in your cart!" ? (
                 <>
                   {myItem?.map((item, index) => (
                     <MycartItem

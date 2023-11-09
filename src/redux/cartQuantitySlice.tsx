@@ -23,10 +23,9 @@ const cartQuantity = createSlice({
 
     deleteItem: (state, action) => {
       const { id } = action.payload;
-      console.log("slice", action.payload);
+      // console.log("slice", action.payload);
       // Busca el índice del elemento a eliminar en el arreglo items
       const index = state.items.findIndex((item) => item.idItemCart === id);
-      console.log(index);
 
       if (index !== -1) {
         // Establece la cantidad del elemento a cero
