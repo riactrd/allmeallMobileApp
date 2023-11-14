@@ -297,8 +297,8 @@ const MealItemPage = ({ route }) => {
       }).unwrap();
 
       trigger("");
-      // navigation.navigate("MyCart");
-      navigation.goBack();
+      navigation.navigate("MyCart");
+      // navigation.goBack();
     }
   };
   useEffect(() => {
