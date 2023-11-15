@@ -50,6 +50,7 @@ const MealItemPage = ({ route }) => {
   const [quantity, SetQuantity] = useState<number>(0);
   const dispatch = useDispatch();
   const [carting, setCarting] = useState(null);
+  const [cartId, setCartId] = useState(null);
 
   // -------------------------------------------------------------------------------
   const [
@@ -68,8 +69,6 @@ const MealItemPage = ({ route }) => {
   //     <Text style={{ marginTop: 100 }}>Algunas propiedades son undefined.</Text>
   //   );
   // }
-
-  const mycartArry = Object.values(mycart);
 
   const {
     name,
@@ -108,7 +107,7 @@ const MealItemPage = ({ route }) => {
     if (datagetmycart) {
       setCarting(datagetmycart?.data.my_cart?.cart_items);
     } else if (dataMycart) {
-      setCarting(dataMycart?.data.my_cart?.cart_items);
+      // setCarting(dataMycart?.data.my_cart?.cart_items);
     }
   }, [datagetmycart, dataMycart]);
 
@@ -131,12 +130,15 @@ const MealItemPage = ({ route }) => {
 
   useEffect(() => {
     if (carting && carting.length > 0) {
+      console.log("CARTING", carting);
       const findId = carting.find((item) => {
         return item.food_id === id;
       });
 
+      console.log("find", findId);
       if (findId) {
         SetQuantity(findId.quantity);
+        setCartId(findId.id);
       }
     } else if (mycart) {
       const findId = mycart.find((item) => {
@@ -148,6 +150,8 @@ const MealItemPage = ({ route }) => {
       }
     }
   }, [carting, id]);
+
+  console.log("cartID", cartId);
 
   //--------------------------------------------------------------------------------
 
@@ -188,18 +192,18 @@ const MealItemPage = ({ route }) => {
   };
 
   const handlerincrease = async () => {
-    if (carroId) {
-      const result = await increaseCart(carroId).unwrap();
+    if (cartId) {
+      console.log("entre a handler Increse");
+      const result = await increaseCart(cartId).unwrap();
+
       trigger("");
 
       SetQuantity(quantity + 1);
-      const itemsState = { id, cantidad: quantity + 1 };
+      const itemsState = { cartId, cantidad: quantity + 1 };
       dispatch(addItem(itemsState));
     }
 
-    // trigger();
-
-    // Lógica adicional si es necesario
+    trigger("");
   };
 
   // useEffect(() => {
