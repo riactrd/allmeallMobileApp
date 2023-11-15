@@ -88,6 +88,9 @@ const MyCart = () => {
   // const totalAmount = useSelector(selectTotalAmount);
   const dispatch = useDispatch();
 
+  const cartItemsState = useSelector((state) => state.cartQuantity);
+  // console.log(cartItemsState);
+
   //------------------------------------------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
     useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
@@ -96,6 +99,16 @@ const MyCart = () => {
   const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
     refetchOnFocus: true,
   });
+
+  // console.log(dataMycart?.data.length > 0);
+
+  useEffect(() => {
+    if (dataMycart?.message === "No Items in your cart!") {
+      // console.log("No hay items en el carrito");
+      // Actualiza el estado de redux con un arreglo vacío sin utilizar Immer
+      dispatch({ type: "ADD_ITEM", payload: [] });
+    }
+  }, [dataMycart]);
 
   //---------------------------------------------------------------------
   const [myItem, SetMyItem] = useState<CartItems[]>([]);
@@ -112,7 +125,7 @@ const MyCart = () => {
 
   useEffect(() => {
     trigger("");
-  }, [increseSuccess, descreseSuccess]);
+  }, [increseSuccess, descreseSuccess, deleteSuccess]);
 
   const [updateCart, SetupdateCart] = useState<UpdateMyCart>({
     is_prime_membership: isMembership?.checked.toString(),

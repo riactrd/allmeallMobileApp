@@ -5,8 +5,6 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useToast } from "react-native-toast-notifications";
 import { useCreateAddCartMutation } from "../../../redux/api/addCartOld";
 import { useSelector } from "react-redux";
-import { selectcartItems } from "../../../redux/store";
-
 import { useDecreaseCartMutation } from "../../../redux/api/decreaseCartApi";
 import {
   useGetmyCartQuery,
@@ -23,17 +21,20 @@ export default function MealPrepCard({ item, navigation }) {
   const [mycart, setMycart] = useState([]);
   const dispatch = useDispatch();
 
+  // FUNCIONES ADD  , INCREASE , DECREASE
+
   const [createAddCart, { data, isError, error, isSuccess, reset }] =
     useCreateAddCartMutation();
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
   const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
 
-  // -------------------------------------------------------------------------------
+  // GET CART AFTER CLICK ----------------------------------------------------------------
+
   const [trigger, { data: dataGetcartTrigger }] = useLazyGetmyCartQuery({
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   });
-  //------------------------------------------------------------------------------------
+  // GET MY CART AFTER RENDER ------------------------------------------------------------
   const {
     data: testing,
     isFetching,
@@ -44,15 +45,15 @@ export default function MealPrepCard({ item, navigation }) {
     // pollingInterval: 5,
   });
 
-  //---------------------------------------------------------------------------
+  // SETMYCART---------------------------------------------------------------------------
 
   useEffect(() => {
     if (dataGetcartTrigger) {
       setMycart(dataGetcartTrigger?.data?.my_cart?.cart_items);
     }
   }, [dataGetcartTrigger, isFetching]);
+
   // -------------------------------------------------------------------------------
-  const cartItems = useSelector((state) => state.cartQuantity);
 
   useEffect(() => {
     if (mycart && Array.isArray(mycart)) {
@@ -70,19 +71,22 @@ export default function MealPrepCard({ item, navigation }) {
 
   //---------------------------------------------------------------
 
-  // Buscar el elemento en el estado del carrito con el mismo ID
-  const testquantity = cartItems.items.find((cartItem) => {
+  // Buscar el elemento en el estado del carrito con el mismo ID  (ITEM viene de props)
+
+  const cartItemsState = useSelector((state) => state.cartQuantity);
+
+  const findFoodId = cartItemsState.items.find((cartItem) => {
     return cartItem.id === item.id;
   });
 
   useEffect(() => {
-    if (testquantity != undefined) {
-      SetQuantity(testquantity.cantidad);
-      setIdCart(testquantity.idItemCart);
+    if (findFoodId != undefined) {
+      SetQuantity(findFoodId.cantidad);
+      setIdCart(findFoodId.idItemCart);
     } else {
       SetQuantity(0);
     }
-  }, [cartItems, trigger, testquantity]);
+  }, [cartItemsState, trigger, findFoodId]);
 
   const handleControl = (direction: string) => {
     if (direction === "increase") {
@@ -216,7 +220,7 @@ export default function MealPrepCard({ item, navigation }) {
               <Text style={{ fontWeight: 800, color: mainColor }}>
                 ${item.price} / Meal
               </Text>
-              <Text>{item.id}</Text>
+              {/* <Text>{item.id}</Text> */}
             </View>
             <View style={{ flexDirection: "row" }}>
               {/* <TouchableOpacity
