@@ -30,6 +30,7 @@ import { updateCartApi } from "./api/updateCartApi";
 import { increasemyCartApi } from "./api/increaseCartApi";
 import myProfileReducer from "./profileSlice";
 import indexCategoryReducer from "./indexCategorySlice";
+import { referEarnApi } from "./api/referEarnApi";
 
 const store = configureStore({
   reducer: {
@@ -55,6 +56,7 @@ const store = configureStore({
     [myorderApi.reducerPath]: myorderApi.reducer,
     [WellnessApi.reducerPath]: WellnessApi.reducer,
     [pickupGlasswareApi.reducerPath]: pickupGlasswareApi.reducer,
+    [referEarnApi.reducerPath]: referEarnApi.reducer,
     [updateCartApi.reducerPath]: updateCartApi.reducer,
     myProfile: myProfileReducer,
     indexCategory: indexCategoryReducer,
@@ -89,6 +91,7 @@ const store = configureStore({
       myorderApi.middleware,
       WellnessApi.middleware,
       pickupGlasswareApi.middleware,
+      referEarnApi.middleware,
       updateCartApi.middleware
     );
   },

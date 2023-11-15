@@ -67,6 +67,7 @@ import FamilyMeal from "../screens/categoryPage/categoryCode/FamilyMeal";
 import VeganMeals from "../screens/categoryPage/categoryCode/VeganMeals";
 import DessertMenu from "../screens/categoryPage/categoryCode/DessertMenu";
 import Notification from "../screens/notification/Notification";
+import ReferList from "../screens/refer/ReferList";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -1315,6 +1316,24 @@ export const ReferStackNavigator: FunctionComponent = () => {
         }}
         name="Refer"
         component={Refer}
+      />
+      <Stack.Screen
+        options={{
+          title: "Refer & Earn History",
+          headerLeft: () => (
+            <AntDesign
+              name="arrowleft"
+              size={25}
+              color="#000"
+              style={{ marginLeft: 10 }}
+              backgroundColor="white"
+              onPress={() => navigation.navigate("Refer")}
+            />
+          ),
+          headerRight: () => <CartNotification />,
+        }}
+        name="ReferList"
+        component={ReferList}
       />
     </Stack.Navigator>
   );
