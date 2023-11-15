@@ -220,7 +220,7 @@ export default function MealPrepCard({ item, navigation }) {
               <Text style={{ fontWeight: 800, color: mainColor }}>
                 ${item.price} / Meal
               </Text>
-              <Text>{item.id}</Text>
+              {/* <Text>{item.id}</Text> */}
             </View>
             <View style={{ flexDirection: "row" }}>
               {/* <TouchableOpacity

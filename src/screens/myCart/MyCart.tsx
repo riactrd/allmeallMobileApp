@@ -89,7 +89,7 @@ const MyCart = () => {
   const dispatch = useDispatch();
 
   const cartItemsState = useSelector((state) => state.cartQuantity);
-  console.log(cartItemsState);
+  // console.log(cartItemsState);
 
   //------------------------------------------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
@@ -104,7 +104,7 @@ const MyCart = () => {
 
   useEffect(() => {
     if (dataMycart?.message === "No Items in your cart!") {
-      console.log("No hay items en el carrito");
+      // console.log("No hay items en el carrito");
       // Actualiza el estado de redux con un arreglo vacío sin utilizar Immer
       dispatch({ type: "ADD_ITEM", payload: [] });
     }
