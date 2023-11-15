@@ -75,14 +75,9 @@ export default function MealPrepCard({ item, navigation }) {
 
   const cartItemsState = useSelector((state) => state.cartQuantity);
 
-  console.log("MI CARRITO", mycart);
-  console.log("MI ESTADO", cartItemsState);
-
   const findFoodId = cartItemsState.items.find((cartItem) => {
     return cartItem.id === item.id;
   });
-
-  console.log("FIND FOOD ID", findFoodId);
 
   useEffect(() => {
     if (findFoodId != undefined) {
