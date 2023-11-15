@@ -130,12 +130,12 @@ const MealItemPage = ({ route }) => {
 
   useEffect(() => {
     if (carting && carting.length > 0) {
-      console.log("CARTING", carting);
+      // console.log("CARTING", carting);
       const findId = carting.find((item) => {
         return item.food_id === id;
       });
 
-      console.log("find", findId);
+      // console.log("find", findId);
       if (findId) {
         SetQuantity(findId.quantity);
         setCartId(findId.id);
@@ -151,7 +151,7 @@ const MealItemPage = ({ route }) => {
     }
   }, [carting, id]);
 
-  console.log("cartID", cartId);
+  // console.log("cartID", cartId);
 
   //--------------------------------------------------------------------------------
 
@@ -193,13 +193,13 @@ const MealItemPage = ({ route }) => {
 
   const handlerincrease = async () => {
     if (cartId) {
-      console.log("entre a handler Increse");
+      // console.log("entre a handler Increse");
       const result = await increaseCart(cartId).unwrap();
 
       trigger("");
 
       SetQuantity(quantity + 1);
-      const itemsState = { cartId, cantidad: quantity + 1 };
+      const itemsState = { cartId, id, cantidad: quantity + 1 };
       dispatch(addItem(itemsState));
     }
 
