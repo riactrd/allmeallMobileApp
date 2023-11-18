@@ -91,51 +91,52 @@ export default function ReferList() {
               />
             </View>
           </View>
-          <View style={styles.viewScroll}>
-            {search.trim() === "" ? (
-              referList.map((item, index) => (
-                <View key={index}>
-                  <ReferItem item={item} />
-                </View>
-              ))
-            ) : found && found.length > 0 ? (
-              found.map((item, index) => (
-                <View key={index}>
-                  <ReferItem item={item} />
-                </View>
-              ))
-            ) : (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginVertical: 40,
-                }}
-              >
-                <Text
+          {referList && referList.length > 0 ? (
+            <View style={styles.viewScroll}>
+              {search.trim() === "" ? (
+                referList.map((item, index) => (
+                  <View key={index}>
+                    <ReferItem item={item} />
+                  </View>
+                ))
+              ) : found && found.length > 0 ? (
+                found.map((item, index) => (
+                  <View key={index}>
+                    <ReferItem item={item} />
+                  </View>
+                ))
+              ) : (
+                <View
                   style={{
-                    fontStyle: "normal",
-                    fontWeight: "600",
-                    fontSize: 16,
-                    lineHeight: 30,
-                    letterSpacing: 0.15,
-                    color: "#262626ad",
-
-                    alignSelf: "center",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginVertical: 40,
                   }}
                 >
-                  User not found
-                </Text>
-                <MaterialIcons
-                  name="search-off"
-                  size={30}
-                  color="#262626ad"
-                  style={{ marginLeft: 5 }}
-                />
-              </View>
-            )}
-            {/* {found && found.length > 0
+                  <Text
+                    style={{
+                      fontStyle: "normal",
+                      fontWeight: "600",
+                      fontSize: 16,
+                      lineHeight: 30,
+                      letterSpacing: 0.15,
+                      color: "#262626ad",
+
+                      alignSelf: "center",
+                    }}
+                  >
+                    User not found
+                  </Text>
+                  <MaterialIcons
+                    name="search-off"
+                    size={30}
+                    color="#262626ad"
+                    style={{ marginLeft: 5 }}
+                  />
+                </View>
+              )}
+              {/* {found && found.length > 0
               ? found.map((item, index) => (
                   <View key={index}>
                     <ReferItem item={item} />
@@ -146,7 +147,38 @@ export default function ReferList() {
                     <ReferItem item={item} />
                   </View>
                 ))} */}
-          </View>
+            </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                marginVertical: 40,
+              }}
+            >
+              <Text
+                style={{
+                  fontStyle: "normal",
+                  fontWeight: "600",
+                  fontSize: 16,
+                  lineHeight: 30,
+                  letterSpacing: 0.15,
+                  color: "#262626ad",
+
+                  alignSelf: "center",
+                }}
+              >
+                No list to show
+              </Text>
+              <MaterialIcons
+                name="search-off"
+                size={30}
+                color="#262626ad"
+                style={{ marginLeft: 5 }}
+              />
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>

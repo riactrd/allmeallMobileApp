@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   useCreateReferEarnMutation,
   useGeneratePromoCodeMutation,
+  useUserPromoCodeQuery,
 } from "../../redux/api/referEarnApi";
 import { useToast } from "react-native-toast-notifications";
 
@@ -29,7 +30,10 @@ const Refer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [promoCode, setPromoCode] = useState("");
+  const [userPromoCode, setUserPromoCode] = useState(null);
   const toast = useToast();
+
+  const { data: dataUserPromo } = useUserPromoCodeQuery("");
 
   const [createRefer, { data, isError, error, isSuccess }] =
     useCreateReferEarnMutation();
@@ -43,6 +47,12 @@ const Refer = () => {
       isSuccess: isSuccessCode,
     },
   ] = useGeneratePromoCodeMutation();
+
+  useEffect(() => {
+    if (dataUserPromo) {
+      setUserPromoCode(dataUserPromo.data.promo_code);
+    }
+  }, [dataUserPromo]);
 
   useEffect(() => {
     if (isSuccessCode) {
@@ -145,24 +155,31 @@ const Refer = () => {
                 <Text style={styles.headerTextInput}>History </Text>
               </TouchableOpacity>
             </View>
-            <TextInput
-              placeholder="Type Promo Code..."
-              style={styles.input}
-              onChange={onChangePromoCode}
-              value={promoCode}
-            />
+            {!userPromoCode ? (
+              <>
+                <TextInput
+                  placeholder="Type Promo Code..."
+                  style={styles.input}
+                  onChange={onChangePromoCode}
+                  value={promoCode}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={[styles.saveButtom, { marginTop: 20 }]}
+                  onPress={handlerSubitGenerateCode}
+                >
+                  <Text style={styles.saveButtomText}>Generate Promo Code</Text>
+                </TouchableOpacity>
+              </>
+            ) : null}
           </View>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.saveButtom}
-            onPress={handlerSubitGenerateCode}
-          >
-            <Text style={styles.saveButtomText}>Generate Promo Code</Text>
-          </TouchableOpacity>
-          <View style={styles.containerheaderText}>
-            <Text style={styles.headerText}>Your promo code is:</Text>
-            <Text style={styles.headerTextCode}>675ABPROMOAMP</Text>
-          </View>
+          {userPromoCode && (
+            <View style={styles.containerheaderText}>
+              <Text style={styles.headerText}>Your promo code is:</Text>
+              <Text style={styles.headerTextCode}>{userPromoCode}</Text>
+            </View>
+          )}
+
           <View style={styles.inputContainer}>
             <Text style={styles.headerTextInput}>
               Name<Text style={{ color: mainColor }}>*</Text>
