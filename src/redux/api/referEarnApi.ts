@@ -34,7 +34,7 @@ export const referEarnApi = createApi({
       return headers;
     },
   }) as BaseQueryFn<string | FetchArgs, unknown, errorModel, {}>,
-  tagTypes: ["ReferList"],
+  tagTypes: ["ReferList", "UserCode"],
 
   endpoints: (builder) => ({
     getListReferEarn: builder.query<PickupGlasswareModel, string | boolean>({
@@ -44,16 +44,7 @@ export const referEarnApi = createApi({
       }),
       providesTags: ["ReferList"],
     }),
-    // getaddressesId: builder.query({
-    //     query: (id) => `addresses/${id}`,
-    // }),
-    // createAddCart: builder.mutation<CartModelApi, NewCartModelApi>({
-    //   query: cart =>({
-    //       url: 'create',
-    //       method: 'POST',
-    //       body: cart
-    //   })
-    // }),
+
     createReferEarn: builder.mutation({
       query: (body) => ({
         url: "referrals",
@@ -71,6 +62,15 @@ export const referEarnApi = createApi({
           promo_code: promoCode,
         },
       }),
+      invalidatesTags: ["UserCode"],
+    }),
+
+    userPromoCode: builder.query({
+      query: () => ({
+        url: `referrals/show-user-promo-code`,
+        method: "GET",
+      }),
+      providesTags: ["UserCode"],
     }),
   }),
 });
@@ -81,4 +81,5 @@ export const {
   useGetListReferEarnQuery,
   useCreateReferEarnMutation,
   useGeneratePromoCodeMutation,
+  useUserPromoCodeQuery,
 } = referEarnApi;
