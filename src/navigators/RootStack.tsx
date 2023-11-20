@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Dashboard from "../screens/dashboard/Dashboard";
 import CategoryPage from "../screens/categoryPage/CategoryPage";
@@ -68,6 +68,9 @@ import VeganMeals from "../screens/categoryPage/categoryCode/VeganMeals";
 import DessertMenu from "../screens/categoryPage/categoryCode/DessertMenu";
 import Notification from "../screens/notification/Notification";
 import ReferList from "../screens/refer/ReferList";
+import { useChangePasswordMutation } from "../redux/api/authApi";
+import { useDispatch } from "react-redux";
+import { reset, setIsLoding } from "../redux/changePasswordSlice";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -668,6 +671,7 @@ export const WellnessstackNavigator: FunctionComponent = () => {
 };
 
 export const MyProfilestackNavigator: FunctionComponent = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const toast = useToast();
   const [updateProfile, { data: profiles }] = useUpdateprofileMutation();
@@ -681,6 +685,11 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
     referralEmail,
     referrer,
   } = useSelector((state) => state.myProfile);
+
+  const passwordState = useSelector((state) => state.changePassword);
+  const loginState = useSelector((state) => state.login);
+
+  const id = loginState?.userData?.id;
 
   const handlerSave = async () => {
     try {
@@ -711,6 +720,111 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
       });
     }
   };
+
+  const [changePassword, { isLoading, isSuccess }] =
+    useChangePasswordMutation();
+
+  useEffect(() => {
+    if (isLoading === true) {
+      dispatch(setIsLoding(true));
+    }
+
+    if (isLoading === false) {
+      dispatch(setIsLoding(false));
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(reset());
+    }
+  }, [isSuccess]);
+
+  const update_password = {
+    id: id,
+    current_password: passwordState.oldPassword,
+    password: passwordState.newPassword,
+    password_confirmation: passwordState.confirmNewPassword,
+  };
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     toast.show(JSON.stringify("password Change"), {
+  //       type: "success",
+  //       placement: "center",
+  //       duration: 8000,
+  //       animationType: "slide-in",
+  //     });
+  //   }
+  // }, [isSuccess]);
+
+  const handlerChangePassword = async () => {
+    if (!update_password.current_password) {
+      toast.show(JSON.stringify("Please fill out the Old Password field"), {
+        type: "danger",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    } else if (!update_password.password) {
+      toast.show(JSON.stringify("Please fill out the New Password field"), {
+        type: "danger",
+        placement: "bottom",
+        duration: 8000,
+        animationType: "slide-in",
+      });
+    } else if (!update_password.password_confirmation) {
+      toast.show(
+        JSON.stringify("Please fill out the Confirm  Password field"),
+        {
+          type: "danger",
+          placement: "bottom",
+          duration: 8000,
+          animationType: "slide-in",
+        }
+      );
+    } else if (
+      update_password.password !== update_password.password_confirmation
+    ) {
+      toast.show(
+        JSON.stringify("Password and Confirm Password doesn't match"),
+        {
+          type: "danger",
+          placement: "bottom",
+          duration: 8000,
+          animationType: "slide-in",
+        }
+      );
+    } else if (update_password.current_password.length <= 5) {
+      toast.show(
+        JSON.stringify("Password is too short ,minimum is 6 characters"),
+        {
+          type: "danger",
+          placement: "bottom",
+          duration: 8000,
+          animationType: "slide-in",
+        }
+      );
+    } else {
+      try {
+        const result = await changePassword({ update_password }).unwrap();
+        toast.show(JSON.stringify("Password changed"), {
+          type: "success",
+          placement: "center",
+          duration: 8000,
+          animationType: "slide-in",
+        });
+      } catch (error) {
+        toast.show(JSON.stringify(error.data.error.message), {
+          type: "danger",
+          placement: "bottom",
+          duration: 8000,
+          animationType: "slide-in",
+        });
+      }
+    }
+  };
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -817,7 +931,23 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
               onPress={() => navigation.goBack()}
             />
           ),
-          headerRight: () => <CartNotification />,
+          headerRight: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.button}
+                onPress={handlerChangePassword}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          ),
           // headerTransparent:true,
           title: "Password",
         })}

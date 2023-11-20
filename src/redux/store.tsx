@@ -29,6 +29,7 @@ import { pickupGlasswareApi } from "./api/pickupGlasswareApi";
 import { updateCartApi } from "./api/updateCartApi";
 import { increasemyCartApi } from "./api/increaseCartApi";
 import myProfileReducer from "./profileSlice";
+import changePasswordReducer from "./changePasswordSlice";
 import indexCategoryReducer from "./indexCategorySlice";
 import { referEarnApi } from "./api/referEarnApi";
 
@@ -59,6 +60,7 @@ const store = configureStore({
     [referEarnApi.reducerPath]: referEarnApi.reducer,
     [updateCartApi.reducerPath]: updateCartApi.reducer,
     myProfile: myProfileReducer,
+    changePassword: changePasswordReducer,
     indexCategory: indexCategoryReducer,
     avatar: imageReducer,
     login: loginReducer,
