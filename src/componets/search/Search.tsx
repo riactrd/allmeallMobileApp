@@ -15,13 +15,13 @@ const Search = ({ search, setSearch, trigger }) => {
   ): void => {
     const value = e.nativeEvent.text;
     setSearch(value);
-    console.log("search:", value);
+    // console.log("search:", value);
   };
 
   const handleSubmit = () => {
     if (search.trim() === "") {
       setSearch("");
-      console.log("El string de búsqueda está vacío, no se hará nada.");
+      // console.log("El string de búsqueda está vacío, no se hará nada.");
     } else {
       // Hacer algo con search si no está vacío
       trigger(search);

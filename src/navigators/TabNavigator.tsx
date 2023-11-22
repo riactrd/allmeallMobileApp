@@ -36,6 +36,7 @@ import {
   Image,
   TouchableOpacity,
   GestureResponderEvent,
+  Platform,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -53,17 +54,42 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         // gestureEnabled: false
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: "8.5%",
+          height: 60,
           borderTopWidth: 0,
           elevation: 0,
           backgroundColor: "#262626",
           borderTopRightRadius: 25,
           borderTopLeftRadius: 25,
+          position: "absolute",
         },
+
+        ...(Platform.OS === "ios"
+          ? {
+              tabBarStyle: {
+                height: "10%",
+                borderTopWidth: 0,
+                elevation: 0,
+                backgroundColor: "#262626",
+                borderTopRightRadius: 25,
+                borderTopLeftRadius: 25,
+                position: "absolute",
+              },
+              tabBarItemStyle: {
+                // flex: 1,
+                // backgroundColor: "red",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                top: "0.7%",
+                // bottom: "1%",
+              },
+              // tabBarLabelStyle: { top: "60%" },
+            }
+          : {}),
       }}
     >
       <Tab.Screen
@@ -75,7 +101,6 @@ const BottomTabNavigator = () => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                // top: 10,
               }}
             >
               <Ionicons
