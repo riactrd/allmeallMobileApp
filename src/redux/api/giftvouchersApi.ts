@@ -1,43 +1,53 @@
-import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { GiftvouchersModel } from "../../model/GiftvouchersModel";
 import { RootState } from "../store";
 import { URL_VAR } from "@env";
 
-interface errorModel{
-  data:{
-      code: number,
-      error:{
-        message: string,
-      },
-      success:boolean,
-  }
+interface errorModel {
+  data: {
+    code: number;
+    error: {
+      message: string;
+    };
+    success: boolean;
+  };
 }
 
-
 export const giftvouchersApi = createApi({
-  
   reducerPath: "giftvouchersApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${URL_VAR}user/`, 
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).login.token
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${URL_VAR}user/`,
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).login.token;
 
-    // If we have a token set in state, let's assume that we should be passing it.
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`)
-    }
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
 
-    return headers
-  },
-}) as BaseQueryFn <string | FetchArgs, unknown, errorModel, {}>,
- 
+      return headers;
+    },
+  }) as BaseQueryFn<string | FetchArgs, unknown, errorModel, {}>,
+
   endpoints: (builder) => ({
-    getGiftvouchers: builder.query<GiftvouchersModel , string | boolean>({
-      query: () =>({
-              url: 'gift-cards',
-              method: 'GET',
-              
-          })
-      
+    getGiftvouchers: builder.query<GiftvouchersModel, string | boolean>({
+      query: () => ({
+        url: "gift-cards",
+        method: "GET",
+      }),
+    }),
+
+    createGiftvouchers: builder.mutation<GiftvouchersModel, string | boolean>({
+      query: (body) => ({
+        url: "gift-cards",
+        method: "POST",
+        body,
+      }),
     }),
     // getaddressesId: builder.query({
     //     query: (id) => `addresses/${id}`,
@@ -62,15 +72,10 @@ export const giftvouchersApi = createApi({
     //       method: 'DELETE',
     //   })
     //  }),
-
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { 
-    useGetGiftvouchersQuery,
-    // useCreateAddCartMutation,
-    // useUpdateaddressesMutation,
-    // useDeleteaddressesMutation,
-    } = giftvouchersApi;
+export const { useGetGiftvouchersQuery, useCreateGiftvouchersMutation } =
+  giftvouchersApi;
