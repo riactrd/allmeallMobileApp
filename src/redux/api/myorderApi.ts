@@ -38,6 +38,22 @@ export const myorderApi = createApi({
     getmyorderId: builder.query({
         query: (id) => `orders/${id}`,
     }),
+
+    createOrder: builder.mutation({
+      query: (body) => {
+        console.log(body)
+        return {
+          url: "orders?page=1",
+          method: "post",
+           headers: {
+               'Content-Type': 'application/json',
+              // Authorization: `Bearer ${JSON.parse(localStorage.getItem("profile")).token}`,
+           },
+          body,
+        };
+      },
+
+    })
     // addmyorder: builder.mutation<AddressModel, NewAddressModel>({
     //   query: address =>({
     //       url: 'addresses',
@@ -67,7 +83,5 @@ export const myorderApi = createApi({
 export const { 
     useGetmyorderQuery,
     useGetmyorderIdQuery,
-    // useAddmyorderMutation,
-    // useUpdatemyorderMutation,
-    // useDeletemyorderMutation,
+    useCreateOrderMutation    
     } = myorderApi;

@@ -57,6 +57,7 @@ import MycartItem from "../categoryPage/mealItem/MycartItem";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../redux/cartQuantitySlice";
+import { useCreateOrderMutation } from "../../redux/api/myorderApi";
 
 const wait = (timeout: number | undefined) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -89,7 +90,10 @@ const MyCart = () => {
   const dispatch = useDispatch();
 
   const cartItemsState = useSelector((state) => state.cartQuantity);
-  // console.log(cartItemsState);
+  const userState = useSelector((state) => state.login);
+ 
+
+ 
 
   //------------------------------------------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
@@ -290,6 +294,16 @@ const MyCart = () => {
 
     Setcontainer(newContainer);
     refetch();
+  };
+
+ 
+
+  const [createOrder, { isSuccess }] =
+  useCreateOrderMutation();
+
+  const handleCreateOrder = () => {
+    createOrder();
+    navigation.navigate("checkOut")
   };
 
   return (
@@ -785,7 +799,8 @@ const MyCart = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.saveButtom}
-                      onPress={() => navigation.navigate("Checkout")}
+                      onPress={ handleCreateOrder}
+                      
                     >
                       <Text style={styles.saveButtomText}>
                         Proceed to checkout
