@@ -5,8 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Button,
+  Alert
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   mainColor,
   ScreenWidth,
@@ -16,54 +18,88 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import CardDetails from "./CardDetails";
+import { CardField, useConfirmPayment, createPaymentMethod, cus, } from "@stripe/stripe-react-native";
+
 
 const Checkout = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState();
+  const [cardDetails, setCardDetails] = useState();
+
+  const handlePayPress = async () => {
+     // 1. Gather the customer's billing information (e.g., email)
+    if (!cardDetails?.complete || !email) {
+      Alert.alert("Please enter complete card details and email");
+      return;
+    }
+
+    const billingDetails = {
+      email: email,
+    };
+
+    
+
+   
+    createPaymentMethod({
+      paymentMethodType: "Card",      
+      card: cardDetails,
+      billing_details: {
+        name: 'Jenny Rosen',
+      },
+    })
+    .then(function(result) {
+      // Handle result.error or result.paymentMethod
+      if (result.error) {
+        console.log("Error al crear el PaymentMethod:", result.error);
+      } else {
+        console.log("Resultado de createPaymentMethod:", result);
+        // Aquí puedes manejar result.paymentMethod si es necesario
+  
+        // Agrega la lógica adicional aquí según tus requisitos
+      }
+    });
+    
+
+     // 2. Create a customer in Stripe
+     const customer = await createCustomer({
+      email: email,
+      //payment_method: cardDetails?.paymentMethodId,
+    });
+
+    if (customer.error) {
+      console.log("Error al crear el cliente en Stripe:", customer.error);
+      return;
+    }
+
+   
+   
+
+    
+  };
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
-          <View style={styles.textDivide}>
-            <MaterialIcons
-              name="credit-card"
-              color={mainColor}
-              style={styles.icon}
-            />
-            <Text style={styles.textDivideFont}>Card Details</Text>
-          </View>
-
-          <CardDetails />
-
-          {/* <View style={styles.inputContainer}>
-              <Text style={styles.headerTextInput}>Card Number</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-
-            <View style={styles.containerCard}>
-            <View style={styles.inputContainerCard}>
-              <Text style={styles.headerTextInput}>Expiration</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-            <View style={styles.inputContainerCard}>
-              <Text style={styles.headerTextInput}>CVC</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-            </View> */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.saveButtom}
-            onPress={() => navigation.navigate("CheckoutInfoDrawer")}
-          >
-            <Text style={styles.saveButtomText}>Pay $33.36</Text>
-          </TouchableOpacity>
-          <View style={{ marginTop: 30 }}>
-            <Text style={styles.bottomText}>
-              Your card will be immediately charged
-              <Text style={styles.bottomTextTotal}> $164.71.</Text>
-            </Text>
-          </View>
-        </View>
-      </View>
+    <View style={styles.container2}>
+      <TextInput
+        autoCapitalize="none"
+        placeholder="E-mail"
+        keyboardType="email-address"
+        onChangeText={(value) => setEmail(value)}
+        style={styles.input}
+      />
+      <CardField
+        postalCodeEnabled={true}
+        placeholder={{
+          number: "4242 4242 4242 4242",
+        }}
+        cardStyle={styles.card}
+        style={styles.cardContainer}
+        onCardChange={(cardDetails) => {
+          setCardDetails(cardDetails);
+        }}
+      />
+      <Button  title="Pay" onPress={handlePayPress} />
+    </View>
+     
     </>
   );
 };
@@ -77,6 +113,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     backgroundColor: secundaryColor,
+  },
+  container2: {
+    flex: 1,
+    justifyContent: "center",
+    margin: 20,
+  },
+
+  input: {
+    backgroundColor: "#efefefef",
+    borderRadius: 8,
+    fontSize: 20,
+    height: 50,
+    padding: 10,
   },
   wrapper: {
     // backgroundColor: '#000',
@@ -244,5 +293,20 @@ const styles = StyleSheet.create({
     color: thirdColor,
     textAlign: "center",
     width: 300,
+  },
+  card: {
+    backgroundColor: "white",
+  },
+  cardContainer: {
+    height: 50,
+    marginVertical: 30,
+  },
+
+  input: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    fontSize: 20,
+    height: 50,
+    padding: 10,
   },
 });

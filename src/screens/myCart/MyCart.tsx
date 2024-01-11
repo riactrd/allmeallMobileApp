@@ -91,6 +91,8 @@ const MyCart = () => {
 
   const cartItemsState = useSelector((state) => state.cartQuantity);
   const userState = useSelector((state) => state.login);
+
+ 
  
 
  
@@ -298,13 +300,59 @@ const MyCart = () => {
 
  
 
-  const [createOrder, { isSuccess }] =
+  const [createOrder, { data: createOrderData, isSuccess, isLoading: createOrderIsLoading, isError:createOrderIsError, error:createOrderError}] =
   useCreateOrderMutation();
 
-  const handleCreateOrder = () => {
-    createOrder();
-    navigation.navigate("checkOut")
+  useEffect(() => {
+    if(createOrderData){
+
+      console.log("create Order Data",createOrderData); 
+    }
+    
+  }, [createOrderData])
+  
+
+  const handleCreateOrder = async () => {
+    try {
+      const result = await createOrder({ "billing_address": "2034",
+      "coupon_code": "",
+      "delivery_address": "2034",
+      "delivery_frequency": "7",
+      "delivery_type": "1",
+      "exp_delivery_date": "13-Dec-2024",
+      "is_admin_order": "false",
+      "is_gift": "true",
+      "is_prime_membership": "true",
+      "is_same_as_billing_address": "true",
+      "no_contact_delivery": "true",
+      "notes": "",
+      "order_id": "",
+      "order_payment_status": "false",
+      "order_type": "Food",
+      "pickup_time_slot_id": "12",
+      "use_reusable_glassware": "true",
+      "use_reward_points": "true",
+      "user_id": "356",
+      "voucher_code": ""});
+      if(createOrderData){
+       
+        console.log("result",result);
+      };
+      
+      
+  
+      // También puedes verificar si la mutación fue exitosa
+      if (isSuccess) {
+        console.log("La mutación fue exitosa");
+      }
+  
+    } catch (error) {
+      console.error("Error al realizar la mutación:", error);
+    }
+
+    navigation.navigate("Checkout")
   };
+  
 
   return (
     <>
@@ -845,20 +893,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: secundaryColor,
+   
   },
   wrapper: {
     // backgroundColor: '#000',
     // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
+    
   },
   viewScroll: {
     // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
     // padding:1,
-    // marginBottom:320,
     marginBottom: "auto",
+    marginBottom:100,
     marginTop: 20,
   },
   icon: {

@@ -31,6 +31,7 @@ export const myorderApi = createApi({
 }) as BaseQueryFn <string | FetchArgs, unknown, errorModel, {}>,
  
   endpoints: (builder) => ({
+   
     getmyorder: builder.query<MyorderModel , string | boolean>({
       query: () => `orders?page=1`,
       
@@ -40,15 +41,10 @@ export const myorderApi = createApi({
     }),
 
     createOrder: builder.mutation({
-      query: (body) => {
-        console.log(body)
+      query: (body) => {       
         return {
           url: "orders?page=1",
-          method: "post",
-           headers: {
-               'Content-Type': 'application/json',
-              // Authorization: `Bearer ${JSON.parse(localStorage.getItem("profile")).token}`,
-           },
+          method: "post",          
           body,
         };
       },

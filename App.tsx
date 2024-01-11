@@ -10,17 +10,21 @@ import Toast from "react-native-toast-message";
 import { getTotals } from "./src/redux/cartSlice";
 import CardDetails from "./src/screens/checkout/CardDetails";
 import Checkout from "./src/screens/checkout/Checkout";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 export default function App() {
   return (
-    <ToastProvider>
-      <Provider store={store}>
-        {/* <Toast /> */}
-        {/* <CardDetails /> */}
-        {/* <Checkout /> */}
-        <RootDrawer />
-      </Provider>
-    </ToastProvider>
+   // <StripeProvider publishableKey="pk_test_h99KEoNojWNDvDaWfWpA9CBG006jTMI7Yw">
+    <StripeProvider publishableKey="pk_test_TYooMQauvdEDq54NiTphI7jx">
+      <ToastProvider>
+        <Provider store={store}>
+          {/* <Toast /> */}
+          {/* <CardDetails /> */}
+          {/* <Checkout /> */}
+          <RootDrawer />
+        </Provider>
+      </ToastProvider>
+    </StripeProvider>
   );
 }
 
