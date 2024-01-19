@@ -18,10 +18,16 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import CardDetails from "./CardDetails";
-import { CardField, useConfirmPayment, createPaymentMethod, cus, } from "@stripe/stripe-react-native";
+import { CardField, useConfirmPayment, createPaymentMethod,  } from "@stripe/stripe-react-native";
 
 
-const Checkout = () => {
+const Checkout = ({route}) => {
+  
+
+  const { createOrderId} = route.params || {};
+  console.log("Desde checkouts",createOrderId)
+
+  
   const navigation = useNavigation();
   const [email, setEmail] = useState();
   const [cardDetails, setCardDetails] = useState();
@@ -32,12 +38,11 @@ const Checkout = () => {
       Alert.alert("Please enter complete card details and email");
       return;
     }
-
     const billingDetails = {
       email: email,
     };
 
-    
+    // 2 Create Payment Method  
 
    
     createPaymentMethod({
@@ -48,31 +53,17 @@ const Checkout = () => {
       },
     })
     .then(function(result) {
-      // Handle result.error or result.paymentMethod
+      
       if (result.error) {
         console.log("Error al crear el PaymentMethod:", result.error);
       } else {
         console.log("Resultado de createPaymentMethod:", result);
-        // Aquí puedes manejar result.paymentMethod si es necesario
-  
-        // Agrega la lógica adicional aquí según tus requisitos
+      
       }
-    });
+    }); 
+
+    // initiate paymentet
     
-
-     // 2. Create a customer in Stripe
-     const customer = await createCustomer({
-      email: email,
-      //payment_method: cardDetails?.paymentMethodId,
-    });
-
-    if (customer.error) {
-      console.log("Error al crear el cliente en Stripe:", customer.error);
-      return;
-    }
-
-   
-   
 
     
   };
