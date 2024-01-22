@@ -103,7 +103,7 @@ const MyCart = () => {
   const { data, isError, error, isLoading, refetch, isFetching } =
     useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
 
-   // console.log(data?.data.my_cart.is_gift.value)
+    //console.log(userState)
 
 
     const handleCreateOrder = async () => {
@@ -112,8 +112,8 @@ const MyCart = () => {
           "billing_address": data?.data.my_cart.billing_addresses.options[0].id,
           "coupon_code": "",
           "delivery_address": data?.data.my_cart.billing_addresses.options[0].id,
-        "delivery_frequency":data?.data.my_cart.delivery_frequency.selected,
-        //  "delivery_frequency": "7",
+       // "delivery_frequency":data?.data.my_cart.delivery_frequency.selected,
+          "delivery_frequency": "7",
           "delivery_type": "1",
           "exp_delivery_date": data?.data.my_cart.expected_delivery_date.selected,
           "is_admin_order": "false",
