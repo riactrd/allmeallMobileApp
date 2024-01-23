@@ -19,18 +19,31 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import CardDetails from "./CardDetails";
 import { CardField, useConfirmPayment, createPaymentMethod,  } from "@stripe/stripe-react-native";
+import { useCreateInitiatePaymentMutation } from "../../redux/api/initiatePayment";
+import { useSelector } from "react-redux";
+import { useConfirmPaymentMutation } from "../../redux/api/confirmPayment";
+import Spinner from "react-native-loading-spinner-overlay";
+
 
 
 const Checkout = ({route}) => {
+
+  const userState = useSelector((state) => state.login);
+  //console.log(userState.userData.email)
   
 
   const { createOrderId} = route.params || {};
-  console.log("Desde checkouts",createOrderId)
+  //console.log("Desde checkouts",createOrderId)
 
   
   const navigation = useNavigation();
   const [email, setEmail] = useState();
   const [cardDetails, setCardDetails] = useState();
+
+  const [initPayment, { data, isLoading }] = useCreateInitiatePaymentMutation();
+  const [confirmPayment, { data: confirmPaymentData, isLoading:confirmPaymentIsLoading }] = useConfirmPaymentMutation();
+
+  useConfirmPaymentMutation
 
   const handlePayPress = async () => {
      // 1. Gather the customer's billing information (e.g., email)
@@ -45,30 +58,99 @@ const Checkout = ({route}) => {
     // 2 Create Payment Method  
 
    
-    createPaymentMethod({
+    const result = await createPaymentMethod({
       paymentMethodType: "Card",      
       card: cardDetails,
       billing_details: {
         name: 'Jenny Rosen',
       },
     })
-    .then(function(result) {
+    
       
       if (result.error) {
         console.log("Error al crear el PaymentMethod:", result.error);
-      } else {
-        console.log("Resultado de createPaymentMethod:", result);
-      
+        return; // Handle the error as needed
       }
-    }); 
+      console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
+    ; 
 
     // initiate paymentet
+
+    let initiatePaymentRes;
+
+    try {
+      
+       initiatePaymentRes  = await initPayment({
+        "order_id": createOrderId,
+        "user_id": userState.userData.id,
+        "paid_by": "1",
+        "email": userState.userData.email,
+        "user_name": userState.userData.first_name,
+        "payment_method": result.paymentMethod.id
+      })
+
+     
+     
+      if (initiatePaymentRes){
+        console.log("res de init es :", initiatePaymentRes.data.data.payment.payment.id)
+      }
+    } catch (error) {
+      console.error("La respuesta de createOrder es falsa o indefinida.",error);
+      return;
+      
+    }
+
+    // Confirm Payment
+
+   
+    try {
+      const confirmRes = await confirmPayment({
+        "payment_intent_id": initiatePaymentRes.data.data.payment.payment.id,
+        "order_id":userState.userData.id,
+        "subscriptionId": initiatePaymentRes.data.data.payment.payment.id,
+        "voucher_id": null,
+        "nutrition_order_id": null,
+        "vegandale_order_id": null,
+        "product_order_id": null,
+        "donation_id": null,
+        "from_donation": false,
+        "from_wallet": false,
+        "from_tip": false,
+        "is_from_catering": false,
+        "is_from_thanks_giving": false,
+        "payment_type": 7
+      });
+
+      if (confirmRes) {
+        navigation.navigate("CheckoutInfoDrawer")
+      } else {
+        console.error("Error");
+      }
+
+    } catch (error) {
+      console.log("error en confirm", error)
+      
+    }
+
+
+    
     
 
     
   };
   return (
+    
     <>
+    <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={confirmPaymentIsLoading || isLoading}
+              //Text with the Spinner
+              // textContent={"Loading..."}
+              //Text style of the Spinner Text
+              // textStyle={styles.spinnerTextStyle}
+            />
+          </View>
     <View style={styles.container2}>
       <TextInput
         autoCapitalize="none"

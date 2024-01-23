@@ -25,6 +25,8 @@ import { deleteItemCartApi } from "./api/deleteItemCartApi";
 import { myorderApi } from "./api/myorderApi";
 import { WellnessApi } from "./api/WellnessApi";
 import { digitalwalletApi } from "./api/digitalwalletApi";
+import { initiatePaymentApi } from "./api/initiatePayment";
+import { confirmPaymentApi } from "./api/confirmPayment";
 import { pickupGlasswareApi } from "./api/pickupGlasswareApi";
 import { updateCartApi } from "./api/updateCartApi";
 import { increasemyCartApi } from "./api/increaseCartApi";
@@ -47,6 +49,8 @@ const store = configureStore({
     [addCartApi.reducerPath]: addCartApi.reducer,
     [giftvouchersApi.reducerPath]: giftvouchersApi.reducer,
     [digitalwalletApi.reducerPath]: digitalwalletApi.reducer,
+    [initiatePaymentApi.reducerPath]: initiatePaymentApi.reducer,
+    [confirmPaymentApi.reducerPath]: confirmPaymentApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
     [allergicApi.reducerPath]: allergicApi.reducer,
     [masterDataApi.reducerPath]: masterDataApi.reducer,
@@ -83,6 +87,8 @@ const store = configureStore({
       addCartApi.middleware,
       giftvouchersApi.middleware,
       digitalwalletApi.middleware,
+      initiatePaymentApi.middleware,
+      confirmPaymentApi.middleware,
       profileApi.middleware,
       allergicApi.middleware,
       masterDataApi.middleware,

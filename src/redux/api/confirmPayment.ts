@@ -14,9 +14,9 @@ interface errorModel{
 }
 
 
-export const initiatePaymentApi = createApi({
+export const confirmPaymentApi = createApi({
   
-  reducerPath: "initiatePaymentApi",
+  reducerPath: "confirmPaymentApi",
   baseQuery: fetchBaseQuery({ baseUrl: `${URL_VAR}user/`, 
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).login.token
@@ -31,9 +31,9 @@ export const initiatePaymentApi = createApi({
 }) as BaseQueryFn <string | FetchArgs, unknown, errorModel, {}>,
  
   endpoints: (builder) => ({
-    createInitiatePayment: builder.mutation<DigitalWalletModel , string | boolean>({      
+    confirmPayment: builder.mutation<DigitalWalletModel , string | boolean>({      
       query: (body) => ({
-        url: "payments/initiate-payment",
+        url: "payments/confirm-payment",
         method: "POST",
         body,
       }),
@@ -46,5 +46,5 @@ export const initiatePaymentApi = createApi({
 
 
 export const { 
-   useCreateInitiatePaymentMutation
-    } = initiatePaymentApi;
+   useConfirmPaymentMutation
+    } = confirmPaymentApi;
