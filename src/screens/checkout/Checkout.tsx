@@ -5,8 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Button,
+  Alert
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   mainColor,
   ScreenWidth,
@@ -16,54 +18,161 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import CardDetails from "./CardDetails";
+import { CardField, useConfirmPayment, createPaymentMethod,  } from "@stripe/stripe-react-native";
+import { useCreateInitiatePaymentMutation } from "../../redux/api/initiatePayment";
+import { useSelector } from "react-redux";
+import { useConfirmPaymentMutation } from "../../redux/api/confirmPayment";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const Checkout = () => {
+
+
+const Checkout = ({route}) => {
+
+  const userState = useSelector((state) => state.login);
+  //console.log(userState.userData.email)
+  
+
+  const { createOrderId} = route.params || {};
+  //console.log("Desde checkouts",createOrderId)
+
+  
   const navigation = useNavigation();
+  const [email, setEmail] = useState();
+  const [cardDetails, setCardDetails] = useState();
+
+  const [initPayment, { data, isLoading }] = useCreateInitiatePaymentMutation();
+  const [confirmPayment, { data: confirmPaymentData, isLoading:confirmPaymentIsLoading }] = useConfirmPaymentMutation();
+
+  useConfirmPaymentMutation
+
+  const handlePayPress = async () => {
+     // 1. Gather the customer's billing information (e.g., email)
+    if (!cardDetails?.complete || !email) {
+      Alert.alert("Please enter complete card details and email");
+      return;
+    }
+    const billingDetails = {
+      email: email,
+    };
+
+    // 2 Create Payment Method  
+
+   
+    const result = await createPaymentMethod({
+      paymentMethodType: "Card",      
+      card: cardDetails,
+      billing_details: {
+        name: 'Jenny Rosen',
+      },
+    })
+    
+      
+      if (result.error) {
+        console.log("Error al crear el PaymentMethod:", result.error);
+        return; // Handle the error as needed
+      }
+      console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
+    ; 
+
+    // initiate paymentet
+
+    let initiatePaymentRes;
+
+    try {
+      
+       initiatePaymentRes  = await initPayment({
+        "order_id": createOrderId,
+        "user_id": userState.userData.id,
+        "paid_by": "1",
+        "email": userState.userData.email,
+        "user_name": userState.userData.first_name,
+        "payment_method": result.paymentMethod.id
+      })
+
+     
+     
+      if (initiatePaymentRes){
+        console.log("res de init es :", initiatePaymentRes.data.data.payment.payment.id)
+      }
+    } catch (error) {
+      console.error("La respuesta de createOrder es falsa o indefinida.",error);
+      return;
+      
+    }
+
+    // Confirm Payment
+
+   
+    try {
+      const confirmRes = await confirmPayment({
+        "payment_intent_id": initiatePaymentRes.data.data.payment.payment.id,
+        "order_id":userState.userData.id,
+        "subscriptionId": initiatePaymentRes.data.data.payment.payment.id,
+        "voucher_id": null,
+        "nutrition_order_id": null,
+        "vegandale_order_id": null,
+        "product_order_id": null,
+        "donation_id": null,
+        "from_donation": false,
+        "from_wallet": false,
+        "from_tip": false,
+        "is_from_catering": false,
+        "is_from_thanks_giving": false,
+        "payment_type": 7
+      });
+
+      if (confirmRes) {
+        navigation.navigate("CheckoutInfoDrawer")
+      } else {
+        console.error("Error");
+      }
+
+    } catch (error) {
+      console.log("error en confirm", error)
+      
+    }
+
+
+    
+    
+
+    
+  };
   return (
+    
     <>
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
-          <View style={styles.textDivide}>
-            <MaterialIcons
-              name="credit-card"
-              color={mainColor}
-              style={styles.icon}
+    <View>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={confirmPaymentIsLoading || isLoading}
+              //Text with the Spinner
+              // textContent={"Loading..."}
+              //Text style of the Spinner Text
+              // textStyle={styles.spinnerTextStyle}
             />
-            <Text style={styles.textDivideFont}>Card Details</Text>
           </View>
-
-          <CardDetails />
-
-          {/* <View style={styles.inputContainer}>
-              <Text style={styles.headerTextInput}>Card Number</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-
-            <View style={styles.containerCard}>
-            <View style={styles.inputContainerCard}>
-              <Text style={styles.headerTextInput}>Expiration</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-            <View style={styles.inputContainerCard}>
-              <Text style={styles.headerTextInput}>CVC</Text>
-              <TextInput placeholder='4566-2222-3333-4532'  keyboardType='number-pad'  style={styles.input}/>
-            </View>
-            </View> */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.saveButtom}
-            onPress={() => navigation.navigate("CheckoutInfoDrawer")}
-          >
-            <Text style={styles.saveButtomText}>Pay $33.36</Text>
-          </TouchableOpacity>
-          <View style={{ marginTop: 30 }}>
-            <Text style={styles.bottomText}>
-              Your card will be immediately charged
-              <Text style={styles.bottomTextTotal}> $164.71.</Text>
-            </Text>
-          </View>
-        </View>
-      </View>
+    <View style={styles.container2}>
+      <TextInput
+        autoCapitalize="none"
+        placeholder="E-mail"
+        keyboardType="email-address"
+        onChangeText={(value) => setEmail(value)}
+        style={styles.input}
+      />
+      <CardField
+        postalCodeEnabled={true}
+        placeholder={{
+          number: "4242 4242 4242 4242",
+        }}
+        cardStyle={styles.card}
+        style={styles.cardContainer}
+        onCardChange={(cardDetails) => {
+          setCardDetails(cardDetails);
+        }}
+      />
+      <Button  title="Pay" onPress={handlePayPress} />
+    </View>
+     
     </>
   );
 };
@@ -77,6 +186,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     backgroundColor: secundaryColor,
+  },
+  container2: {
+    flex: 1,
+    justifyContent: "center",
+    margin: 20,
+  },
+
+  input: {
+    backgroundColor: "#efefefef",
+    borderRadius: 8,
+    fontSize: 20,
+    height: 50,
+    padding: 10,
   },
   wrapper: {
     // backgroundColor: '#000',
@@ -244,5 +366,20 @@ const styles = StyleSheet.create({
     color: thirdColor,
     textAlign: "center",
     width: 300,
+  },
+  card: {
+    backgroundColor: "white",
+  },
+  cardContainer: {
+    height: 50,
+    marginVertical: 30,
+  },
+
+  input: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    fontSize: 20,
+    height: 50,
+    padding: 10,
   },
 });

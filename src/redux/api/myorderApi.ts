@@ -31,6 +31,7 @@ export const myorderApi = createApi({
 }) as BaseQueryFn <string | FetchArgs, unknown, errorModel, {}>,
  
   endpoints: (builder) => ({
+   
     getmyorder: builder.query<MyorderModel , string | boolean>({
       query: () => `orders?page=1`,
       
@@ -38,6 +39,17 @@ export const myorderApi = createApi({
     getmyorderId: builder.query({
         query: (id) => `orders/${id}`,
     }),
+
+    createOrder: builder.mutation({
+      query: (body) => {       
+        return {
+          url: "orders?page=1",
+          method: "post",          
+          body,
+        };
+      },
+
+    })
     // addmyorder: builder.mutation<AddressModel, NewAddressModel>({
     //   query: address =>({
     //       url: 'addresses',
@@ -67,7 +79,5 @@ export const myorderApi = createApi({
 export const { 
     useGetmyorderQuery,
     useGetmyorderIdQuery,
-    // useAddmyorderMutation,
-    // useUpdatemyorderMutation,
-    // useDeletemyorderMutation,
+    useCreateOrderMutation    
     } = myorderApi;
