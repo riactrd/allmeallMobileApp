@@ -1520,13 +1520,13 @@ export const MyCartStackNavigator: FunctionComponent = () => {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 activeOpacity={0.7}
                 style={styles.button}
                 onPress={() => navigation.navigate("Checkout")}
               >
                 <Text style={styles.buttonText}>Checkout</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ),
         }}

@@ -31,10 +31,9 @@ import { useGetdashboardQuery } from "../../redux/api/dashboardApi";
 
 const Checkout = ({ route }) => {
   const userState = useSelector((state) => state.login);
-  //console.log(userState.userData.email)
 
-  const { createOrderId } = route.params || {};
-  //console.log("Desde checkouts",createOrderId)
+  const { createOrderId, grandTotal } = route.params || {};
+  //console.log("Desde checkouts", userState.userData.first_name);
 
   const {
     data: dataDashboard,
@@ -57,11 +56,19 @@ const Checkout = ({ route }) => {
   useConfirmPaymentMutation;
 
   const handlePayPress = async () => {
+    // 1. check email format is correct  (e.g., email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Please enter a valid email address");
+      return;
+    }
+
     // 1. Gather the customer's billing information (e.g., email)
     if (!cardDetails?.complete || !email) {
       Alert.alert("Please enter complete card details and email");
       return;
     }
+
     const billingDetails = {
       email: email,
     };
@@ -72,17 +79,23 @@ const Checkout = ({ route }) => {
       paymentMethodType: "Card",
       card: cardDetails,
       billing_details: {
-        name: "Jenny Rosen",
+        name: `${userState.userData.first_name} ${userState.userData.last_name}`,
       },
     });
 
-    if (result.error) {
-      console.log("Error al crear el PaymentMethod:", result.error);
-      return; // Handle the error as needed
-    }
-    console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
-    // initiate paymentet
+    // console.log({
+    //   billing_details: {
+    //     name: `${userState.userData.first_name} ${userState.userData.last_name}`,
+    //   },
+    // });
 
+    // if (result.error) {
+    //   console.log("Error al crear el PaymentMethod:", result.error);
+    //   return;
+    // }
+    // console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
+
+    // initiate paymentet
     let initiatePaymentRes;
 
     try {
@@ -91,21 +104,21 @@ const Checkout = ({ route }) => {
         user_id: userState.userData.id,
         paid_by: "1",
         email: userState.userData.email,
-        user_name: userState.userData.first_name,
+        user_name: `${userState.userData.first_name} ${userState.userData.last_name}`,
         payment_method: result.paymentMethod.id,
       });
 
       if (initiatePaymentRes) {
-        console.log(
-          "res de init es :",
-          initiatePaymentRes.data.data.payment.payment.id
-        );
+        // console.log(
+        //   "res de init es :",
+        //   initiatePaymentRes?.data?.data?.payment?.payment?.id
+        // );
       }
     } catch (error) {
-      console.error(
-        "La respuesta de createOrder es falsa o indefinida.",
-        error
-      );
+      // console.error(
+      //   "La respuesta de createOrder es falsa o indefinida.",
+      //   error
+      // );
       return;
     }
 
@@ -135,7 +148,7 @@ const Checkout = ({ route }) => {
         console.error("Error");
       }
     } catch (error) {
-      console.log("error en confirm", error);
+      // console.log("error en confirm", error);
     }
     // refetch api dashboard to update counter orders
     await refetch();
@@ -153,6 +166,14 @@ const Checkout = ({ route }) => {
         />
       </View>
       <View style={styles.container2}>
+        <View style={styles.textDivide}>
+          <MaterialIcons
+            name="credit-card"
+            color={mainColor}
+            style={styles.icon}
+          />
+          <Text style={styles.textDivideFont}>Card Details</Text>
+        </View>
         <TextInput
           autoCapitalize="none"
           placeholder="E-mail"
@@ -171,7 +192,20 @@ const Checkout = ({ route }) => {
             setCardDetails(cardDetails);
           }}
         />
-        <Button title="Pay" onPress={handlePayPress} />
+        {/* <Button title="Pay" onPress={handlePayPress} /> */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.saveButtom}
+          onPress={handlePayPress}
+        >
+          <Text style={styles.saveButtomText}>Pay {grandTotal}</Text>
+        </TouchableOpacity>
+        <View style={{ marginTop: 30 }}>
+          <Text style={styles.bottomText}>
+            Your card will be immediately charged
+            <Text style={styles.bottomTextTotal}> {grandTotal} .</Text>
+          </Text>
+        </View>
       </View>
     </>
   );
@@ -189,7 +223,6 @@ const styles = StyleSheet.create({
   },
   container2: {
     flex: 1,
-    justifyContent: "center",
     margin: 20,
   },
 
@@ -266,7 +299,6 @@ const styles = StyleSheet.create({
   saveButtom: {
     flexDirection: "row",
     justifyContent: "center",
-    width: ScreenWidth - 20,
     marginBottom: 20,
     backgroundColor: mainColor,
     padding: 20,
@@ -365,14 +397,17 @@ const styles = StyleSheet.create({
     letterSpacing: 1.25,
     color: thirdColor,
     textAlign: "center",
-    width: 300,
+    // width: 300,
+    marginHorizontal: "10%",
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
   },
   cardContainer: {
     height: 50,
     marginVertical: 30,
+    //backgroundColor: "#f2f2f2",
+    // color: "#f2f2f2",
   },
 
   input: {
