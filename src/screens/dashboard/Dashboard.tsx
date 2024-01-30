@@ -227,6 +227,7 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
           style={{
             backgroundColor: secundaryColor7,
             flex: 1,
+            marginBottom: "15%",
           }}
         >
           <DashInfo dash={dash} />

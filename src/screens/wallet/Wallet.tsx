@@ -43,7 +43,7 @@ const Wallet = () => {
         <View style={styles.wrapper}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{ width: ScreenWidth, marginBottom: 5 }}
+            style={{ width: ScreenWidth, marginBottom: "14%" }}
           >
             <View style={styles.viewScroll}>
               <View style={styles.headerTop}>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // padding:1,
     marginTop: 20,
-    marginBottom: "auto",
+    marginBottom: "14%",
   },
   headerTop: {
     width: ScreenWidth - 20,

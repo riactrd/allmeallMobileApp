@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
     // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
+    marginBottom: "14%",
   },
   viewScroll: {
     // width: ScreenWidth-20,
@@ -243,7 +244,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // padding:1,
     // marginBottom:320,
-    marginBottom: "auto",
   },
   containerheaderText: {
     marginTop: 20,

@@ -137,7 +137,7 @@ const Checkout = ({ route }) => {
     } catch (error) {
       console.log("error en confirm", error);
     }
-
+    // refetch api dashboard to update counter orders
     await refetch();
   };
   return (
