@@ -27,6 +27,7 @@ import { useCreateInitiatePaymentMutation } from "../../redux/api/initiatePaymen
 import { useSelector } from "react-redux";
 import { useConfirmPaymentMutation } from "../../redux/api/confirmPayment";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useGetdashboardQuery } from "../../redux/api/dashboardApi";
 
 const Checkout = ({ route }) => {
   const userState = useSelector((state) => state.login);
@@ -34,6 +35,14 @@ const Checkout = ({ route }) => {
 
   const { createOrderId } = route.params || {};
   //console.log("Desde checkouts",createOrderId)
+
+  const {
+    data: dataDashboard,
+    isError,
+    error,
+    isSuccess,
+    refetch,
+  } = useGetdashboardQuery("");
 
   const navigation = useNavigation();
   const [email, setEmail] = useState();
@@ -128,6 +137,8 @@ const Checkout = ({ route }) => {
     } catch (error) {
       console.log("error en confirm", error);
     }
+
+    await refetch();
   };
   return (
     <>
