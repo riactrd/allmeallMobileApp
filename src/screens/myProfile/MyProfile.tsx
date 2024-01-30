@@ -259,7 +259,11 @@ const MyProfile = () => {
           style={{ width: ScreenWidth, marginBottom: -10 }}
         >
           <View
-            style={{ flexDirection: "column", justifyContent: "flex-start" }}
+            style={{
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              marginBottom: "20%",
+            }}
           >
             <ScrollView
               showsHorizontalScrollIndicator={false}

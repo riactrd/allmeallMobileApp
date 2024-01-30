@@ -21,7 +21,7 @@ export default function MealPrepList({ navigation, meal }) {
             <MealPrepCard item={item} navigation={navigation} />
           </View>
         ))}
-      <View style={{ marginBottom: 60 }}></View>
+      <View style={{ marginBottom: "40%" }}></View>
     </View>
   );
 }

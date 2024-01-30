@@ -57,7 +57,7 @@ export default function OrdersList({ navigation, ordersList }) {
         renderItem={({ item }) => (
           <OrderCard item={item} navigation={navigation} />
         )}
-        ListFooterComponent={<View style={{ marginBottom: 10 }}></View>}
+        ListFooterComponent={<View style={{ marginBottom: "60%" }}></View>}
         // ListFooterComponentStyle={
         //   {
         //     // paddingHorizontal: 20,

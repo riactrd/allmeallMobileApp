@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import {
@@ -18,161 +18,195 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import CardDetails from "./CardDetails";
-import { CardField, useConfirmPayment, createPaymentMethod,  } from "@stripe/stripe-react-native";
+import {
+  CardField,
+  useConfirmPayment,
+  createPaymentMethod,
+} from "@stripe/stripe-react-native";
 import { useCreateInitiatePaymentMutation } from "../../redux/api/initiatePayment";
 import { useSelector } from "react-redux";
 import { useConfirmPaymentMutation } from "../../redux/api/confirmPayment";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useGetdashboardQuery } from "../../redux/api/dashboardApi";
 
-
-
-const Checkout = ({route}) => {
-
+const Checkout = ({ route }) => {
   const userState = useSelector((state) => state.login);
-  //console.log(userState.userData.email)
-  
 
-  const { createOrderId} = route.params || {};
-  //console.log("Desde checkouts",createOrderId)
+  const { createOrderId, grandTotal } = route.params || {};
+  //console.log("Desde checkouts", userState.userData.first_name);
 
-  
+  const {
+    data: dataDashboard,
+    isError,
+    error,
+    isSuccess,
+    refetch,
+  } = useGetdashboardQuery("");
+
   const navigation = useNavigation();
   const [email, setEmail] = useState();
   const [cardDetails, setCardDetails] = useState();
 
   const [initPayment, { data, isLoading }] = useCreateInitiatePaymentMutation();
-  const [confirmPayment, { data: confirmPaymentData, isLoading:confirmPaymentIsLoading }] = useConfirmPaymentMutation();
+  const [
+    confirmPayment,
+    { data: confirmPaymentData, isLoading: confirmPaymentIsLoading },
+  ] = useConfirmPaymentMutation();
 
-  useConfirmPaymentMutation
+  useConfirmPaymentMutation;
 
   const handlePayPress = async () => {
-     // 1. Gather the customer's billing information (e.g., email)
+    // 1. check email format is correct  (e.g., email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Please enter a valid email address");
+      return;
+    }
+
+    // 1. Gather the customer's billing information (e.g., email)
     if (!cardDetails?.complete || !email) {
       Alert.alert("Please enter complete card details and email");
       return;
     }
+
     const billingDetails = {
       email: email,
     };
 
-    // 2 Create Payment Method  
+    // 2 Create Payment Method
 
-   
     const result = await createPaymentMethod({
-      paymentMethodType: "Card",      
+      paymentMethodType: "Card",
       card: cardDetails,
       billing_details: {
-        name: 'Jenny Rosen',
+        name: `${userState.userData.first_name} ${userState.userData.last_name}`,
       },
-    })
-    
-      
-      if (result.error) {
-        console.log("Error al crear el PaymentMethod:", result.error);
-        return; // Handle the error as needed
-      }
-      console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
-    ; 
+    });
+
+    // console.log({
+    //   billing_details: {
+    //     name: `${userState.userData.first_name} ${userState.userData.last_name}`,
+    //   },
+    // });
+
+    // if (result.error) {
+    //   console.log("Error al crear el PaymentMethod:", result.error);
+    //   return;
+    // }
+    // console.log("Resultado de createPaymentMethod:", result.paymentMethod.id);
 
     // initiate paymentet
-
     let initiatePaymentRes;
 
     try {
-      
-       initiatePaymentRes  = await initPayment({
-        "order_id": createOrderId,
-        "user_id": userState.userData.id,
-        "paid_by": "1",
-        "email": userState.userData.email,
-        "user_name": userState.userData.first_name,
-        "payment_method": result.paymentMethod.id
-      })
+      initiatePaymentRes = await initPayment({
+        order_id: createOrderId,
+        user_id: userState.userData.id,
+        paid_by: "1",
+        email: userState.userData.email,
+        user_name: `${userState.userData.first_name} ${userState.userData.last_name}`,
+        payment_method: result.paymentMethod.id,
+      });
 
-     
-     
-      if (initiatePaymentRes){
-        console.log("res de init es :", initiatePaymentRes.data.data.payment.payment.id)
+      if (initiatePaymentRes) {
+        // console.log(
+        //   "res de init es :",
+        //   initiatePaymentRes?.data?.data?.payment?.payment?.id
+        // );
       }
     } catch (error) {
-      console.error("La respuesta de createOrder es falsa o indefinida.",error);
+      // console.error(
+      //   "La respuesta de createOrder es falsa o indefinida.",
+      //   error
+      // );
       return;
-      
     }
 
     // Confirm Payment
 
-   
     try {
       const confirmRes = await confirmPayment({
-        "payment_intent_id": initiatePaymentRes.data.data.payment.payment.id,
-        "order_id":userState.userData.id,
-        "subscriptionId": initiatePaymentRes.data.data.payment.payment.id,
-        "voucher_id": null,
-        "nutrition_order_id": null,
-        "vegandale_order_id": null,
-        "product_order_id": null,
-        "donation_id": null,
-        "from_donation": false,
-        "from_wallet": false,
-        "from_tip": false,
-        "is_from_catering": false,
-        "is_from_thanks_giving": false,
-        "payment_type": 7
+        payment_intent_id: initiatePaymentRes.data.data.payment.payment.id,
+        order_id: createOrderId,
+        subscriptionId: initiatePaymentRes.data.data.payment.payment.id,
+        voucher_id: null,
+        nutrition_order_id: null,
+        vegandale_order_id: null,
+        product_order_id: null,
+        donation_id: null,
+        from_donation: false,
+        from_wallet: false,
+        from_tip: false,
+        is_from_catering: false,
+        is_from_thanks_giving: false,
+        payment_type: 7,
       });
 
       if (confirmRes) {
-        navigation.navigate("CheckoutInfoDrawer")
+        navigation.navigate("CheckoutInfoDrawer");
       } else {
         console.error("Error");
       }
-
     } catch (error) {
-      console.log("error en confirm", error)
-      
+      // console.log("error en confirm", error);
     }
-
-
-    
-    
-
-    
+    // refetch api dashboard to update counter orders
+    await refetch();
   };
   return (
-    
     <>
-    <View>
-            <Spinner
-              //visibility of Overlay Loading Spinner
-              visible={confirmPaymentIsLoading || isLoading}
-              //Text with the Spinner
-              // textContent={"Loading..."}
-              //Text style of the Spinner Text
-              // textStyle={styles.spinnerTextStyle}
-            />
-          </View>
-    <View style={styles.container2}>
-      <TextInput
-        autoCapitalize="none"
-        placeholder="E-mail"
-        keyboardType="email-address"
-        onChangeText={(value) => setEmail(value)}
-        style={styles.input}
-      />
-      <CardField
-        postalCodeEnabled={true}
-        placeholder={{
-          number: "4242 4242 4242 4242",
-        }}
-        cardStyle={styles.card}
-        style={styles.cardContainer}
-        onCardChange={(cardDetails) => {
-          setCardDetails(cardDetails);
-        }}
-      />
-      <Button  title="Pay" onPress={handlePayPress} />
-    </View>
-     
+      <View>
+        <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={confirmPaymentIsLoading || isLoading}
+          //Text with the Spinner
+          // textContent={"Loading..."}
+          //Text style of the Spinner Text
+          // textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+      <View style={styles.container2}>
+        <View style={styles.textDivide}>
+          <MaterialIcons
+            name="credit-card"
+            color={mainColor}
+            style={styles.icon}
+          />
+          <Text style={styles.textDivideFont}>Card Details</Text>
+        </View>
+        <TextInput
+          autoCapitalize="none"
+          placeholder="E-mail"
+          keyboardType="email-address"
+          onChangeText={(value) => setEmail(value)}
+          style={styles.input}
+        />
+        <CardField
+          postalCodeEnabled={true}
+          placeholder={{
+            number: "4242 4242 4242 4242",
+          }}
+          cardStyle={styles.card}
+          style={styles.cardContainer}
+          onCardChange={(cardDetails) => {
+            setCardDetails(cardDetails);
+          }}
+        />
+        {/* <Button title="Pay" onPress={handlePayPress} /> */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.saveButtom}
+          onPress={handlePayPress}
+        >
+          <Text style={styles.saveButtomText}>Pay {grandTotal}</Text>
+        </TouchableOpacity>
+        <View style={{ marginTop: 30 }}>
+          <Text style={styles.bottomText}>
+            Your card will be immediately charged
+            <Text style={styles.bottomTextTotal}> {grandTotal} .</Text>
+          </Text>
+        </View>
+      </View>
     </>
   );
 };
@@ -189,7 +223,6 @@ const styles = StyleSheet.create({
   },
   container2: {
     flex: 1,
-    justifyContent: "center",
     margin: 20,
   },
 
@@ -266,7 +299,6 @@ const styles = StyleSheet.create({
   saveButtom: {
     flexDirection: "row",
     justifyContent: "center",
-    width: ScreenWidth - 20,
     marginBottom: 20,
     backgroundColor: mainColor,
     padding: 20,
@@ -365,14 +397,17 @@ const styles = StyleSheet.create({
     letterSpacing: 1.25,
     color: thirdColor,
     textAlign: "center",
-    width: 300,
+    // width: 300,
+    marginHorizontal: "10%",
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
   },
   cardContainer: {
     height: 50,
     marginVertical: 30,
+    //backgroundColor: "#f2f2f2",
+    // color: "#f2f2f2",
   },
 
   input: {

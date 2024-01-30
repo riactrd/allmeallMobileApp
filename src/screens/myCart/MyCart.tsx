@@ -92,63 +92,52 @@ const MyCart = () => {
   const cartItemsState = useSelector((state) => state.cartQuantity);
   const userState = useSelector((state) => state.login);
 
-  
-
- 
- 
-
- 
-
   //--------------------------GET MY CART API----------------------------------
   const { data, isError, error, isLoading, refetch, isFetching } =
     useGetmyCartQuery("bulbasaur", { refetchOnMountOrArgChange: true });
 
-    //console.log(userState)
+  //console.log(userState)
 
+  const handleCreateOrder = async () => {
+    try {
+      const result = await createOrder({
+        billing_address: data?.data.my_cart.billing_addresses.options[0].id,
+        coupon_code: "",
+        delivery_address: data?.data.my_cart.billing_addresses.options[0].id,
+        // "delivery_frequency":data?.data.my_cart.delivery_frequency.selected,
+        delivery_frequency: "7",
+        delivery_type: "1",
+        exp_delivery_date: data?.data.my_cart.expected_delivery_date.selected,
+        is_admin_order: "false",
+        is_gift: "true",
+        is_prime_membership: "true",
+        is_same_as_billing_address: "true",
+        no_contact_delivery: "true",
+        notes: "",
+        order_id: "",
+        order_payment_status: "false",
+        order_type: "Food",
+        pickup_time_slot_id: "12",
+        use_reusable_glassware: "true",
+        use_reward_points: "true",
+        user_id: userState.userData.id,
+        voucher_code: "",
+      });
 
-    const handleCreateOrder = async () => {
-      try {
-        const result = await createOrder({          
-          "billing_address": data?.data.my_cart.billing_addresses.options[0].id,
-          "coupon_code": "",
-          "delivery_address": data?.data.my_cart.billing_addresses.options[0].id,
-       // "delivery_frequency":data?.data.my_cart.delivery_frequency.selected,
-          "delivery_frequency": "7",
-          "delivery_type": "1",
-          "exp_delivery_date": data?.data.my_cart.expected_delivery_date.selected,
-          "is_admin_order": "false",
-          "is_gift": "true",
-          "is_prime_membership": "true",
-          "is_same_as_billing_address": "true",
-          "no_contact_delivery": "true",
-          "notes": "",
-          "order_id": "",
-          "order_payment_status": "false",
-          "order_type": "Food",
-          "pickup_time_slot_id": "12",
-          "use_reusable_glassware": "true",
-          "use_reward_points": "true",
-          "user_id": userState.userData.id,
-          "voucher_code": ""      
-      } );         
-        
-        if (result) {
-          navigation.navigate("Checkout", { createOrderId: result.data.data.order.id });
-        } else {
-          console.error("La respuesta de createOrder es falsa o indefinida.");
-        }
-        
-    
-      } catch (error) {
-        console.error("Error al realizar la mutación:", error);
+      if (result) {
+        navigation.navigate("Checkout", {
+          createOrderId: result.data.data.order.id,
+          grandTotal: ordersummary?.grand_total.value,
+        });
+      } else {
+        console.error("La respuesta de createOrder es falsa o indefinida.");
       }
-  
-    //  navigation.navigate("Checkout", {createOrder: createOrderData})
-    };
+    } catch (error) {
+      console.error("Error al realizar la mutación:", error);
+    }
 
-   
-    
-  
+    //  navigation.navigate("Checkout", {createOrder: createOrderData})
+  };
 
   //--------------------------------------------------------------------
   const [trigger, { data: dataMycart }] = useLazyGetmyCartQuery({
@@ -347,25 +336,27 @@ const MyCart = () => {
     refetch();
   };
 
- 
+  const [
+    createOrder,
+    {
+      data: createOrderData,
+      isSuccess,
+      isLoading: createOrderIsLoading,
+      isError: createOrderIsError,
+      error: createOrderError,
+    },
+  ] = useCreateOrderMutation();
 
-  const [createOrder, { data: createOrderData, isSuccess, isLoading: createOrderIsLoading, isError:createOrderIsError, error:createOrderError}] =
-  useCreateOrderMutation();
+  // useEffect(() => {
+  //    if(createOrderData){
+  //
+  //     console.log("create Order Data",createOrderData);
+  //   }
+  //    if(createOrderIsError){
+  //     console.log(createOrderError)
+  //   }
 
- // useEffect(() => {
-//    if(createOrderData){
-//
- //     console.log("create Order Data",createOrderData); 
- //   }
-//    if(createOrderIsError){
- //     console.log(createOrderError)
- //   }
-    
- // }, [createOrderData, createOrderIsError, createOrderError])
-  
-
- 
-  
+  // }, [createOrderData, createOrderIsError, createOrderError])
 
   return (
     <>
@@ -860,8 +851,7 @@ const MyCart = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.saveButtom}
-                      onPress={ handleCreateOrder}
-                      
+                      onPress={handleCreateOrder}
                     >
                       <Text style={styles.saveButtomText}>
                         Proceed to checkout
@@ -906,14 +896,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: secundaryColor,
-   
   },
   wrapper: {
     // backgroundColor: '#000',
     // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
-    
   },
   viewScroll: {
     // width: ScreenWidth-20,
@@ -921,7 +909,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // padding:1,
     marginBottom: "auto",
-    marginBottom:100,
+    marginBottom: 100,
     marginTop: 20,
   },
   icon: {

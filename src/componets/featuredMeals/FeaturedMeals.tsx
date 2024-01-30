@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
-    marginBottom: -40,
   },
   wrapper: {
     display: "flex",
@@ -80,6 +79,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 20,
     paddingLeft: 20,
     width: "100%",
+
     // backgroundColor: "red",
   },
   categoryText: {
