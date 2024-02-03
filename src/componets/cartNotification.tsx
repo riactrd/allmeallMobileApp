@@ -6,10 +6,26 @@ import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { mainColor, secundaryColor, thirdColor } from "./shared";
+import { useGetmyCartQuery } from "../redux/api/myCartApi";
 
 const CartNotification = () => {
-  const totalQuantity = useSelector(selectcartTotalQuantity);
   const navigation = useNavigation();
+
+  const { data, isFetching, isLoading, refetch } = useGetmyCartQuery("");
+
+  // to count al de items in the cart----------
+  let totalQuantity;
+  if (data) {
+    const quantities =
+      data?.data.my_cart.cart_items.map((item) => item.quantity) || [];
+
+    totalQuantity = quantities.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+
+    console.log("Total Quantity:", totalQuantity);
+  }
 
   return (
     <View
@@ -34,14 +50,15 @@ const CartNotification = () => {
         />
       </View>
       <View style={{ position: "relative" }}>
-        <View
+        {/* <View
           style={[
             totalQuantity ? styles.bellContainer : styles.bellContainerCero,
           ]}
         >
-          <Text style={[totalQuantity ? styles.textbel : styles.textbelCero]}>
-            {totalQuantity}
-          </Text>
+          <Text style={styles.textbel}>{ {totalQuantity} }</Text>
+        </View> */}
+        <View style={styles.bellContainer}>
+          <Text style={styles.textbel}>{totalQuantity}</Text>
         </View>
         <AntDesign
           name="shoppingcart"

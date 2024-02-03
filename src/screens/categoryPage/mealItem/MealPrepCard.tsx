@@ -23,7 +23,7 @@ export default function MealPrepCard({ item, navigation }) {
 
   // FUNCIONES ADD  , INCREASE , DECREASE
 
-  const [createAddCart, { data, isError, error, isSuccess, reset }] =
+  const [createAddCart, { data, isError, error, isSuccess }] =
     useCreateAddCartMutation();
   const [decreaseCart, { data: dataDecreaseCart }] = useDecreaseCartMutation();
   const [increaseCart, { data: dataIncreaseCart }] = useIncreaseCartMutation();
@@ -39,6 +39,7 @@ export default function MealPrepCard({ item, navigation }) {
     data: testing,
     isFetching,
     isLoading,
+    refetch,
   } = useGetmyCartQuery("", {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -112,6 +113,7 @@ export default function MealPrepCard({ item, navigation }) {
         // });
       }
     }
+    refetch();
   };
 
   const handlerAddCart = async () => {
@@ -128,6 +130,7 @@ export default function MealPrepCard({ item, navigation }) {
 
       trigger();
     }
+    refetch();
   };
 
   const handlerdecrease = async () => {
@@ -135,6 +138,7 @@ export default function MealPrepCard({ item, navigation }) {
     SetQuantity(quantity - 1);
 
     // Lógica adicional si es necesario
+    refetch();
   };
 
   const handlerincrease = async () => {
@@ -143,6 +147,7 @@ export default function MealPrepCard({ item, navigation }) {
     trigger("");
 
     // Lógica adicional si es necesario
+    refetch();
   };
 
   useEffect(() => {

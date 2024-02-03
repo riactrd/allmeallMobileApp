@@ -98,21 +98,6 @@ const CategoryPage: FunctionComponent<props> = ({ navigation }) => {
             horizontal={false}
             alwaysBounceVertical={true}
           >
-            {/* <View style={styles.mealItems}>
-              {mealsList.map((item, index) => (
-                <TouchableOpacity
-                // onPress={() => navigation.navigate("Category")}
-                >
-                  <MealItem
-                    item={item}
-                    key={index}
-                    // selected={selected}
-                    // Setselected={Setselected}
-                    // index={index}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View> */}
             <View style={{ marginHorizontal: 10, marginTop: 20 }}>
               <View
                 style={{
