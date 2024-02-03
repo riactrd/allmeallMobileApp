@@ -49,8 +49,12 @@ export default function MealPrepCard({ item, navigation }) {
   // SETMYCART---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (dataGetcartTrigger) {
-      setMycart(dataGetcartTrigger?.data?.my_cart?.cart_items);
+    if (
+      dataGetcartTrigger &&
+      dataGetcartTrigger.data &&
+      dataGetcartTrigger.data.my_cart
+    ) {
+      setMycart(dataGetcartTrigger.data.my_cart.cart_items || []);
     }
   }, [dataGetcartTrigger, isFetching]);
 
@@ -138,7 +142,9 @@ export default function MealPrepCard({ item, navigation }) {
     SetQuantity(quantity - 1);
 
     // Lógica adicional si es necesario
-    refetch();
+    if (result) {
+      refetch();
+    }
   };
 
   const handlerincrease = async () => {
@@ -146,8 +152,9 @@ export default function MealPrepCard({ item, navigation }) {
 
     trigger("");
 
-    // Lógica adicional si es necesario
-    refetch();
+    if (result) {
+      refetch();
+    }
   };
 
   useEffect(() => {

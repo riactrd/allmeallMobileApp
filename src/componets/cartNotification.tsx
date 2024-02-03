@@ -14,16 +14,14 @@ const CartNotification = () => {
   const { data, isFetching, isLoading, refetch } = useGetmyCartQuery("");
 
   // to count al de items in the cart----------
-  let totalQuantity;
-  if (data) {
+  let totalQuantity = 0;
+  if (data && data.data && data.data.my_cart && data.data.my_cart.cart_items) {
     const quantities =
-      data?.data.my_cart.cart_items.map((item) => item.quantity) || [];
-
+      data.data.my_cart.cart_items.map((item) => item.quantity) || [];
     totalQuantity = quantities.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       0
     );
-
     console.log("Total Quantity:", totalQuantity);
   }
 
