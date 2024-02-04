@@ -36,6 +36,7 @@ import {
 } from "../../redux/api/profileApi";
 import Spinner from "react-native-loading-spinner-overlay";
 import { format } from "date-fns";
+import { formatDate, formatPhoneNumber } from "../../utils/formatDate";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -64,21 +65,9 @@ const MyProfile = () => {
       SetPhone(data?.data.profile.phone_number);
       SetSecondaryPhone(data?.data.profile.sec_phone_number);
       SetGender(data?.data.profile.gender);
-      setReferrer(data?.data.profile.referral_email);
+      setReferrer(data?.data.profile.referrer_id.toString());
       setReferralEmail(data?.data.profile.referral_email);
 
-      // // SetDateofBirth
-      // if (data?.data.profile.date_of_birth) {
-      //   const isoDate = data?.data.profile.date_of_birth;
-      //   const dateObject = new Date(isoDate);
-      //   // Ajusta la fecha a la zona horaria local del usuario
-      //   const adjustedDate = new Date(
-      //     dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
-      //   );
-      //   const formattedDate = format(adjustedDate, "dd/MM/yy");
-      //   SetDateofBirth(formattedDate);
-      // }
-      // SetDateofBirth;
       if (data?.data.profile.date_of_birth) {
         const isoDate = data?.data.profile.date_of_birth;
         const dateObject = new Date(isoDate);
@@ -93,8 +82,6 @@ const MyProfile = () => {
       }
     }
   }, [data]);
-  // console.log(data?.data.profile.date_of_birth);
-  // console.log(dateofBirth);
 
   useEffect(() => {
     dispatch(
@@ -103,13 +90,13 @@ const MyProfile = () => {
         lastname,
         phone,
         dateofBirth,
-        // dateofBirth: formatDateForBackend(dateofBirth),
         secondaryPhone,
         gender,
         referrer,
         referralEmail,
       })
     );
+    console.log(referralEmail);
   }, [
     name,
     lastname,
@@ -169,6 +156,8 @@ const MyProfile = () => {
         dateofBirth,
         secondaryPhone,
         gender,
+        referrer,
+        referralEmail,
       })
     );
   }, [name, lastname, phone, dateofBirth, secondaryPhone, gender]);
@@ -195,21 +184,24 @@ const MyProfile = () => {
     e: NativeSyntheticEvent<TextInputChangeEventData>
   ): void => {
     const value = e.nativeEvent.text;
-    SetPhone(value);
+    const format = formatPhoneNumber(value);
+    SetPhone(format);
   };
 
   const onChangeSecondaryPhone = (
     e: NativeSyntheticEvent<TextInputChangeEventData>
   ): void => {
     const value = e.nativeEvent.text;
-    SetSecondaryPhone(value);
+    const format = formatPhoneNumber(value);
+    SetSecondaryPhone(format);
   };
 
   const onChanDateofBirth = (
     e: NativeSyntheticEvent<TextInputChangeEventData>
   ): void => {
     const value = e.nativeEvent.text;
-    SetDateofBirth(value);
+    const farmat = formatDate(value);
+    SetDateofBirth(farmat);
   };
 
   const onChangeReferrer = (
@@ -434,7 +426,7 @@ const MyProfile = () => {
                       </Text>
                       <TextInput
                         keyboardType="number-pad"
-                        placeholder="Type email..."
+                        placeholder=" (960) 123-4567"
                         style={styles.input}
                         value={phone}
                         onChange={onChangePhone}
@@ -459,7 +451,8 @@ const MyProfile = () => {
                         <Text style={{ color: mainColor }}>*</Text>
                       </Text>
                       <TextInput
-                        placeholder="Type amount..."
+                        keyboardType="number-pad"
+                        placeholder="(960) 123-4567"
                         style={styles.input}
                         value={secondaryPhone}
                         onChange={onChangeSecondaryPhone}
@@ -562,9 +555,7 @@ const MyProfile = () => {
                         placeholder="Type Referrer..."
                         style={styles.input}
                         onChange={onChangeReferrer}
-                        value={referralEmail}
-                        onChange={onChangeReferrer}
-                        value={referralEmail}
+                        value={referrer}
                       />
                     </View>
                     <View style={styles.inputContainer}>
@@ -575,8 +566,6 @@ const MyProfile = () => {
                       <TextInput
                         placeholder="Type Referral Email*..."
                         style={styles.input}
-                        onChange={onChangeReferralEmail}
-                        value={referralEmail}
                         onChange={onChangeReferralEmail}
                         value={referralEmail}
                       />

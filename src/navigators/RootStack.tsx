@@ -691,8 +691,51 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
 
   const id = loginState?.userData?.id;
 
+  const isValidPhoneNumber = (phoneNumber) => {
+    // Expresión regular para validar un número de teléfono con formato (XXX) XXX-XXXX
+    const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const isValidDateOfBirth = (dateOfBirth) => {
+    // Expresión regular para validar la fecha de nacimiento en formato dd/mm/yy
+    const dateOfBirthRegex =
+      /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{2}$/;
+
+    return dateOfBirthRegex.test(dateOfBirth);
+  };
+
+  const isValidEmailRefer = (email) => {
+    // Expresión regular para validar la fecha de nacimiento en formato dd/mm/yy
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return emailRegex.test(email);
+  };
+
   const handlerSave = async () => {
     try {
+      // // Validar los números de teléfono antes de enviar a la API
+      // if (!isValidPhoneNumber(phone) || !isValidPhoneNumber(secondaryPhone)) {
+      //   // Mostrar una alerta o manejar la validación de acuerdo a tus necesidades
+      //   alert("Invalid phone number, Please enter a 10 digit number.");
+      //   return;
+      // }
+
+      // Validar la fecha de nacimiento antes de enviar a la API
+      if (!isValidDateOfBirth(dateofBirth)) {
+        alert(
+          "Invalid date of birth. Please enter a valid date in the format dd/mm/yy."
+        );
+        return;
+      }
+
+      if (!isValidEmailRefer(referralEmail)) {
+        console.log(referralEmail);
+        alert("Please enter a valid email address", referralEmail);
+        return;
+      }
+
       const response = await updateProfile({
         name,
         lastname,
@@ -703,12 +746,14 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
         referralEmail,
         referrer,
       }).unwrap();
+
       toast.show(JSON.stringify(response.message), {
         type: "success",
         placement: "center",
         duration: 8000,
         animationType: "slide-in",
       });
+
       console.log("Response Server:", response.message);
     } catch (error) {
       console.error("Error :", error);
