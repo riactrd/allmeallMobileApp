@@ -36,3 +36,24 @@ export const formatPhoneNumber = (text) => {
     ? formattedPhoneNumber
     : formattedPhoneNumber.slice(0, 14);
 };
+
+export const isValidPhoneNumber = (phoneNumber) => {
+  // Expresión regular para validar un número de teléfono con formato (XXX) XXX-XXXX
+  const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+
+  return phoneRegex.test(phoneNumber);
+};
+
+export const isValidEmailRefer = (email) => {
+  // Expresión regular para validar la fecha de nacimiento en formato dd/mm/yy
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  return emailRegex.test(email);
+};
+
+export const isValidDateOfBirth = (dateOfBirth) => {
+  // Expresión regular para validar la fecha de nacimiento en formato dd/mm/yy
+  const dateOfBirthRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{2}$/;
+
+  return dateOfBirthRegex.test(dateOfBirth);
+};
