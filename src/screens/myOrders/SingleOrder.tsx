@@ -31,8 +31,7 @@ import { useRoute } from "@react-navigation/native";
 import { useGetmyorderIdQuery } from "../../redux/api/myorderApi";
 import HTML from "react-native-render-html";
 import Spinner from "react-native-loading-spinner-overlay";
-
-const itemList = [1, 2, 3, 4];
+import Loader from "../../utils/Loader";
 
 const SingleOrder = () => {
   const [selected, Setselected] = useState("1");
@@ -109,31 +108,7 @@ const SingleOrder = () => {
 
   return (
     <>
-      {isLoading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(3, 0, 2, 0.30)",
-            height: Screenheight,
-            width: ScreenWidth,
-            position: "absolute",
-            zIndex: 99,
-          }}
-        >
-          <View>
-            <Spinner
-              //visibility of Overlay Loading Spinner
-              visible={isLoading}
-              //Text with the Spinner
-              textContent={"Loading..."}
-              //Text style of the Spinner Text
-              textStyle={styles.spinnerTextStyle}
-            />
-          </View>
-        </View>
-      )}
+      {isLoading && <Loader isLoading={isLoading} />}
       <View style={styles.container}>
         <View style={styles.wrapper}>
           <View style={styles.headerContainer}>
@@ -709,12 +684,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   viewScroll: {
-    // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
-    // padding:1,
-    // marginBottom:320,
-    marginBottom: "auto",
+    marginBottom: "20%",
   },
   headerContainer: {
     flexDirection: "row",
@@ -757,7 +729,7 @@ const styles = StyleSheet.create({
   },
   orderDetails: {
     width: ScreenWidth - 20,
-    height: 149,
+    height: "auto",
     backgroundColor: secundaryColor,
     borderRadius: 8,
     alignItems: "flex-start",
