@@ -168,7 +168,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
                 <MaterialIcons
                   name="volunteer-activism"
                   size={24}
-                  // color={focused ? "#fff" : "black"}
+                  // colaor={focused ? "#fff" : "black"}
                 />
               )}
               label="Donate"
