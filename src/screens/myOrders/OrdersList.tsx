@@ -52,8 +52,6 @@ const foods = [
 export default function OrdersList({ navigation, ordersList, selected }) {
   // Filtrar los elementos en base a selected y newOrder
 
-  console.log(selected);
-
   const resultOrder =
     selected === 0
       ? orderData
@@ -70,8 +68,6 @@ export default function OrdersList({ navigation, ordersList, selected }) {
             return item.delivery_status === "Canceled"; // Si selected no es 0 ni 1, incluir todos los elementos
           }
         });
-
-  console.log("this is a result order", resultOrder);
 
   return (
     <>

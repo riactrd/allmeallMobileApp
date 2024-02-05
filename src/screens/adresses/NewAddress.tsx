@@ -465,12 +465,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   viewScroll: {
-    // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
-    // padding:1,
-    // marginBottom:320,
-    marginBottom: "auto",
+    marginBottom: "20%",
     marginTop: 20,
   },
   inputContainer: {

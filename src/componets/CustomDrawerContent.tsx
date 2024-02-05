@@ -75,10 +75,10 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               />
             </View>
             <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 16 }}> Marco Williams</Text>
-              <Text style={{ fontSize: 10 }}>
-                marcowilliams@allmealprep.com
+              <Text style={{ fontSize: 16 }}>
+                {first_name} {last_name}
               </Text>
+              <Text style={{ fontSize: 10 }}>{email}</Text>
             </View>
           </View>
 
