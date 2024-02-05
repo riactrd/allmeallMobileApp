@@ -2,6 +2,7 @@ import { View, Text, FlatList, Button } from "react-native";
 import React from "react";
 // import foods from "../../foods";
 import OrderCard from "./OrderCard";
+import orderData from "../../utils/orderTestList";
 
 const foods = [
   {
@@ -48,22 +49,39 @@ const foods = [
   },
 ];
 
-export default function OrdersList({ navigation, ordersList }) {
+export default function OrdersList({ navigation, ordersList, selected }) {
+  // Filtrar los elementos en base a selected y newOrder
+
+  console.log(selected);
+
+  const resultOrder =
+    selected === 0
+      ? orderData
+      : orderData.filter((item) => {
+          if (selected === 1) {
+            return item.delivery_status === "Neworder";
+          }
+          if (selected === 2) {
+            return item.delivery_status === "Preparing";
+          }
+          if (selected === 3) {
+            return item.delivery_status === "Delivered";
+          } else {
+            return item.delivery_status === "Canceled"; // Si selected no es 0 ni 1, incluir todos los elementos
+          }
+        });
+
+  console.log("this is a result order", resultOrder);
+
   return (
     <>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={ordersList}
+        data={resultOrder}
         renderItem={({ item }) => (
           <OrderCard item={item} navigation={navigation} />
         )}
         ListFooterComponent={<View style={{ marginBottom: "60%" }}></View>}
-        // ListFooterComponentStyle={
-        //   {
-        //     // paddingHorizontal: 20,
-        //     // marginTop: 20,
-        //   }
-        // }
       />
     </>
   );
