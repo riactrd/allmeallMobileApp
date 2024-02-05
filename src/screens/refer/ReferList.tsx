@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     backgroundColor: secundaryColor,
+    marginBottom: "12%",
   },
   wrapper: {
     // backgroundColor: '#000',

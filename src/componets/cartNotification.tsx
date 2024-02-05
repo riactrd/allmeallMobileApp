@@ -22,7 +22,6 @@ const CartNotification = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
     );
-    console.log("Total Quantity:", totalQuantity);
   }
 
   return (

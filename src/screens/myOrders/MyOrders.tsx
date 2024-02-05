@@ -16,6 +16,7 @@ import OrdersList from "./OrdersList";
 import { useGetmyorderQuery } from "../../redux/api/myorderApi";
 import { ScreenWidth, Screenheight } from "../../componets/shared";
 import Spinner from "react-native-loading-spinner-overlay";
+import Loader from "../../utils/Loader";
 
 const itemsCategories = [
   {
@@ -56,31 +57,7 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
 
   return (
     <>
-      {isLoading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(3, 0, 2, 0.30)",
-            height: Screenheight,
-            width: ScreenWidth,
-            position: "absolute",
-            zIndex: 99,
-          }}
-        >
-          <View>
-            <Spinner
-              //visibility of Overlay Loading Spinner
-              visible={isLoading}
-              //Text with the Spinner
-              textContent={"Loading..."}
-              //Text style of the Spinner Text
-              textStyle={styles.spinnerTextStyle}
-            />
-          </View>
-        </View>
-      )}
+      {isLoading && <Loader isLoading={isLoading} />}
       <View style={{ flex: 1 }}>
         {/* <TopMenuCategory /> */}
         <View style={styles.container}>
@@ -107,7 +84,11 @@ const MyOrders: FunctionComponent<props> = ({ navigation }) => {
               </View>
             </ScrollView>
 
-            <OrdersList navigation={navigation} ordersList={ordersList} />
+            <OrdersList
+              navigation={navigation}
+              ordersList={ordersList}
+              selected={selected}
+            />
           </View>
         </View>
         {/* <BottomMenu/> */}

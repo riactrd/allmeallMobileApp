@@ -4,9 +4,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -24,6 +21,8 @@ import {
   useUserPromoCodeQuery,
 } from "../../redux/api/referEarnApi";
 import { useToast } from "react-native-toast-notifications";
+import { Alert } from "react-native";
+import { isValidEmailRefer } from "../../utils/formatDate";
 
 const Refer = () => {
   const navigation = useNavigation();
@@ -122,6 +121,18 @@ const Refer = () => {
   };
 
   const handlerSubmit = async () => {
+    if (!sendApiRefer.referral.name) {
+      Alert.alert("Please enter a name");
+      return;
+    }
+    if (
+      !sendApiRefer.referral.email ||
+      !isValidEmailRefer(sendApiRefer.referral.email)
+    ) {
+      Alert.alert("Please enter a valid email");
+      return;
+    }
+
     await createRefer(sendApiRefer);
     setName(""), setEmail("");
   };

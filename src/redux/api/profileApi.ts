@@ -91,7 +91,7 @@ export const profileApi = createApi({
               last_name: profile.lastname,
               phone_number: profile.phone,
               sec_phone_number: profile.secondaryPhone,
-              // referrer_id: 1,
+              referrer_id: profile.referrer,
               referral_email: profile.referralEmail,
               // height_feet: null,
               // height_inches: null,

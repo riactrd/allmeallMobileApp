@@ -71,6 +71,7 @@ import ReferList from "../screens/refer/ReferList";
 import { useChangePasswordMutation } from "../redux/api/authApi";
 import { useDispatch } from "react-redux";
 import { reset, setIsLoding } from "../redux/changePasswordSlice";
+import { isValidDateOfBirth, isValidEmailRefer } from "../utils/formatDate";
 // import CartNotification from '../componets/CartNotification';
 
 export type RootStackParamList = {
@@ -693,6 +694,26 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
 
   const handlerSave = async () => {
     try {
+      // // Validar los números de teléfono antes de enviar a la API
+      // if (!isValidPhoneNumber(phone) || !isValidPhoneNumber(secondaryPhone)) {
+      //   // Mostrar una alerta o manejar la validación de acuerdo a tus necesidades
+      //   alert("Invalid phone number, Please enter a 10 digit number.");
+      //   return;
+      // }
+
+      // Validar la fecha de nacimiento antes de enviar a la API
+      if (!isValidDateOfBirth(dateofBirth)) {
+        alert(
+          "Invalid date of birth. Please enter a valid date in the format dd/mm/yy."
+        );
+        return;
+      }
+
+      if (!isValidEmailRefer(referralEmail)) {
+        alert("Please enter a valid email address", referralEmail);
+        return;
+      }
+
       const response = await updateProfile({
         name,
         lastname,
@@ -703,12 +724,14 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
         referralEmail,
         referrer,
       }).unwrap();
+
       toast.show(JSON.stringify(response.message), {
         type: "success",
         placement: "center",
         duration: 8000,
         animationType: "slide-in",
       });
+
       console.log("Response Server:", response.message);
     } catch (error) {
       console.error("Error :", error);
@@ -746,17 +769,6 @@ export const MyProfilestackNavigator: FunctionComponent = () => {
     password: passwordState.newPassword,
     password_confirmation: passwordState.confirmNewPassword,
   };
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.show(JSON.stringify("password Change"), {
-  //       type: "success",
-  //       placement: "center",
-  //       duration: 8000,
-  //       animationType: "slide-in",
-  //     });
-  //   }
-  // }, [isSuccess]);
 
   const handlerChangePassword = async () => {
     if (!update_password.current_password) {
