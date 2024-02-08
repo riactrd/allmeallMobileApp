@@ -7,6 +7,8 @@ import {
   ScrollView,
   NativeSyntheticEvent,
   TextInputChangeEventData,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -46,8 +48,6 @@ const NewGift = () => {
       }));
     }
   }, [userInfo]);
-
-  console.log(giftData);
 
   const onChangeRecipient_first_name = (
     e: NativeSyntheticEvent<TextInputChangeEventData>
@@ -115,77 +115,83 @@ const NewGift = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.viewScroll}
-        >
-          <View style={styles.inputContainer}>
-            <Text style={styles.headerTextInput}>
-              Recipient First Name<Text style={{ color: mainColor }}>*</Text>
-            </Text>
-            <TextInput
-              placeholder="Type first Name..."
-              style={styles.input}
-              value={giftData.recipient_first_name}
-              onChange={onChangeRecipient_first_name}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.headerTextInput}>
-              Recipient Last Name<Text style={{ color: mainColor }}>*</Text>
-            </Text>
-            <TextInput
-              placeholder="Type last Name*..."
-              style={styles.input}
-              onChange={onChangeRecipient_last_name}
-              value={giftData.recipient_last_name}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.headerTextInput}>
-              Email Address Receiving Gift Card
-              <Text style={{ color: mainColor }}>*</Text>
-            </Text>
-            <TextInput
-              placeholder="Type email..."
-              style={styles.input}
-              onChange={onChangeRecipient_email}
-              value={giftData.recipient_email}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.headerTextInput}>
-              Digital Gift Card Amount(Min. $50.0)
-              <Text style={{ color: mainColor }}>*</Text>
-            </Text>
-            <TextInput
-              placeholder="Type amount..."
-              style={styles.input}
-              onChange={onChangeAmount}
-              value={giftData.amount}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.headerTextInput}>Message to Recipient</Text>
-            <TextInput
-              placeholder="Type message..."
-              style={styles.input}
-              onChange={onChangeMessage}
-              value={giftData.message}
-            />
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.saveButtom}
-            onPress={handlerNewGift}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500}
+    >
+      <View style={styles.container}>
+        <View style={styles.wrapper}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.viewScroll}
           >
-            <Text style={styles.saveButtomText}>Submit Gift Card</Text>
-          </TouchableOpacity>
-        </ScrollView>
+            <View style={styles.inputContainer}>
+              <Text style={styles.headerTextInput}>
+                Recipient First Name<Text style={{ color: mainColor }}>*</Text>
+              </Text>
+              <TextInput
+                placeholder="Type first Name..."
+                style={styles.input}
+                value={giftData.recipient_first_name}
+                onChange={onChangeRecipient_first_name}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.headerTextInput}>
+                Recipient Last Name<Text style={{ color: mainColor }}>*</Text>
+              </Text>
+              <TextInput
+                placeholder="Type last Name*..."
+                style={styles.input}
+                onChange={onChangeRecipient_last_name}
+                value={giftData.recipient_last_name}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.headerTextInput}>
+                Email Address Receiving Gift Card
+                <Text style={{ color: mainColor }}>*</Text>
+              </Text>
+              <TextInput
+                placeholder="Type email..."
+                style={styles.input}
+                onChange={onChangeRecipient_email}
+                value={giftData.recipient_email}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.headerTextInput}>
+                Digital Gift Card Amount(Min. $50.0)
+                <Text style={{ color: mainColor }}>*</Text>
+              </Text>
+              <TextInput
+                placeholder="Type amount..."
+                style={styles.input}
+                onChange={onChangeAmount}
+                value={giftData.amount}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.headerTextInput}>Message to Recipient</Text>
+              <TextInput
+                placeholder="Type message..."
+                style={styles.input}
+                onChange={onChangeMessage}
+                value={giftData.message}
+              />
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.saveButtom}
+              onPress={handlerNewGift}
+            >
+              <Text style={styles.saveButtomText}>Submit Gift Card</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -205,6 +211,7 @@ const styles = StyleSheet.create({
     // width: ScreenWidth-20,
     flexDirection: "column",
     alignItems: "center",
+    marginBottom: "15%",
   },
   viewScroll: {
     // width: ScreenWidth-20,
@@ -212,7 +219,6 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // padding:1,
     // marginBottom:320,
-    marginBottom: "auto",
     marginTop: 30,
   },
   inputContainer: {

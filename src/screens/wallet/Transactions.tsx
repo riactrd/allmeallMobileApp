@@ -15,6 +15,7 @@ import {
 
 import { useGetDigitalWalletQuery } from "../../redux/api/digitalwalletApi";
 import TransactionItem from "./TransactionItem";
+import ListEmpty from "../../componets/ListEmpty/ListEmpty";
 
 export default function Transactions() {
   const { data, isLoading, error } = useGetDigitalWalletQuery();
@@ -29,22 +30,22 @@ export default function Transactions() {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{ width: ScreenWidth, marginBottom: 5 }}
-        >
-          <View style={styles.viewScroll}>
-            {transactions.map((item, index) => (
-              <TransactionItem key={index} item={item} />
-            ))}
-            {/* <TouchableOpacity tyle={styles.containerButtom} onPress={() => navigation.navigate('NewGift')}>
-                <View style={styles.buttom}>
-                    <Ionicons name="add-circle" color={secundaryColor} style={styles.icon}/>
-                    <Text style={styles.text}>New Gift Card</Text>
-                </View>
-            </TouchableOpacity> */}
+        {transactions.length > 0 ? (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ width: ScreenWidth, marginBottom: 5 }}
+          >
+            <View style={styles.viewScroll}>
+              {transactions.map((item, index) => (
+                <TransactionItem key={index} item={item} />
+              ))}
+            </View>
+          </ScrollView>
+        ) : (
+          <View>
+            <ListEmpty title={" No transactions "} />
           </View>
-        </ScrollView>
+        )}
       </View>
     </View>
   );
