@@ -247,7 +247,6 @@ const Dashboard: FunctionComponent<props> = ({ navigation }) => {
               dataSearchApi={dataSearchApi}
               featuredMeals={dataSearchApi}
               navigation={navigation}
-              isLoadingDataSearch={isLoadingDataSearch}
               isFetching={isFetching}
             />
           ) : (

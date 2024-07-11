@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
     // paddingVertical: 20,
-    paddingLeft: 20,
+    // paddingLeft: 20,
     width: "100%",
 
     // backgroundColor: "red",
@@ -89,11 +89,13 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     letterSpacing: 0.15,
     color: "#262626",
+    paddingLeft: 20,
   },
   categoryItems: {
     marginTop: 10,
     display: "flex",
     flexDirection: "row",
+    paddingLeft: 20,
   },
   categoryContainer: {
     display: "flex",
