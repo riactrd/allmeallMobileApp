@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, StyleSheet, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   ScreenWidth,
@@ -17,7 +11,8 @@ import { useGetListReferEarnQuery } from "../../redux/api/referEarnApi";
 import { ScrollView } from "react-native-gesture-handler";
 import ReferItem from "./ReferItem";
 import Spinner from "react-native-loading-spinner-overlay";
-import { MaterialIcons } from "@expo/vector-icons";
+import ListEmpty from "../../componets/ListEmpty/ListEmpty";
+import Loader from "../../utils/Loader";
 
 export default function ReferList() {
   const { data, isLoading, isSuccess } = useGetListReferEarnQuery();
@@ -48,31 +43,7 @@ export default function ReferList() {
 
   return (
     <View style={styles.container}>
-      {isLoading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(3, 0, 2, 0.30)",
-            height: Screenheight,
-            width: ScreenWidth,
-            position: "absolute",
-            zIndex: 99,
-          }}
-        >
-          <View>
-            <Spinner
-              //visibility of Overlay Loading Spinner
-              visible={isLoading}
-              //Text with the Spinner
-              // textContent={"Loading..."}
-              //Text style of the Spinner Text
-              // textStyle={styles.spinnerTextStyle}
-            />
-          </View>
-        </View>
-      )}
+      {isLoading && <Loader isLoading={isLoading} />}
       <View style={styles.wrapper}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -106,78 +77,11 @@ export default function ReferList() {
                   </View>
                 ))
               ) : (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginVertical: 40,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontStyle: "normal",
-                      fontWeight: "600",
-                      fontSize: 16,
-                      lineHeight: 30,
-                      letterSpacing: 0.15,
-                      color: "#262626ad",
-
-                      alignSelf: "center",
-                    }}
-                  >
-                    User not found
-                  </Text>
-                  <MaterialIcons
-                    name="search-off"
-                    size={30}
-                    color="#262626ad"
-                    style={{ marginLeft: 5 }}
-                  />
-                </View>
+                <ListEmpty title={"User not Found "} />
               )}
-              {/* {found && found.length > 0
-              ? found.map((item, index) => (
-                  <View key={index}>
-                    <ReferItem item={item} />
-                  </View>
-                ))
-              : referList.map((item, index) => (
-                  <View key={index}>
-                    <ReferItem item={item} />
-                  </View>
-                ))} */}
             </View>
           ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                marginVertical: 40,
-              }}
-            >
-              <Text
-                style={{
-                  fontStyle: "normal",
-                  fontWeight: "600",
-                  fontSize: 16,
-                  lineHeight: 30,
-                  letterSpacing: 0.15,
-                  color: "#262626ad",
-
-                  alignSelf: "center",
-                }}
-              >
-                No list to show
-              </Text>
-              <MaterialIcons
-                name="search-off"
-                size={30}
-                color="#262626ad"
-                style={{ marginLeft: 5 }}
-              />
-            </View>
+            <ListEmpty title={"No list to show"} />
           )}
         </ScrollView>
       </View>
